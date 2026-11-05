@@ -1,0 +1,16 @@
+---
+import site from '../data/site.json';
+const text = encodeURIComponent(`Hi, I'd like to enquire about a room at ${site.name}.`);
+---
+<a class="wa-float" href={`https://wa.me/${site.whatsapp}?text=${text}`} target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  WhatsApp
+</a>
+
+<style>
+  .wa-float {
+    position: fixed; right: 16px; bottom: 16px; z-index: 20;
+    background: var(--accent); color: #0b3d1e; font-weight: 700;
+    padding: 12px 18px; border-radius: 99px; text-decoration: none;
+    box-shadow: 0 4px 14px rgb(0 0 0 / 0.18);
+  }
+</style>

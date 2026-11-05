@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Drop photos into public/images/gallery/ and list them here
+const photos = [
+  { src: '/images/gallery/reception.webp', alt: 'Reception' },
+  { src: '/images/gallery/room.webp', alt: 'Room interior' },
+  { src: '/images/gallery/bathroom.webp', alt: 'Bathroom' },
+  { src: '/images/gallery/exterior.webp', alt: 'Hotel exterior' },
+];
+---
+<BaseLayout title="Gallery" description="Photos of rooms, bathrooms and common areas at Hotel Living Hub.">
+  <section class="section container">
+    <h1>Gallery</h1>
+    <div class="gallery">
+      {photos.map((p) => (
+        <figure>
+          <img src={p.src} alt={p.alt} loading="lazy" width="800" height="600" />
+          <figcaption>{p.alt}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .gallery { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  figure img { aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); background: var(--surface); width: 100%; }
+  figcaption { font-size: 0.9rem; color: var(--muted); padding-top: 4px; }
+</style>

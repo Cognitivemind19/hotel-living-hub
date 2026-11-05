@@ -1,0 +1,18 @@
+{
+  "name": "Hotel Living Hub",
+  "tagline": "Comfortable stays, warm hospitality",
+  "phone": "+91 00000 00000",
+  "whatsapp": "910000000000",
+  "email": "reservations@hotellivinghub.in",
+  "address": "Street, Area, City, Odisha, PIN",
+  "checkIn": "12:00 PM",
+  "checkOut": "11:00 AM",
+  "mapEmbedUrl": "",
+  "formAccessKey": "YOUR_WEB3FORMS_ACCESS_KEY",
+  "amenities": ["Free Wi-Fi", "Air conditioning", "Parking", "24-hour reception", "Power backup", "CCTV security"],
+  "social": {
+    "facebook": "",
+    "instagram": "",
+    "x": ""
+  }
+}

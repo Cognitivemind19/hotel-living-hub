@@ -1,0 +1,29 @@
+[
+  {
+    "slug": "standard",
+    "name": "Standard Room",
+    "price": 1500,
+    "guests": 2,
+    "bed": "Double bed",
+    "image": "/images/rooms/standard.webp",
+    "amenities": ["AC", "Wi-Fi", "TV", "Attached bathroom"]
+  },
+  {
+    "slug": "deluxe",
+    "name": "Deluxe Room",
+    "price": 2200,
+    "guests": 2,
+    "bed": "Queen bed",
+    "image": "/images/rooms/deluxe.webp",
+    "amenities": ["AC", "Wi-Fi", "TV", "Hot water", "Work desk"]
+  },
+  {
+    "slug": "family",
+    "name": "Family Room",
+    "price": 3000,
+    "guests": 4,
+    "bed": "2 double beds",
+    "image": "/images/rooms/family.webp",
+    "amenities": ["AC", "Wi-Fi", "TV", "Hot water", "Extra space"]
+  }
+]
