@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Web3Form from '../components/Web3Form.astro';
+import site from '../data/site.json';
+import rooms from '../data/rooms.json';
+import { telHref, waHref } from '../lib/links';
+---
+<BaseLayout title="Book Your Stay" description="Book Hotel Living Hub by WhatsApp, by phone or with an online reservation request.">
+  <PageHero title="Book Your Stay" lead="Choose whichever way is easiest for you." image="/images/rooms/suite.webp" />
+
+  <section class="section container">
+    <div class="ways">
+      <a class="way" id="wa-booking" href={waHref(`Hi, I'd like to book a stay at ${site.name}.`)} data-base={waHref()} data-hotel={site.name} target="_blank" rel="noopener">
+        <h2>WhatsApp booking</h2>
+        <p class="muted">The quickest way to reach us.</p>
+        <span class="btn btn-whatsapp">Chat on WhatsApp</span>
+      </a>
+      <a class="way" href={telHref}>
+        <h2>Phone booking</h2>
+        <p class="muted">Speak directly to our front desk.</p>
+        <span class="btn">Call {site.phone}</span>
+      </a>
+      <a class="way" href="#reserve">
+        <h2>Online reservation</h2>
+        <p class="muted">Send your details using the form.</p>
+        <span class="btn">Fill in the form</span>
+      </a>
+    </div>
+
+    <div class="reserve" id="reserve">
+      <h2>Online reservation</h2>
+      <p class="muted intro">Send your request and we'll confirm availability and the rate by phone or WhatsApp.</p>
+
+      <Web3Form subject="New booking enquiry" sheet="Booking" id="booking-form">
+        <label>Name <input name="name" required autocomplete="name" /></label>
+        <div class="row">
+          <label>Phone <input name="phone" type="tel" required autocomplete="tel" /></label>
+          <label>Email (optional) <input name="email" type="email" autocomplete="email" /></label>
+        </div>
+        <div class="row">
+          <label>Check-in <input name="check_in" type="date" required /></label>
+          <label>Check-out <input name="check_out" type="date" required /></label>
+        </div>
+        <div class="row">
+          <label>Room
+            <select name="room">
+              <option value="">Any room</option>
+              {rooms.map((r) => <option value={r.slug}>{r.name}</option>)}
+            </select>
+          </label>
+          <label>Guests <input name="guests" type="number" min="1" max="10" value="2" /></label>
+        </div>
+        <label>Message (optional) <textarea name="message" rows="3"></textarea></label>
+        <button class="btn" type="submit">Send reservation request</button>
+      </Web3Form>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { bindStayDates } from '../scripts/stay-dates';
+
+  const form = document.getElementById('booking-form') as HTMLFormElement;
+  const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
+  const room = form.elements.namedItem('room') as HTMLSelectElement;
+
+  // Carry over the choices from the home page bar or a "Book this room" link
+  const params = new URLSearchParams(location.search);
+  for (const name of ['check_in', 'check_out', 'room', 'guests']) {
+    const value = params.get(name);
+    if (value) field(name).value = value;
+  }
+  if (room.selectedIndex < 0) room.selectedIndex = 0;
+  bindStayDates(form);
+
+  // Keep the WhatsApp message in step with the form
+  const wa = document.getElementById('wa-booking') as HTMLAnchorElement;
+  const updateWhatsApp = () => {
+    const details = [
+      field('check_in').value && `Check-in: ${field('check_in').value}`,
+      field('check_out').value && `Check-out: ${field('check_out').value}`,
+      room.value && `Room: ${room.selectedOptions[0].text}`,
+      field('guests').value && `Guests: ${field('guests').value}`,
+    ].filter(Boolean);
+    const text = [`Hi, I'd like to book a stay at ${wa.dataset.hotel}.`, ...details].join('\n');
+    wa.href = `${wa.dataset.base}?text=${encodeURIComponent(text)}`;
+  };
+  form.addEventListener('input', updateWhatsApp);
+  form.addEventListener('change', updateWhatsApp);
+  form.addEventListener('reset', () => setTimeout(updateWhatsApp));
+  updateWhatsApp();
+
+  if (params.has('check_in')) document.getElementById('reserve')?.scrollIntoView();
+</script>
+
+<style>
+  .ways { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-bottom: 40px; }
+  .way { display: grid; gap: 8px; justify-items: start; padding: 20px; background: #fff; border: 1px solid #eadfd2; border-radius: var(--radius); color: inherit; text-decoration: none; }
+  .way:hover { border-color: var(--forest); }
+  .way h2 { font-size: 1.2rem; margin: 0; }
+  .way .btn { margin-top: 6px; }
+  .intro { margin-bottom: 14px; }
+</style>

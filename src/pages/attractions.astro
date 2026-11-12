@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import BookingCta from '../components/BookingCta.astro';
+import data from '../data/attractions.json';
+
+type Attraction = { name: string; distance?: string; description: string; image?: string };
+const attractions = data.attractions as Attraction[];
+const nearby = data.nearby.filter((n) => n.distance);
+---
+<BaseLayout title="Tourism & Local Attractions" description="Places to visit around North Lakhimpur, Assam, and how to reach Hotel Living Hub.">
+  <PageHero title="Tourism & Local Attractions" lead="Make the most of your time in North Lakhimpur." image="/images/gallery/exterior.webp" />
+
+  <section class="section container">
+    <p class="narrow">North Lakhimpur sits where the plains of Assam meet the first rise of the Himalayan foothills, and is a natural stop on the way to Itanagar and Ziro in Arunachal Pradesh. Our front desk is happy to suggest places to visit and help with directions. <a href="/contact/">Get in touch</a> before you arrive, or just ask us during your stay.</p>
+
+    {attractions.length > 0 && (
+      <div class="grid places">
+        {attractions.map((a) => (
+          <article class="card">
+            {a.image && <img src={a.image} alt={a.name} loading="lazy" width="800" height="600" />}
+            <div class="card-body">
+              <h2 class="name">{a.name}</h2>
+              {a.distance && <p class="muted">{a.distance}</p>}
+              <p>{a.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+
+    {nearby.length > 0 && (
+      <div class="getting">
+        <h2>Getting around</h2>
+        <ul class="nearby">
+          {nearby.map((n) => <li><span>{n.place}</span><strong>{n.distance}</strong></li>)}
+        </ul>
+      </div>
+    )}
+  </section>
+
+  <BookingCta />
+</BaseLayout>
+
+<style>
+  .places { margin-top: 28px; }
+  .name { font-size: 1.15rem; margin-bottom: 2px; }
+  .getting { margin-top: 36px; }
+  .nearby { list-style: none; max-width: 480px; }
+  .nearby li { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eadfd2; }
+</style>

@@ -3,12 +3,37 @@
   "tagline": "Comfortable stays, warm hospitality",
   "phone": "+91 9124423748",
   "whatsapp": "+91 9665036123",
-  "email": "reservations@llivinghubhotel.com",
-  "address": "Street, Area, City, Odisha, PIN",
+  "email": "reservations@livinghubhotel.com",
+  "emailAlt": "dlivinghub@gmail.com",
+  "address": "DK Road, Chetia Gaon, North Lakhimpur, Assam, India",
   "checkIn": "12:00 PM",
   "checkOut": "11:00 AM",
-  "mapEmbedUrl": "",
-  "formAccessKey": "YOUR_WEB3FORMS_ACCESS_KEY",
+  "mapUrl": "https://www.google.com/maps/search/DK%20Road%2C%20Chetia%20Gaon%2C%20North%20Lakhimpur%2C%20Assam%2C%20India/@27.2365,94.1114,17z?hl=en",
+  "mapEmbedUrl": "https://maps.google.com/maps?q=DK%20Road%2C%20Chetia%20Gaon%2C%20North%20Lakhimpur%2C%20Assam%2C%20India&z=16&hl=en&output=embed",
+  "formAccessKey": "6c37cf46-319e-425a-bfcc-fe5eb5432568",
+  "sheetsWebAppUrl": "",
+  "nav": [
+    { "href": "/", "label": "Home" },
+    { "href": "/about/", "label": "About" },
+    { "href": "/rooms/", "label": "Rooms" },
+    { "href": "/amenities/", "label": "Amenities" },
+    { "href": "/dining/", "label": "Dining" },
+    { "href": "/corporate/", "label": "Corporate" },
+    { "href": "/attractions/", "label": "Attractions" },
+    { "href": "/gallery/", "label": "Gallery" },
+    { "href": "/offers/", "label": "Offers" },
+    { "href": "/contact/", "label": "Contact" }
+  ],
+  "reviews": [],
+  "roomAmenities": [
+    "Air conditioning",
+    "Flat-screen TV",
+    "Electric kettle",
+    "Writing table",
+    "Sitting area",
+    "Attached bathroom",
+    "Hot water"
+  ],
   "amenities": [
     "Free Wi-Fi",
     "Air conditioning",
@@ -17,9 +42,44 @@
     "Power backup",
     "CCTV security"
   ],
+  "heroSlides": [
+    {
+      "image": "/images/hero.webp",
+      "alt": "Guest room with two beds and a sitting area",
+      "title": "Hotel Living Hub",
+      "lead": "Comfortable stays, warm hospitality",
+      "text": "AC rooms, a restaurant, a lounge bar and a banquet hall, all under one roof.",
+      "cta": { "href": "/rooms/", "label": "Explore our rooms" }
+    },
+    {
+      "image": "/images/dining/taste-point.webp",
+      "alt": "Tables set for dining at Taste Point",
+      "title": "Taste Point",
+      "lead": "Our in-house AC restaurant",
+      "text": "Table seating for families and groups, and a relaxed lounge area to unwind after a meal.",
+      "cta": { "href": "/dining/#taste-point", "label": "Visit Taste Point" }
+    },
+    {
+      "image": "/images/dining/madira.webp",
+      "alt": "Madira lounge bar",
+      "title": "Madira – The Bar",
+      "lead": "A stylish AC lounge bar",
+      "text": "A backlit counter, table seating and private booths for a quiet evening.",
+      "cta": { "href": "/dining/#madira", "label": "Discover Madira" }
+    },
+    {
+      "image": "/images/dining/sobha.webp",
+      "alt": "Sobha banquet hall set up for a seminar",
+      "title": "Sobha – The Banquet",
+      "lead": "A large AC banquet hall",
+      "text": "Set up for meetings, seminars, receptions and family celebrations.",
+      "cta": { "href": "/dining/#sobha", "label": "Plan your event" }
+    }
+  ],
   "social": {
-    "facebook": "",
-    "instagram": "",
+    "facebook": "https://www.facebook.com/profile.php?id=61596130121479",
+    "instagram": "https://www.instagram.com/livinghubhotel/",
+    "linkedin": "https://www.linkedin.com/in/living-hub-hotel-60333244a/",
     "x": ""
   }
 }

@@ -15,17 +15,18 @@ No linter, type-checker, or tests — verify with `npm run build`.
 
 ## Architecture
 
-Static Astro site, plain CSS, no framework, no backend, no client JS except a tiny inline script on `book.astro`.
+Static Astro site, plain CSS, no framework, no backend. Client JS is limited to small scripts on the home availability bar and `book.astro`.
 
-- `src/data/site.json` and `src/data/rooms.json` are the source of truth for content (contact info, rooms/prices). Pages read from them rather than hardcoding text.
-- Room `slug` links `RoomCard` → `/book/?room=<slug>` → the pre-select script in `book.astro`. Keep slugs in sync if renamed.
-- Booking form posts directly to Web3Forms (`site.json`'s `formAccessKey`) — no backend.
+- `src/data/*.json` is the source of truth for content: `site.json` (contact info, nav, amenities, reviews), `rooms.json`, `venues.json`, `offers.json`, `attractions.json`. Pages read from them rather than hardcoding text. Unset values (`price`, `guests`, `distance`, `reviews`, `attractions`, `mapEmbedUrl`) are hidden on the page.
+- Room `slug` links `RoomCard` and `AvailabilityBar` → `/book/?room=<slug>` → the pre-fill script in `book.astro`. Keep slugs in sync if renamed.
+- "Check Availability" does not query live inventory: it passes dates, room and guests to `/book/`, where the guest sends a request.
+- Forms post directly to Web3Forms through `Web3Form.astro` (`site.json`'s `formAccessKey`) — no backend. On success Web3Forms redirects to `/?sent=1`, which shows a thank-you notice. When `site.json`'s `sheetsWebAppUrl` is set, each form's `sheet` prop also sends a copy to a Google Sheet via the Apps Script in `google-apps-script/Code.gs` (the user deploys that script themselves).
 - Shared styles/classes live in `src/styles/global.css`; page-specific CSS goes in a scoped `<style>` block in that `.astro` file.
 - Internal links use trailing slashes (`/rooms/`), which `Header.astro` relies on for active-link highlighting.
 
 ## Known placeholders
 
-Pre-launch stubs, not bugs: `site.json` phone/whatsapp/formAccessKey/mapEmbedUrl/social, `location.astro`'s `nearby` distances, the testimonials note in `index.astro`, and the domain in `astro.config.mjs`.
+Pre-launch stubs, not bugs: `site.json` reviews, provisional room prices in `rooms.json`, distances in `attractions.json`, and the sample packages in `offers.json`.
 
 ## Deploy
 

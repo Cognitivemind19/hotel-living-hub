@@ -3,8 +3,8 @@ interface Props {
   room: {
     slug: string;
     name: string;
-    price: number;
-    guests: number;
+    price: number | null;
+    guests: number | null;
     bed: string;
     image: string;
     amenities: string[];
@@ -12,15 +12,17 @@ interface Props {
 }
 const { room } = Astro.props;
 ---
-<article class="card" id={room.slug}>
+<article class="card">
   <img src={room.image} alt={room.name} loading="lazy" width="800" height="600" />
   <div class="card-body">
     <h3>{room.name}</h3>
-    <p class="muted">{room.bed} · Up to {room.guests} guests</p>
+    <p class="muted">{room.bed}{room.guests && ` · Up to ${room.guests} guests`}</p>
     <ul class="tags">
       {room.amenities.map((a) => <li>{a}</li>)}
     </ul>
-    <p><strong>From ₹{room.price.toLocaleString('en-IN')}</strong> / night</p>
+    {room.price
+      ? <p><strong>From ₹{room.price.toLocaleString('en-IN')}</strong> / night</p>
+      : <p class="muted">Contact us for today's rate</p>}
     <a class="btn" href={`/book/?room=${room.slug}`} style="margin-top:10px">Book this room</a>
   </div>
 </article>

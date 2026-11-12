@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Long-stay rates",
+    "description": "Staying for a week or more? Tell us your dates and we'll share our best rate for your stay.",
+    "image": "/images/rooms/executive-2.webp",
+    "cta": "Ask about long stays"
+  },
+  {
+    "title": "Stay and dine",
+    "description": "Pair your room with meals at Taste Point, our in-house restaurant.",
+    "image": "/images/dining/taste-point.webp",
+    "cta": "Ask about this package"
+  },
+  {
+    "title": "Corporate packages",
+    "description": "Regular room bookings for your team, with meeting space available at Sobha – The Banquet.",
+    "image": "/images/dining/sobha-2.webp",
+    "cta": "Ask about corporate rates"
+  },
+  {
+    "title": "Celebrations and events",
+    "description": "Birthdays, anniversaries and family functions, with banquet space and rooms for your guests.",
+    "image": "/images/dining/sobha-3.webp",
+    "cta": "Plan your event"
+  }
+]

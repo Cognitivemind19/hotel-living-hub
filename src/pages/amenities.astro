@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import BookingCta from '../components/BookingCta.astro';
+import site from '../data/site.json';
+import venues from '../data/venues.json';
+---
+<BaseLayout title="Amenities & Facilities" description="In-room comforts and hotel facilities at Hotel Living Hub, including a restaurant, lounge bar and banquet hall.">
+  <PageHero title="Amenities & Facilities" lead="Everything you need for a comfortable stay." image="/images/gallery/lounge.webp" />
+
+  <section class="section container">
+    <h2>Hotel facilities</h2>
+    <ul class="checks">
+      {site.amenities.map((a) => <li>{a}</li>)}
+    </ul>
+  </section>
+
+  <section class="section band">
+    <div class="container">
+      <h2>In your room</h2>
+      <ul class="checks">
+        {site.roomAmenities.map((a) => <li>{a}</li>)}
+      </ul>
+      <p class="muted note">Features vary by room category.</p>
+    </div>
+  </section>
+
+  <section class="section container">
+    <h2>On-site spaces</h2>
+    <div class="grid">
+      {venues.map((v) => (
+        <a class="card space" href={`/dining/#${v.slug}`}>
+          <img src={v.image} alt={v.name} loading="lazy" width="800" height="600" />
+          <div class="card-body">
+            <h3>{v.name}</h3>
+            <p class="muted">{v.type}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <BookingCta />
+</BaseLayout>
+
+<style>
+  .note { margin-top: 12px; font-size: 0.9rem; }
+  .space { color: inherit; text-decoration: none; }
+</style>

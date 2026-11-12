@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import BookingCta from '../components/BookingCta.astro';
+import site from '../data/site.json';
+import venues from '../data/venues.json';
+---
+<BaseLayout title="About Us" description={`About ${site.name}: comfortable AC rooms, a restaurant, a lounge bar and a banquet hall under one roof.`}>
+  <PageHero title="About Us" lead={site.tagline} image="/images/gallery/reception.webp" />
+
+  <section class="section container narrow">
+    <h2>Welcome to {site.name}</h2>
+    <p>{site.name} brings comfortable accommodation, good food and space to celebrate together in one place. Whether you are here for work, a family visit or a special occasion, our team at the front desk is here to make your stay easy.</p>
+    <p class="gap">Choose from Deluxe, Executive and Suite rooms, then enjoy a meal at {venues[0].name}, an evening at {venues[1].name}, or host your event at {venues[2].name}.</p>
+  </section>
+
+  <section class="section band">
+    <div class="container">
+      <h2>Why guests stay with us</h2>
+      <ul class="checks">
+        <li>Air-conditioned rooms in three categories</li>
+        <li>In-house restaurant and lounge bar</li>
+        <li>Banquet hall for meetings and celebrations</li>
+        <li>24-hour reception</li>
+        <li>Power backup and CCTV security</li>
+        <li>Parking and free Wi-Fi</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="photo-row">
+      <img src="/images/gallery/welcome.webp" alt="Our front desk team welcoming guests" loading="lazy" width="800" height="600" />
+      <img src="/images/gallery/entrance.webp" alt="Hotel entrance" loading="lazy" width="800" height="600" />
+      <img src="/images/gallery/corridor.webp" alt="Guest room corridor" loading="lazy" width="800" height="600" />
+    </div>
+  </section>
+
+  <BookingCta />
+</BaseLayout>
+
+<style>
+  .gap { margin-top: 12px; }
+</style>

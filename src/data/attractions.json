@@ -1,0 +1,44 @@
+{
+  "nearby": [
+    { "place": "Lilabari Airport", "distance": "About 5 km from town" },
+    { "place": "Railway station (Nakari)", "distance": "About 2 km from town" },
+    { "place": "Bus stand", "distance": "" },
+    { "place": "Nearest hospital", "distance": "" }
+  ],
+  "attractions": [
+    {
+      "name": "Leteku Pukhuri",
+      "distance": "About 15 km from town",
+      "description": "A peaceful lake and pilgrimage site, revered as the birthplace of the Vaishnavite saint Sri Madhabdev. A lovely half-day outing."
+    },
+    {
+      "name": "Narua Satra, Dhakuakhana",
+      "description": "A historic Satra founded by Damodar Aata, and a respected centre of Assam's Vaishnavite culture."
+    },
+    {
+      "name": "Shri Basudev Than",
+      "description": "One of Assam's old temples, visited by devotees throughout the year."
+    },
+    {
+      "name": "Phulani Than",
+      "distance": "About 35 km from town",
+      "description": "An important holy site in the district, easily combined with a scenic countryside drive."
+    },
+    {
+      "name": "Pabha (Milroy) Wildlife Sanctuary",
+      "description": "A small protected forest established for the wild water buffalo, and a quiet stop for nature lovers and birdwatchers."
+    },
+    {
+      "name": "Subansiri River",
+      "description": "A major tributary of the Brahmaputra, with wide channels, river islands and green banks close to town."
+    },
+    {
+      "name": "Rahdhala Pukhuri",
+      "description": "A water body in North Lakhimpur town, named the state's best in the Amrit Sarovar Mahotsav."
+    },
+    {
+      "name": "Gandhi Park",
+      "description": "A municipal park in town with slides, swings and a mini toy train, popular with families."
+    }
+  ]
+}

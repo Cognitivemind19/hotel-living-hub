@@ -1,8 +1,8 @@
 ---
 import site from '../data/site.json';
-const text = encodeURIComponent(`Hi, I'd like to enquire about a room at ${site.name}.`);
+import { waHref } from '../lib/links';
 ---
-<a class="wa-float" href={`https://wa.me/${site.whatsapp}?text=${text}`} target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+<a class="wa-float" href={waHref(`Hi, I'd like to enquire about a room at ${site.name}.`)} target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
   WhatsApp
 </a>
 

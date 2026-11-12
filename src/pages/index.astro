@@ -1,4 +1,129 @@
 ---
-import ComingSoon from '../components/ComingSoon.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSlider from '../components/HeroSlider.astro';
+import RoomCard from '../components/RoomCard.astro';
+import AvailabilityBar from '../components/AvailabilityBar.astro';
+import BookingCta from '../components/BookingCta.astro';
+import site from '../data/site.json';
+import rooms from '../data/rooms.json';
+import venues from '../data/venues.json';
+
+const photos = [
+  { src: '/images/gallery/reception.webp', alt: 'Hotel reception' },
+  { src: '/images/dining/taste-point-2.webp', alt: 'Taste Point restaurant' },
+  { src: '/images/rooms/suite-3.webp', alt: 'Suite sitting room' },
+  { src: '/images/dining/madira-2.webp', alt: 'Madira lounge bar' },
+];
 ---
-<ComingSoon />
+<BaseLayout>
+  <div class="sent-notice" id="sent-notice" role="status" hidden>
+    <div class="container">
+      <p><strong>Thank you!</strong> Your message has been sent. We'll get back to you soon.</p>
+      <button type="button" aria-label="Dismiss message" data-dismiss>&times;</button>
+    </div>
+  </div>
+
+  <HeroSlider />
+
+  <div class="container availability-wrap">
+    <AvailabilityBar />
+  </div>
+
+  <section class="section container">
+    <h2>Rooms &amp; accommodation</h2>
+    <div class="grid">
+      {rooms.map((room) => <RoomCard room={room} />)}
+    </div>
+    <p class="more"><a href="/rooms/">See room details and photos</a></p>
+  </section>
+
+  <section class="section band">
+    <div class="container">
+      <h2>Dine, unwind and celebrate</h2>
+      <div class="grid">
+        {venues.map((v) => (
+          <article class="card">
+            <img src={v.image} alt={v.name} loading="lazy" width="800" height="600" />
+            <div class="card-body">
+              <h3>{v.name}</h3>
+              <p class="muted">{v.type}</p>
+              <p class="more"><a href={`/dining/#${v.slug}`}>Learn more</a></p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <h2>Amenities</h2>
+    <ul class="tags">
+      {site.amenities.map((a) => <li>{a}</li>)}
+    </ul>
+    <p class="more"><a href="/amenities/">All amenities &amp; facilities</a></p>
+  </section>
+
+  <section class="section container split">
+    <div>
+      <h2>Travelling for work?</h2>
+      <p>Comfortable rooms for your team, and a banquet hall for meetings and seminars. Ask us about corporate stays.</p>
+      <a class="btn" href="/corporate/" style="margin-top:14px">Corporate accommodation</a>
+    </div>
+    <img src="/images/dining/sobha-2.webp" alt="Sobha banquet hall set up with a projector screen" loading="lazy" width="800" height="600" />
+  </section>
+
+  {site.reviews.length > 0 && (
+    <section class="section container">
+      <h2>What guests say</h2>
+      <div class="grid">
+        {site.reviews.map((r: { quote: string; name: string }) => (
+          <blockquote class="card card-body">
+            <p>“{r.quote}”</p>
+            <footer class="muted">{r.name}</footer>
+          </blockquote>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="section container">
+    <h2>A look inside</h2>
+    <div class="photo-row">
+      {photos.map((p) => <img src={p.src} alt={p.alt} loading="lazy" width="800" height="600" />)}
+    </div>
+    <p class="more"><a href="/gallery/">View the full gallery</a></p>
+  </section>
+
+  <BookingCta />
+</BaseLayout>
+
+<script>
+  import { FORM_SENT_KEY } from '../scripts/form-sent';
+
+  // Web3Forms lands here with ?sent=1 after a successful submission.
+  const url = new URL(location.href);
+  if (url.searchParams.get('sent') === '1') {
+    const notice = document.getElementById('sent-notice')!;
+    notice.hidden = false;
+    notice.querySelector('[data-dismiss]')!.addEventListener('click', () => (notice.hidden = true));
+    try { sessionStorage.setItem(FORM_SENT_KEY, '1'); } catch {}
+    url.searchParams.delete('sent');
+    history.replaceState(null, '', url.pathname + url.search + url.hash);
+  }
+</script>
+
+<style>
+  .sent-notice { background: #e6f4ea; border-bottom: 2px solid var(--forest); color: var(--forest-dark); }
+  .sent-notice[hidden] { display: none; }
+  .sent-notice .container { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; }
+  .sent-notice button { background: none; border: 0; font-size: 1.6rem; line-height: 1; color: inherit; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+  .sent-notice button:focus-visible { outline: 2px solid var(--forest); }
+  .availability-wrap { margin-top: -56px; position: relative; z-index: 2; }
+  .more { margin-top: 12px; font-weight: 600; }
+  .split { display: grid; gap: 28px; grid-template-columns: 1fr 1fr; align-items: center; }
+  .split img { border-radius: var(--radius); aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+
+  @media (max-width: 720px) {
+    .split { grid-template-columns: 1fr; }
+  }
+</style>

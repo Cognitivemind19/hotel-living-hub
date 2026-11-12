@@ -1,0 +1,30 @@
+---
+import Icon from './Icon.astro';
+import { socialLinks } from '../lib/links';
+
+interface Props {
+  size?: number;
+}
+const { size } = Astro.props;
+---
+{socialLinks.length > 0 && (
+  <div class="social">
+    {socialLinks.map((s) => (
+      <a href={s.url} target="_blank" rel="noopener" aria-label={s.label} title={s.label}>
+        <Icon name={s.name} size={size} />
+      </a>
+    ))}
+  </div>
+)}
+
+<style>
+  .social { display: flex; flex-wrap: wrap; gap: 10px; }
+  a { display: inline-flex; border-radius: 12px; transition: transform 0.18s ease; }
+  a:hover { transform: translateY(-3px) scale(1.06); }
+  a:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    a { transition: none; }
+    a:hover { transform: none; }
+  }
+</style>

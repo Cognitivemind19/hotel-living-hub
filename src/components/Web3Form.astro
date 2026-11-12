@@ -1,0 +1,62 @@
+---
+import site from '../data/site.json';
+
+interface Props {
+  subject: string;
+  /** Google Sheet tab that also receives a copy of each submission (see google-apps-script/Code.gs). */
+  sheet?: 'Contact' | 'Booking' | 'Corporate';
+  id?: string;
+}
+const { subject, sheet, id } = Astro.props;
+// After a successful submission Web3Forms sends the guest here. The script below
+// swaps in the current origin so this also works on localhost and preview URLs.
+const redirect = new URL('/?sent=1', Astro.site).href;
+const sheetUrl = sheet && site.sheetsWebAppUrl ? site.sheetsWebAppUrl : undefined;
+---
+<!-- Web3Forms: get a free access key at web3forms.com and set formAccessKey in src/data/site.json -->
+<form action="https://api.web3forms.com/submit" method="POST" id={id} data-web3form data-sheet={sheet} data-sheet-url={sheetUrl}>
+  <input type="hidden" name="access_key" value={site.formAccessKey} />
+  <input type="hidden" name="subject" value={`${subject} — ${site.name}`} />
+  <input type="hidden" name="redirect" value={redirect} />
+  <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
+  <slot />
+</form>
+
+<script>
+  import { FORM_SENT_KEY } from '../scripts/form-sent';
+
+  const forms = document.querySelectorAll<HTMLFormElement>('form[data-web3form]');
+  for (const form of forms) {
+    (form.elements.namedItem('redirect') as HTMLInputElement).value = new URL('/?sent=1', location.origin).href;
+    form.addEventListener('submit', () => copyToSheet(form));
+  }
+
+  // Sends a copy of the guest's details to the Google Sheet. Web3Forms still emails as usual.
+  function copyToSheet(form: HTMLFormElement) {
+    const { sheet, sheetUrl } = form.dataset;
+    if (!sheet || !sheetUrl) return;
+    if ((form.elements.namedItem('botcheck') as HTMLInputElement | null)?.checked) return;
+
+    const body = new URLSearchParams({ _sheet: sheet });
+    for (const el of Array.from(form.elements)) {
+      if (!(el instanceof HTMLInputElement || el instanceof HTMLSelectElement || el instanceof HTMLTextAreaElement)) continue;
+      if (!el.name || el.type === 'hidden' || el.name === 'botcheck') continue;
+      // Store the room's name ("Suite"), not its internal slug.
+      const value = el instanceof HTMLSelectElement ? (el.value ? el.selectedOptions[0].text : '') : el.value;
+      body.append(el.name, value);
+    }
+    fetch(sheetUrl, { method: 'POST', body, mode: 'no-cors', keepalive: true }).catch(() => {});
+  }
+
+  // If the guest presses Back after a successful send, clear the details they typed.
+  window.addEventListener('pageshow', (event) => {
+    const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+    if (!event.persisted && nav?.type !== 'back_forward') return;
+    let sent = false;
+    try {
+      sent = sessionStorage.getItem(FORM_SENT_KEY) === '1';
+      sessionStorage.removeItem(FORM_SENT_KEY);
+    } catch {}
+    if (sent) forms.forEach((form) => form.reset());
+  });
+</script>

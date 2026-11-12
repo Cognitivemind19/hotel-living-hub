@@ -1,33 +1,119 @@
 ---
 import site from '../data/site.json';
+import { telHref, waHref } from '../lib/links';
 
-const links = [
-  { href: '/', label: 'Home' },
-  { href: '/rooms/', label: 'Rooms' },
-  { href: '/gallery/', label: 'Gallery' },
-  { href: '/location/', label: 'Location' },
-  { href: '/contact/', label: 'Contact' },
-];
 const path = Astro.url.pathname;
 ---
+<div class="topbar">
+  <div class="container strip">
+    <span class="times">Check-in {site.checkIn} · Check-out {site.checkOut}</span>
+    <span class="reach">
+      <a href={telHref}>{site.phone}</a>
+      <a href={waHref()} target="_blank" rel="noopener">WhatsApp</a>
+    </span>
+  </div>
+</div>
+
 <header class="site-header">
   <div class="container bar">
-    <a href="/" class="logo">{site.name}</a>
-    <nav aria-label="Main">
-      {links.map((l) => (
+    <a href="/" class="logo">
+      <img src="/images/brand/logo-horizontal.svg" alt={site.name} width="3849" height="1111" />
+    </a>
+
+    <nav class="nav-desktop" aria-label="Main">
+      {site.nav.map((l) => (
         <a href={l.href} aria-current={path === l.href ? 'page' : undefined}>{l.label}</a>
       ))}
-      <a href="/book/" class="btn">Book Now</a>
     </nav>
+
+    <div class="actions">
+      <a href="/book/" class="btn book">Book Now</a>
+
+      <details class="menu">
+        <summary aria-label="Menu">
+          <svg class="i-menu" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+          <svg class="i-close" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" /></svg>
+        </summary>
+        <nav class="nav-mobile" aria-label="Main">
+          {site.nav.map((l) => (
+            <a href={l.href} aria-current={path === l.href ? 'page' : undefined}>{l.label}</a>
+          ))}
+          <a href={telHref}>Call {site.phone}</a>
+        </nav>
+      </details>
+    </div>
   </div>
 </header>
 
 <style>
+  .topbar { background: var(--forest); color: #fff; font-size: 0.85rem; }
+  .strip { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; }
+  .reach { display: flex; gap: 18px; margin-left: auto; }
+  .reach a { color: #fff; text-decoration: none; font-weight: 600; white-space: nowrap; }
+  .reach a:hover { text-decoration: underline; }
+  .reach a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
   .site-header { background: #fff; border-bottom: 1px solid #eadfd2; position: sticky; top: 0; z-index: 10; }
-  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; flex-wrap: wrap; }
-  .logo { font-weight: 700; font-size: 1.2rem; text-decoration: none; color: var(--text); }
-  nav { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-  nav a:not(.btn) { text-decoration: none; color: var(--text); font-size: 0.95rem; }
-  nav a[aria-current='page'] { color: var(--brand); font-weight: 600; }
-  nav .btn { padding: 8px 14px; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 10px 0; }
+
+  .logo { flex: none; display: block; border-radius: 4px; }
+  .logo img { height: 48px; width: auto; }
+
+  .nav-desktop { display: flex; gap: 18px; align-items: center; }
+  .nav-desktop a { position: relative; padding: 6px 0; }
+  .nav-desktop a[aria-current='page']::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+    height: 2px; background: var(--forest);
+  }
+
+  nav a { text-decoration: none; color: var(--text); font-size: 0.95rem; }
+  nav a:hover, nav a[aria-current='page'] { color: var(--forest); }
+  nav a[aria-current='page'] { font-weight: 600; }
+
+  .actions { display: flex; align-items: center; gap: 16px; flex: none; }
+  .book { padding: 9px 16px; white-space: nowrap; }
+
+  .menu { display: none; }
+  summary {
+    display: grid; place-items: center;
+    width: 44px; height: 44px;
+    border-radius: 8px; color: var(--forest);
+    cursor: pointer; list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  .menu[open] .i-menu, .menu:not([open]) .i-close { display: none; }
+
+  .nav-mobile {
+    position: absolute; top: 100%; left: 0; right: 0;
+    display: grid;
+    padding: 8px 16px 16px;
+    background: #fff;
+    border-bottom: 1px solid #eadfd2;
+    box-shadow: 0 10px 20px rgb(0 0 0 / 0.08);
+    max-height: calc(100dvh - 70px);
+    overflow-y: auto;
+  }
+  .nav-mobile a { padding: 12px 0; font-size: 1.05rem; border-bottom: 1px solid #f1e9df; }
+  .nav-mobile a:last-child { border-bottom: 0; color: var(--forest); font-weight: 600; }
+
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--forest); outline-offset: 2px; }
+
+  @media (max-width: 1080px) {
+    .nav-desktop { display: none; }
+    .menu { display: block; }
+    .actions { gap: 8px; }
+  }
+
+  @media (max-width: 600px) {
+    .times { display: none; }
+    .reach { margin-inline: auto; }
+    .logo img { height: 42px; }
+  }
+
+  @media (max-width: 380px) {
+    .bar { gap: 8px; }
+    .logo img { height: 36px; }
+    .book { padding: 8px 12px; font-size: 0.9rem; }
+  }
 </style>

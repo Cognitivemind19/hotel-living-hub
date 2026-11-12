@@ -1,6 +1,8 @@
 :root {
   --brand: #8a4b2a;
   --brand-dark: #6b3a20;
+  --forest: #195a32;
+  --forest-dark: #12442a;
   --accent: #25d366;
   --text: #1f1f1f;
   --muted: #5f5f5f;
@@ -19,8 +21,9 @@ body {
   line-height: 1.6;
 }
 
-img { max-width: 100%; display: block; }
-a { color: var(--brand); }
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--forest); }
+[id] { scroll-margin-top: 90px; }
 
 .container { width: min(100% - 32px, var(--max)); margin-inline: auto; }
 .section { padding: 48px 0; }
@@ -31,14 +34,15 @@ a { color: var(--brand); }
   display: inline-block;
   padding: 12px 20px;
   border-radius: var(--radius);
-  background: var(--brand);
+  background: var(--forest);
   color: #fff;
   text-decoration: none;
+  font: inherit;
   font-weight: 600;
   border: 0;
   cursor: pointer;
 }
-.btn:hover { background: var(--brand-dark); }
+.btn:hover { background: var(--forest-dark); }
 .btn-whatsapp { background: var(--accent); color: #0b3d1e; }
 .btn-whatsapp:hover { background: #1ebe5a; }
 
@@ -52,15 +56,24 @@ a { color: var(--brand); }
 .tags li { background: var(--surface); padding: 2px 10px; border-radius: 99px; font-size: 0.85rem; }
 
 form { display: grid; gap: 12px; max-width: 520px; }
-label { display: grid; gap: 4px; font-weight: 600; font-size: 0.95rem; }
+label { display: grid; gap: 4px; font-weight: 700; font-size: 0.95rem; }
 input, select, textarea {
   font: inherit;
+  font-weight: 400;
   padding: 10px 12px;
-  border: 1px solid #d6c8b8;
+  border: 1.5px solid var(--forest);
   border-radius: 8px;
   background: #fff;
 }
 .row { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+
+.narrow { max-width: 720px; }
+.band { background: var(--surface); }
+.photo-row { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.photo-row img { aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); background: var(--surface); width: 100%; }
+.checks { list-style: none; display: grid; gap: 8px 24px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.checks li { padding-left: 26px; position: relative; }
+.checks li::before { content: '✓'; position: absolute; left: 0; color: var(--forest); font-weight: 700; }
 
 @media (max-width: 600px) {
   .row { grid-template-columns: 1fr; }

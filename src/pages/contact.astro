@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Web3Form from '../components/Web3Form.astro';
+import Icon from '../components/Icon.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import site from '../data/site.json';
+import { telHref, waHref } from '../lib/links';
+---
+<BaseLayout title="Contact Us" description="Phone, WhatsApp, email, address and map for Hotel Living Hub.">
+  <PageHero title="Contact Us" lead="We're happy to help with bookings, events and directions." image="/images/gallery/reception.webp" />
+
+  <section class="section container">
+    <header class="intro">
+      <h2>We are here to support you 24&nbsp;X&nbsp;7</h2>
+      <p class="muted">Call, message or visit us. Our front desk is always open.</p>
+    </header>
+
+    <div class="cards">
+      <article class="contact-card">
+        <Icon name="phone" size={56} />
+        <h3>Call us</h3>
+        <a href={telHref}>{site.phone}</a>
+      </article>
+      <article class="contact-card">
+        <Icon name="whatsapp" size={56} />
+        <h3>WhatsApp</h3>
+        <a href={waHref()} target="_blank" rel="noopener">{site.whatsapp}</a>
+      </article>
+      <article class="contact-card">
+        <Icon name="email" size={56} />
+        <h3>Email</h3>
+        {[site.email, site.emailAlt].map((email) => {
+          const [user, domain] = email.split('@');
+          return <a class="email" href={`mailto:${email}`}>{user}@<wbr />{domain}</a>;
+        })}
+      </article>
+      <article class="contact-card">
+        <Icon name="address" size={56} />
+        <h3>Visit us</h3>
+        <p>{site.address}</p>
+      </article>
+    </div>
+
+    <div class="strip">
+      <div class="times">
+        <div class="time"><Icon name="check-in" size={40} /><div><strong>Check-in</strong><span>{site.checkIn}</span></div></div>
+        <div class="time"><Icon name="check-out" size={40} /><div><strong>Check-out</strong><span>{site.checkOut}</span></div></div>
+      </div>
+      <div class="follow">
+        <strong>Follow us</strong>
+        <SocialLinks size={40} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section container split">
+    <div class="panel">
+      <h2>Please share your valuable feedbacks</h2>
+      <Web3Form subject="New website message" sheet="Contact">
+        <label>Name <input name="name" required autocomplete="name" /></label>
+        <label>Phone <input name="phone" type="tel" required autocomplete="tel" /></label>
+        <label>Message <textarea name="message" rows="5" required></textarea></label>
+        <button class="btn" type="submit">Send message</button>
+      </Web3Form>
+    </div>
+
+    {site.mapEmbedUrl && (
+      <div class="panel map-panel">
+        <h2>Find us</h2>
+        <iframe class="map" src={site.mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map to Hotel Living Hub"></iframe>
+        <a class="btn" href={site.mapUrl} target="_blank" rel="noopener">Open in Google Maps</a>
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .intro { text-align: center; max-width: 640px; margin: 0 auto 32px; }
+  .intro h2 { margin-bottom: 6px; }
+
+  .cards { display: grid; gap: 20px; grid-template-columns: repeat(4, 1fr); }
+  .contact-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 28px 14px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #eadfd2;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.05);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .contact-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgb(0 0 0 / 0.09); }
+  .contact-card h3 { margin: 14px 0 4px; font-size: 1.1rem; }
+  .contact-card a { font-size: 0.95rem; font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+  .contact-card a:hover { text-decoration: underline; }
+  .contact-card .email { font-size: 0.9rem; overflow-wrap: break-word; }
+  .contact-card p { line-height: 1.5; }
+
+  .strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 32px;
+    margin-top: 24px;
+    padding: 20px 28px;
+    background: var(--surface);
+    border-radius: 14px;
+  }
+  .times { display: flex; flex-wrap: wrap; gap: 20px 40px; }
+  .time { display: flex; align-items: center; gap: 12px; }
+  .time div { display: grid; line-height: 1.35; }
+  .follow { display: flex; align-items: center; gap: 16px; }
+
+  .split { display: grid; gap: 28px; grid-template-columns: 1fr 1fr; padding-top: 0; }
+  .panel { display: flex; flex-direction: column; padding: 28px; background: #fff; border: 1px solid #eadfd2; border-radius: 14px; }
+  .panel h2 { font-size: 1.4rem; }
+  .panel :global(form) { max-width: none; }
+  .map-panel .map { flex: 1; width: 100%; min-height: 320px; border: 0; border-radius: var(--radius); background: var(--surface); }
+  .map-panel .btn { align-self: flex-start; margin-top: 16px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-card { transition: none; }
+    .contact-card:hover { transform: none; }
+  }
+
+  @media (max-width: 1000px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 800px) {
+    .split { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    .cards { grid-template-columns: 1fr; gap: 12px; }
+    .contact-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-content: center;
+      justify-items: start;
+      column-gap: 16px;
+      row-gap: 2px;
+      padding: 16px 18px;
+      text-align: left;
+    }
+    .contact-card > :global(.icon) { grid-row: span 3; align-self: center; }
+    .contact-card h3 { margin: 0; }
+    .strip { padding: 20px; }
+    .panel { padding: 20px; }
+  }
+</style>

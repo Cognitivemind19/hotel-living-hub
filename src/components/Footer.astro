@@ -1,31 +1,78 @@
 ---
 import site from '../data/site.json';
+import { telHref, waHref } from '../lib/links';
+import Icon from './Icon.astro';
+import SocialLinks from './SocialLinks.astro';
 const year = new Date().getFullYear();
-const social = Object.entries(site.social).filter(([, url]) => url);
+const iconSize = 32;
 ---
 <footer class="site-footer">
   <div class="container cols">
-    <div>
-      <strong>{site.name}</strong>
-      <p>{site.address}</p>
+    <div class="brand">
+      <img src="/images/brand/logo-horizontal-white.svg" alt={site.name} width="3849" height="1111" loading="lazy" />
+      <p>{site.tagline}</p>
+      <p class="address"><Icon name="address" size={iconSize} /><span>{site.address}</span></p>
+      <div class="follow"><SocialLinks size={38} /></div>
     </div>
+
+    <nav aria-label="Footer">
+      <h2>Explore</h2>
+      <ul>
+        {site.nav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        <li><a href="/book/">Book Now</a></li>
+      </ul>
+    </nav>
+
     <div>
-      <p><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></p>
-      <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
-      <p>Check-in {site.checkIn} · Check-out {site.checkOut}</p>
+      <h2>Contact</h2>
+      <ul class="with-icons">
+        <li><Icon name="phone" size={iconSize} /><a href={telHref}>{site.phone}</a></li>
+        <li><Icon name="whatsapp" size={iconSize} /><a href={waHref()} target="_blank" rel="noopener">WhatsApp us</a></li>
+        <li><Icon name="email" size={iconSize} /><a class="email" href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><Icon name="email" size={iconSize} /><a class="email" href={`mailto:${site.emailAlt}`}>{site.emailAlt}</a></li>
+      </ul>
     </div>
-    {social.length > 0 && (
-      <div>
-        {social.map(([name, url]) => <p><a href={url} rel="noopener">{name}</a></p>)}
-      </div>
-    )}
+
+    <div>
+      <h2>Your stay</h2>
+      <ul class="with-icons">
+        <li><Icon name="check-in" size={iconSize} /><span>Check-in {site.checkIn}</span></li>
+        <li><Icon name="check-out" size={iconSize} /><span>Check-out {site.checkOut}</span></li>
+      </ul>
+    </div>
   </div>
-  <p class="container copy">© {year} {site.name}</p>
+
+  <p class="container copy">© {year} {site.name}. All rights reserved.</p>
 </footer>
 
 <style>
-  .site-footer { background: var(--surface); padding: 32px 0 16px; margin-top: 48px; font-size: 0.95rem; }
-  .cols { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-  .copy { margin-top: 20px; color: var(--muted); font-size: 0.85rem; }
-  a { text-transform: capitalize; }
+  .site-footer { background: var(--forest); color: rgb(255 255 255 / 0.85); padding: 48px 0 24px; margin-top: 48px; font-size: 0.95rem; }
+  .cols { display: grid; gap: 32px; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr) auto auto; }
+  nav ul { grid-template-columns: 1fr 1fr; }
+
+  .brand img { width: 180px; height: auto; margin-bottom: 14px; }
+  .brand p + p { margin-top: 6px; }
+
+  h2 { color: #fff; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+  ul { list-style: none; display: grid; gap: 8px; }
+
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: #fff; text-decoration: underline; }
+  a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .email { overflow-wrap: anywhere; min-width: 0; }
+
+  .with-icons { gap: 10px; }
+  .with-icons li, .address { display: flex; align-items: center; gap: 10px; }
+  .follow { margin-top: 16px; }
+
+  .copy { margin-top: 32px; padding-top: 16px; border-top: 1px solid rgb(255 255 255 / 0.2); font-size: 0.85rem; }
+
+  @media (max-width: 900px) {
+    .cols { grid-template-columns: 1fr 1fr; }
+    .brand { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 480px) {
+    .cols { grid-template-columns: 1fr; }
+  }
 </style>

@@ -1,0 +1,37 @@
+[
+  {
+    "slug": "taste-point",
+    "name": "Taste Point",
+    "type": "AC restaurant",
+    "description": "Our in-house restaurant, with table seating for families and groups and a relaxed lounge area for waiting or unwinding after a meal.",
+    "image": "/images/dining/taste-point.webp",
+    "photos": [
+      { "src": "/images/dining/taste-point-2.webp", "alt": "Taste Point dining tables" },
+      { "src": "/images/dining/taste-point-3.webp", "alt": "Table setting at Taste Point" },
+      { "src": "/images/dining/taste-point-lounge.webp", "alt": "Lounge seating beside Taste Point" }
+    ]
+  },
+  {
+    "slug": "madira",
+    "name": "Madira – The Bar",
+    "type": "AC lounge bar",
+    "description": "A stylish lounge bar with a backlit counter, table seating and private booths for a quiet evening.",
+    "image": "/images/dining/madira.webp",
+    "photos": [
+      { "src": "/images/dining/madira-2.webp", "alt": "Backlit bar shelves at Madira" },
+      { "src": "/images/dining/madira-3.webp", "alt": "Madira lounge seating" },
+      { "src": "/images/dining/madira-booth.webp", "alt": "Private booth at Madira" }
+    ]
+  },
+  {
+    "slug": "sobha",
+    "name": "Sobha – The Banquet",
+    "type": "AC banquet hall",
+    "description": "A large pillared hall that can be set up theatre-style or with round tables for meetings, seminars, receptions and family celebrations.",
+    "image": "/images/dining/sobha.webp",
+    "photos": [
+      { "src": "/images/dining/sobha-2.webp", "alt": "Sobha banquet hall with projector screen" },
+      { "src": "/images/dining/sobha-3.webp", "alt": "Sobha banquet hall with round tables" }
+    ]
+  }
+]

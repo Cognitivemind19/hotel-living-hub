@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import BookingCta from '../components/BookingCta.astro';
+
+const groups = [
+  {
+    title: 'Rooms',
+    photos: [
+      { src: '/images/rooms/deluxe-2.webp', alt: 'Deluxe Room' },
+      { src: '/images/rooms/executive.webp', alt: 'Executive Room' },
+      { src: '/images/rooms/suite.webp', alt: 'Suite Room' },
+      { src: '/images/rooms/suite-3.webp', alt: 'Suite sitting room' },
+      { src: '/images/gallery/room.webp', alt: 'Guest room' },
+      { src: '/images/rooms/executive-bath.webp', alt: 'Attached bathroom' },
+    ],
+  },
+  {
+    title: 'Taste Point restaurant',
+    photos: [
+      { src: '/images/dining/taste-point.webp', alt: 'Taste Point dining room' },
+      { src: '/images/dining/taste-point-2.webp', alt: 'Dining tables' },
+      { src: '/images/dining/taste-point-3.webp', alt: 'Table setting' },
+      { src: '/images/dining/taste-point-lounge.webp', alt: 'Lounge seating' },
+    ],
+  },
+  {
+    title: 'Madira – The Bar',
+    photos: [
+      { src: '/images/dining/madira.webp', alt: 'Bar counter' },
+      { src: '/images/dining/madira-2.webp', alt: 'Backlit bar shelves' },
+      { src: '/images/dining/madira-3.webp', alt: 'Lounge seating' },
+      { src: '/images/dining/madira-booth.webp', alt: 'Private booth' },
+    ],
+  },
+  {
+    title: 'Sobha – The Banquet',
+    photos: [
+      { src: '/images/dining/sobha.webp', alt: 'Theatre-style seating' },
+      { src: '/images/dining/sobha-2.webp', alt: 'Meeting setup with screen' },
+      { src: '/images/dining/sobha-3.webp', alt: 'Round table setup' },
+    ],
+  },
+  {
+    title: 'The hotel',
+    photos: [
+      { src: '/images/gallery/exterior.webp', alt: 'Hotel entrance at night' },
+      { src: '/images/gallery/sign.webp', alt: 'Living Hub sign' },
+      { src: '/images/gallery/entrance.webp', alt: 'Entrance' },
+      { src: '/images/gallery/reception.webp', alt: 'Reception' },
+      { src: '/images/gallery/corridor.webp', alt: 'Corridor' },
+      { src: '/images/gallery/sitting.webp', alt: 'Sitting area' },
+    ],
+  },
+];
+---
+<BaseLayout title="Gallery" description="Photos of rooms, dining, the lounge bar and banquet hall at Hotel Living Hub.">
+  <PageHero title="Gallery" lead="Take a look around before you arrive." image="/images/gallery/lounge.webp" />
+
+  <section class="section container groups">
+    {groups.map((g) => (
+      <div>
+        <h2>{g.title}</h2>
+        <div class="gallery">
+          {g.photos.map((p) => (
+            <figure>
+              <img src={p.src} alt={p.alt} loading="lazy" width="800" height="600" />
+              <figcaption>{p.alt}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <BookingCta />
+</BaseLayout>
+
+<style>
+  .groups { display: grid; gap: 40px; }
+  .gallery { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  figure img { aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); background: var(--surface); width: 100%; }
+  figcaption { font-size: 0.9rem; color: var(--muted); padding-top: 4px; }
+</style>

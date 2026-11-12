@@ -1,0 +1,43 @@
+---
+import rooms from '../data/rooms.json';
+---
+<form class="availability" action="/book/" method="GET" aria-label="Check availability" id="availability">
+  <label>Check-in <input name="check_in" type="date" required /></label>
+  <label>Check-out <input name="check_out" type="date" required /></label>
+  <label>Room
+    <select name="room">
+      <option value="">Any room</option>
+      {rooms.map((r) => <option value={r.slug}>{r.name}</option>)}
+    </select>
+  </label>
+  <label>Guests <input name="guests" type="number" min="1" max="10" value="2" required /></label>
+  <button class="btn" type="submit">Check Availability</button>
+</form>
+
+<script>
+  import { bindStayDates } from '../scripts/stay-dates';
+  bindStayDates(document.getElementById('availability') as HTMLFormElement);
+</script>
+
+<style>
+  .availability {
+    max-width: none;
+    grid-template-columns: 1fr 1fr 1fr 0.7fr auto;
+    align-items: end;
+    padding: 18px;
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.16);
+  }
+  input, select { width: 100%; min-width: 0; height: 46px; }
+  button { height: 46px; padding-block: 0; white-space: nowrap; }
+
+  @media (max-width: 900px) {
+    .availability { grid-template-columns: 1fr 1fr; }
+    button { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 420px) {
+    .availability { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,182 @@
+---
+import site from '../data/site.json';
+const slides = site.heroSlides;
+---
+<section class="hero" data-hero aria-roledescription="carousel" aria-label="Hotel highlights">
+  <div class="track" data-track>
+    {slides.map((s, i) => (
+      <div class="slide" role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${slides.length}`}>
+        <img src={s.image} alt={s.alt} width="1280" height="854" fetchpriority={i === 0 ? 'high' : undefined} />
+        <div class="container content">
+          {i === 0 ? <h1 class="title">{s.title}</h1> : <h2 class="title">{s.title}</h2>}
+          <p class="lead">{s.lead}</p>
+          <p class="sub">{s.text}</p>
+          <a class="btn" href={s.cta.href}>{s.cta.label}</a>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="container controls" data-controls hidden>
+    <button type="button" class="ctl" data-prev aria-label="Previous slide">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+    </button>
+    {slides.map((s, i) => (
+      <button type="button" class="dot" data-dot aria-label={`Go to slide ${i + 1}: ${s.title}`}></button>
+    ))}
+    <button type="button" class="ctl" data-next aria-label="Next slide">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+    </button>
+    <button type="button" class="ctl" data-toggle aria-label="Pause slideshow">
+      <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14" /></svg>
+      <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" /></svg>
+    </button>
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-hero]');
+
+  if (root) {
+    const INTERVAL = 6000;
+    const track = root.querySelector<HTMLElement>('[data-track]')!;
+    const slides = Array.from(track.children) as HTMLElement[];
+    const dots = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-dot]'));
+    const toggle = root.querySelector<HTMLButtonElement>('[data-toggle]')!;
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canHover = matchMedia('(hover: hover)').matches;
+
+    let current = 0;
+    let stopped = reducedMotion;
+    let timer: number | undefined;
+
+    const goTo = (index: number) => {
+      const target = slides[(index + slides.length) % slides.length];
+      track.scrollTo({ left: target.offsetLeft, behavior: reducedMotion ? 'auto' : 'smooth' });
+    };
+
+    const isHeld = () =>
+      document.hidden ||
+      (canHover && root.matches(':hover')) ||
+      root.querySelector(':focus-visible') !== null;
+
+    const restartTimer = () => {
+      clearInterval(timer);
+      if (stopped) return;
+      timer = window.setInterval(() => {
+        if (!isHeld()) goTo(current + 1);
+      }, INTERVAL);
+    };
+
+    const renderToggle = () => {
+      root.toggleAttribute('data-stopped', stopped);
+      toggle.setAttribute('aria-label', stopped ? 'Play slideshow' : 'Pause slideshow');
+    };
+
+    const renderDots = () => {
+      dots.forEach((dot, i) => {
+        if (i === current) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+    };
+
+    // Tracks the visible slide however it got there: buttons, autoplay, swipe or tabbing to a link.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          current = slides.indexOf(entry.target as HTMLElement);
+          renderDots();
+          restartTimer();
+        }
+      },
+      { root: track, threshold: 0.6 },
+    );
+    slides.forEach((slide) => observer.observe(slide));
+
+    dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+    root.querySelector('[data-prev]')!.addEventListener('click', () => goTo(current - 1));
+    root.querySelector('[data-next]')!.addEventListener('click', () => goTo(current + 1));
+    toggle.addEventListener('click', () => {
+      stopped = !stopped;
+      renderToggle();
+      restartTimer();
+    });
+
+    root.querySelector('[data-controls]')!.removeAttribute('hidden');
+    renderToggle();
+    renderDots();
+    restartTimer();
+  }
+</script>
+
+<style>
+  .hero { position: relative; background: var(--forest-dark); color: #fff; }
+
+  /* Native scroll-snap gives touch swiping, and still works without JS. */
+  .track {
+    position: relative;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .track::-webkit-scrollbar { display: none; }
+
+  .slide {
+    position: relative;
+    flex: 0 0 100%;
+    display: flex;
+    align-items: center;
+    min-height: clamp(440px, 64vh, 620px);
+    padding: 72px 0 140px;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  .slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(0 0 0 / 0.72), rgb(0 0 0 / 0.4));
+  }
+
+  .content { position: relative; z-index: 1; }
+  .title { color: #fff; font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.15; }
+  .lead { font-size: 1.3rem; margin-top: 8px; }
+  .sub { margin-top: 8px; max-width: 560px; }
+  .btn { margin-top: 20px; }
+
+  .controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 72px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .controls[hidden] { display: none; }
+
+  button { background: none; border: 0; padding: 0; color: #fff; cursor: pointer; }
+  button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 4px; }
+
+  .ctl { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; }
+  .ctl:hover { background: rgb(255 255 255 / 0.2); }
+  .ctl svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+
+  .icon-play { display: none; }
+  .hero[data-stopped] .icon-play { display: block; fill: currentColor; }
+  .hero[data-stopped] .icon-pause { display: none; }
+
+  .dot { display: grid; place-items: center; width: 24px; height: 24px; }
+  .dot::before { content: ''; width: 10px; height: 10px; border-radius: 50%; border: 2px solid #fff; transition: background 0.2s; }
+  .dot[aria-current]::before { background: #fff; }
+
+  @media (max-width: 720px) {
+    .slide { padding: 56px 0 128px; }
+    .slide::after { background: rgb(0 0 0 / 0.62); }
+    .controls { bottom: 66px; }
+  }
+</style>

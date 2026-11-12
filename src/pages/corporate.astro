@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Web3Form from '../components/Web3Form.astro';
+---
+<BaseLayout title="Corporate Accommodation" description="Corporate stays, team bookings and meeting space at Hotel Living Hub.">
+  <PageHero title="Corporate Accommodation" lead="Rooms for your team and space for your meetings, in one place." image="/images/dining/sobha-2.webp" />
+
+  <section class="section container split">
+    <div>
+      <h2>Built for business stays</h2>
+      <ul class="checks">
+        <li>Executive rooms with a writing table</li>
+        <li>Free Wi-Fi and power backup</li>
+        <li>24-hour reception</li>
+        <li>In-house restaurant for team meals</li>
+        <li>Banquet hall for meetings and seminars</li>
+        <li>On-site parking</li>
+      </ul>
+      <div class="photo-row photos">
+        <img src="/images/rooms/executive-2.webp" alt="Executive Room writing table and seating" loading="lazy" width="800" height="600" />
+        <img src="/images/dining/sobha.webp" alt="Sobha banquet hall in theatre-style seating" loading="lazy" width="800" height="600" />
+      </div>
+    </div>
+
+    <div>
+      <h2>Ask for corporate rates</h2>
+      <p class="muted intro">Tell us what your team needs and we'll get back to you with a quote.</p>
+      <Web3Form subject="New corporate enquiry" sheet="Corporate">
+        <label>Company <input name="company" required autocomplete="organization" /></label>
+        <label>Your name <input name="name" required autocomplete="name" /></label>
+        <div class="row">
+          <label>Phone <input name="phone" type="tel" required autocomplete="tel" /></label>
+          <label>Email <input name="email" type="email" autocomplete="email" /></label>
+        </div>
+        <label>Rooms needed <input name="rooms_needed" type="number" min="1" /></label>
+        <label>Requirements <textarea name="message" rows="4" placeholder="Dates, length of stay, meeting space, meals"></textarea></label>
+        <button class="btn" type="submit">Request a quote</button>
+      </Web3Form>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .split { display: grid; gap: 40px; grid-template-columns: 1fr 1fr; }
+  .split .checks { grid-template-columns: 1fr; }
+  .photos { margin-top: 20px; }
+  .intro { margin-bottom: 14px; }
+
+  @media (max-width: 800px) {
+    .split { grid-template-columns: 1fr; }
+  }
+</style>

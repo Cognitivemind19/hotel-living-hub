@@ -1,29 +1,47 @@
 [
   {
-    "slug": "standard",
-    "name": "Standard Room",
-    "price": 1500,
-    "guests": 2,
-    "bed": "Double bed",
-    "image": "/images/rooms/standard.webp",
-    "amenities": ["AC", "Wi-Fi", "TV", "Attached bathroom"]
-  },
-  {
     "slug": "deluxe",
     "name": "Deluxe Room",
-    "price": 2200,
-    "guests": 2,
-    "bed": "Queen bed",
+    "description": "A bright, spacious room with wooden flooring, two beds and a comfortable sitting corner.",
+    "price": 1999,
+    "guests": null,
+    "bed": "Two beds",
     "image": "/images/rooms/deluxe.webp",
-    "amenities": ["AC", "Wi-Fi", "TV", "Hot water", "Work desk"]
+    "photos": [
+      { "src": "/images/rooms/deluxe-2.webp", "alt": "Deluxe Room with two beds and table" },
+      { "src": "/images/rooms/deluxe-3.webp", "alt": "Deluxe Room with TV and dresser" },
+      { "src": "/images/rooms/deluxe-bath.webp", "alt": "Deluxe Room attached bathroom" }
+    ],
+    "amenities": ["AC", "TV", "Sitting area", "Attached bathroom"]
   },
   {
-    "slug": "family",
-    "name": "Family Room",
-    "price": 3000,
-    "guests": 4,
-    "bed": "2 double beds",
-    "image": "/images/rooms/family.webp",
-    "amenities": ["AC", "Wi-Fi", "TV", "Hot water", "Extra space"]
+    "slug": "executive",
+    "name": "Executive Room",
+    "description": "A large room with a carved headboard, a writing table and a separate seating area, well suited to business stays.",
+    "price": 2499,
+    "guests": null,
+    "bed": "Double bed",
+    "image": "/images/rooms/executive.webp",
+    "photos": [
+      { "src": "/images/rooms/executive-2.webp", "alt": "Executive Room seating and writing table" },
+      { "src": "/images/rooms/executive-3.webp", "alt": "Executive Room with TV and mirror" },
+      { "src": "/images/rooms/executive-bath.webp", "alt": "Executive Room attached bathroom" }
+    ],
+    "amenities": ["AC", "TV", "Electric kettle", "Writing table", "Attached bathroom"]
+  },
+  {
+    "slug": "suite",
+    "name": "Suite Room",
+    "description": "Our most spacious option, with a separate sitting room opening onto the bedroom.",
+    "price": 2999,
+    "guests": null,
+    "bed": "Two beds",
+    "image": "/images/rooms/suite.webp",
+    "photos": [
+      { "src": "/images/rooms/suite-2.webp", "alt": "Suite bedroom with two beds" },
+      { "src": "/images/rooms/suite-3.webp", "alt": "Suite sitting room" },
+      { "src": "/images/rooms/suite-bath.webp", "alt": "Suite attached bathroom" }
+    ],
+    "amenities": ["AC", "TV", "Separate sitting room", "Attached bathroom"]
   }
 ]

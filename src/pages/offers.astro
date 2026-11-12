@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import BookingCta from '../components/BookingCta.astro';
+import site from '../data/site.json';
+import offers from '../data/offers.json';
+import { waHref } from '../lib/links';
+---
+<BaseLayout title="Special Offers & Packages" description="Long-stay, dining, corporate and event packages at Hotel Living Hub.">
+  <PageHero title="Special Offers & Packages" lead="Book direct and ask us for the best rate on your stay." image="/images/dining/taste-point-2.webp" />
+
+  <section class="section container">
+    <div class="grid">
+      {offers.map((o) => (
+        <article class="card">
+          <img src={o.image} alt={o.title} loading="lazy" width="800" height="600" />
+          <div class="card-body">
+            <h2 class="name">{o.title}</h2>
+            <p>{o.description}</p>
+            <a class="btn" style="margin-top:12px" href={waHref(`Hi, I'd like to know more about "${o.title}" at ${site.name}.`)} target="_blank" rel="noopener">{o.cta}</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <BookingCta />
+</BaseLayout>
+
+<style>
+  .name { font-size: 1.2rem; margin-bottom: 6px; }
+</style>

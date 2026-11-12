@@ -38,6 +38,7 @@ const schema = {
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content={new URL('/images/brand/og-image.png', Astro.site)} />
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
   <body>
