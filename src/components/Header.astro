@@ -59,14 +59,15 @@ const path = Astro.url.pathname;
   .logo { flex: none; display: block; border-radius: 4px; }
   .logo img { height: 48px; width: auto; }
 
-  .nav-desktop { display: flex; gap: 18px; align-items: center; }
-  .nav-desktop a { position: relative; padding: 6px 0; }
+  .nav-desktop { display: flex; gap: 2px; align-items: center; }
+  .nav-desktop a { position: relative; padding: 6px 9px; }
   .nav-desktop a[aria-current='page']::after {
-    content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+    content: ''; position: absolute; left: 9px; right: 9px; bottom: 0;
     height: 2px; background: var(--forest);
   }
 
-  nav a { text-decoration: none; color: var(--text); font-size: 0.95rem; }
+  nav a { text-decoration: none; color: var(--text); font-size: 0.95rem; border-radius: 6px; transition: background-color 0.15s, color 0.15s; }
+  nav a:hover { background: #e7f0ea; }
   nav a:hover, nav a[aria-current='page'] { color: var(--forest); }
   nav a[aria-current='page'] { font-weight: 600; }
 
@@ -94,7 +95,7 @@ const path = Astro.url.pathname;
     max-height: calc(100dvh - 70px);
     overflow-y: auto;
   }
-  .nav-mobile a { padding: 12px 0; font-size: 1.05rem; border-bottom: 1px solid #f1e9df; }
+  .nav-mobile a { padding: 12px 10px; font-size: 1.05rem; border-bottom: 1px solid #f1e9df; }
   .nav-mobile a:last-child { border-bottom: 0; color: var(--forest); font-weight: 600; }
 
   a:focus-visible, summary:focus-visible { outline: 2px solid var(--forest); outline-offset: 2px; }
