@@ -94,6 +94,17 @@ const photos = [
     <p class="more"><a href="/gallery/">View the full gallery</a></p>
   </section>
 
+  {site.mapEmbedUrl && (
+    <section class="section container split">
+      <div>
+        <h2>Find us</h2>
+        <p>{site.address}</p>
+        <a class="btn" href={site.mapUrl} target="_blank" rel="noopener" style="margin-top:14px">Open in Google Maps</a>
+      </div>
+      <iframe class="map" src={site.mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map to Hotel Living Hub"></iframe>
+    </section>
+  )}
+
   <BookingCta />
 </BaseLayout>
 
@@ -122,6 +133,7 @@ const photos = [
   .more { margin-top: 12px; font-weight: 600; }
   .split { display: grid; gap: 28px; grid-template-columns: 1fr 1fr; align-items: center; }
   .split img { border-radius: var(--radius); aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+  .map { width: 100%; aspect-ratio: 4 / 3; border: 0; border-radius: var(--radius); background: var(--surface); }
 
   @media (max-width: 720px) {
     .split { grid-template-columns: 1fr; }
