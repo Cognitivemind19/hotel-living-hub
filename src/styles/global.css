@@ -78,3 +78,13 @@ input, select, textarea {
 @media (max-width: 600px) {
   .row { grid-template-columns: 1fr; }
 }
+
+/* Veg / non-veg marks on menus */
+.dot { flex: none; width: 14px; height: 14px; border: 1.5px solid; border-radius: 3px; display: inline-grid; place-items: center; }
+.dot::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.dot.veg { color: #1e8a3a; }
+.dot.nonveg { color: #b3261e; }
+
+/* Struck-through regular price next to the online price */
+.was { color: var(--muted); text-decoration: line-through; font-weight: 400; margin-right: 6px; }
+.save { display: block; color: var(--brand-dark); font-weight: 700; font-size: 0.85rem; }

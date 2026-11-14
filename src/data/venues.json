@@ -18,7 +18,8 @@
         "src": "/images/dining/taste-point-lounge.webp",
         "alt": "Lounge seating beside Taste Point"
       }
-    ]
+    ],
+    "href": "/restaurant/#taste-point"
   },
   {
     "slug": "madira",
@@ -31,28 +32,33 @@
         "src": "/images/dining/madira-2.webp",
         "alt": "Backlit bar shelves at Madira"
       },
-      { "src": "/images/dining/madira-3.webp", "alt": "Madira lounge seating" },
+      {
+        "src": "/images/dining/madira-3.webp",
+        "alt": "Madira lounge seating"
+      },
       {
         "src": "/images/dining/madira-booth.webp",
         "alt": "Private booth at Madira"
       }
-    ]
+    ],
+    "href": "/restaurant/#madira"
   },
   {
-    "slug": "Sabha",
+    "slug": "sabha",
     "name": "Sabha – The Banquet",
     "type": "AC banquet hall",
-    "description": "A large pillared hall that can be set up theatre-style or with round tables for meetings, seminars, receptions and family celebrations.",
+    "description": "A large pillared AC hall that can be set up theatre-style or with round tables for weddings, receptions, corporate events, seminars, family functions and public meetings.",
     "image": "/images/dining/sobha.webp",
     "photos": [
       {
         "src": "/images/dining/sobha-2.webp",
-        "alt": "Sobha banquet hall with projector screen"
+        "alt": "Sabha banquet hall with projector screen"
       },
       {
         "src": "/images/dining/sobha-3.webp",
-        "alt": "Sobha banquet hall with round tables"
+        "alt": "Sabha banquet hall with round tables"
       }
-    ]
+    ],
+    "href": "/banquet/"
   }
 ]

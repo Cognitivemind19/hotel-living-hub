@@ -1,26 +1,46 @@
 [
   {
+    "title": "10% off rooms",
+    "description": "Book your stay through our website and get 10% off the room tariff.",
+    "image": "/images/rooms/suite.webp",
+    "cta": "Book a room",
+    "href": "/book/",
+    "web": true
+  },
+  {
+    "title": "10% off at Taste Point",
+    "description": "Reserve your table online and get 10% off your food bill at our restaurant.",
+    "image": "/images/dining/taste-point.webp",
+    "cta": "Reserve a table",
+    "href": "/restaurant/#reserve",
+    "web": true
+  },
+  {
+    "title": "10% off food delivery",
+    "description": "Order online from the Taste Point menu and get 10% off your order total.",
+    "image": "/images/dining/taste-point-3.webp",
+    "cta": "Order food",
+    "href": "/order/",
+    "web": true
+  },
+  {
+    "title": "10% off the banquet hall",
+    "description": "Book Sabha – The Banquet online for your wedding, corporate event or function and get 10% off the hall rent.",
+    "image": "/images/dining/sobha-3.webp",
+    "cta": "Plan your event",
+    "href": "/banquet/#enquire",
+    "web": true
+  },
+  {
     "title": "Long-stay rates",
     "description": "Staying for a week or more? Tell us your dates and we'll share our best rate for your stay.",
     "image": "/images/rooms/executive-2.webp",
     "cta": "Ask about long stays"
   },
   {
-    "title": "Stay and dine",
-    "description": "Pair your room with meals at Taste Point, our in-house restaurant.",
-    "image": "/images/dining/taste-point.webp",
-    "cta": "Ask about this package"
-  },
-  {
     "title": "Corporate packages",
-    "description": "Regular room bookings for your team, with meeting space available at Sobha – The Banquet.",
+    "description": "Regular room bookings for your team, with meeting space available at Sabha – The Banquet.",
     "image": "/images/dining/sobha-2.webp",
     "cta": "Ask about corporate rates"
-  },
-  {
-    "title": "Celebrations and events",
-    "description": "Birthdays, anniversaries and family functions, with banquet space and rooms for your guests.",
-    "image": "/images/dining/sobha-3.webp",
-    "cta": "Plan your event"
   }
 ]

@@ -1,0 +1,58 @@
+[
+  {
+    "category": "Starters",
+    "items": [
+      { "id": "veg-pakora", "name": "Veg Pakora", "price": 120, "veg": true },
+      { "id": "paneer-tikka", "name": "Paneer Tikka", "price": 240, "veg": true },
+      { "id": "chilli-chicken", "name": "Chilli Chicken (dry)", "price": 260, "veg": false },
+      { "id": "chicken-tikka", "name": "Chicken Tikka", "price": 280, "veg": false }
+    ]
+  },
+  {
+    "category": "Main course",
+    "items": [
+      { "id": "dal-tadka", "name": "Dal Tadka", "price": 160, "veg": true },
+      { "id": "paneer-butter-masala", "name": "Paneer Butter Masala", "price": 240, "veg": true },
+      { "id": "mixed-veg", "name": "Mixed Veg Curry", "price": 180, "veg": true },
+      { "id": "butter-chicken", "name": "Butter Chicken", "price": 300, "veg": false },
+      { "id": "chicken-curry", "name": "Chicken Curry", "price": 260, "veg": false },
+      { "id": "fish-curry", "name": "Assamese Fish Curry", "price": 280, "veg": false }
+    ]
+  },
+  {
+    "category": "Rice & breads",
+    "items": [
+      { "id": "steamed-rice", "name": "Steamed Rice", "price": 90, "veg": true },
+      { "id": "veg-biryani", "name": "Veg Biryani", "price": 200, "veg": true },
+      { "id": "chicken-biryani", "name": "Chicken Biryani", "price": 260, "veg": false },
+      { "id": "tandoori-roti", "name": "Tandoori Roti", "price": 25, "veg": true },
+      { "id": "butter-naan", "name": "Butter Naan", "price": 50, "veg": true }
+    ]
+  },
+  {
+    "category": "Chinese",
+    "items": [
+      { "id": "veg-noodles", "name": "Veg Hakka Noodles", "price": 160, "veg": true },
+      { "id": "chicken-fried-rice", "name": "Chicken Fried Rice", "price": 200, "veg": false },
+      { "id": "veg-momo", "name": "Veg Momo (8 pcs)", "price": 120, "veg": true },
+      { "id": "chicken-momo", "name": "Chicken Momo (8 pcs)", "price": 150, "veg": false }
+    ]
+  },
+  {
+    "category": "Thalis",
+    "items": [
+      { "id": "veg-thali", "name": "Veg Thali", "price": 220, "veg": true },
+      { "id": "chicken-thali", "name": "Chicken Thali", "price": 300, "veg": false },
+      { "id": "fish-thali", "name": "Fish Thali", "price": 320, "veg": false }
+    ]
+  },
+  {
+    "category": "Desserts & drinks",
+    "items": [
+      { "id": "gulab-jamun", "name": "Gulab Jamun (2 pcs)", "price": 60, "veg": true },
+      { "id": "ice-cream", "name": "Ice Cream", "price": 80, "veg": true },
+      { "id": "soft-drink", "name": "Soft Drink", "price": 40, "veg": true },
+      { "id": "masala-tea", "name": "Masala Tea", "price": 30, "veg": true }
+    ]
+  }
+]

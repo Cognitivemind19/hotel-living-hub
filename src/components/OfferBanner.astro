@@ -1,0 +1,41 @@
+---
+import site from '../data/site.json';
+import { discount } from '../lib/offer';
+
+interface Props {
+  /** What the guest books or orders, e.g. "your stay" or "your table". */
+  what: string;
+  /** What the discount comes off, e.g. "the room tariff". */
+  on: string;
+  verb?: string;
+  href?: string;
+  cta?: string;
+}
+const { what, on, verb = 'Book', href, cta } = Astro.props;
+---
+<aside class="offer" aria-label="Website offer">
+  <div class="badge"><strong>{discount}%</strong><span>OFF</span></div>
+  <div class="text">
+    <p class="title">{verb} {what} on our website and save {discount}%</p>
+    <p class="small">{discount}% off {on}. {site.offerTerms}</p>
+  </div>
+  {href && <a class="btn" href={href}>{cta}</a>}
+</aside>
+
+<style>
+  .offer {
+    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    padding: 16px 20px; margin-bottom: 28px;
+    background: #fff6e8; border: 2px dashed var(--brand); border-radius: var(--radius);
+  }
+  .badge {
+    flex: none; display: grid; place-items: center; width: 74px; height: 74px;
+    border-radius: 50%; background: var(--brand); color: #fff; line-height: 1;
+  }
+  .badge strong { font-size: 1.5rem; }
+  .badge span { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; margin-top: -10px; }
+  .text { flex: 1 1 260px; }
+  .title { font-weight: 700; font-size: 1.1rem; color: var(--brand-dark); }
+  .small { font-size: 0.88rem; color: var(--muted); }
+  .btn { flex: none; }
+</style>

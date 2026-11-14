@@ -7,6 +7,10 @@ import BookingCta from '../components/BookingCta.astro';
 import site from '../data/site.json';
 import rooms from '../data/rooms.json';
 import venues from '../data/venues.json';
+import offers from '../data/offers.json';
+import { discount } from '../lib/offer';
+
+const services = offers.filter((o) => o.web);
 
 const photos = [
   { src: '/images/gallery/reception.webp', alt: 'Hotel reception' },
@@ -30,6 +34,23 @@ const photos = [
   </div>
 
   <section class="section container">
+    <h2>Book online, save {discount}%</h2>
+    <p class="muted lead">Rooms, restaurant tables, food delivery and the banquet hall: book any of them through this website and get {discount}% off.</p>
+    <div class="services">
+      {services.map((s) => (
+        <a class="card service" href={s.href}>
+          <div class="pic"><img src={s.image} alt="" loading="lazy" width="800" height="600" /><span class="flag">{discount}% OFF</span></div>
+          <div class="card-body">
+            <h3>{s.title}</h3>
+            <p class="muted">{s.description}</p>
+            <span class="go">{s.cta} →</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section container">
     <h2>Rooms &amp; accommodation</h2>
     <div class="grid">
       {rooms.map((room) => <RoomCard room={room} />)}
@@ -47,7 +68,7 @@ const photos = [
             <div class="card-body">
               <h3>{v.name}</h3>
               <p class="muted">{v.type}</p>
-              <p class="more"><a href={`/dining/#${v.slug}`}>Learn more</a></p>
+              <p class="more"><a href={v.href}>Learn more</a></p>
             </div>
           </article>
         ))}
@@ -65,11 +86,14 @@ const photos = [
 
   <section class="section container split">
     <div>
-      <h2>Travelling for work?</h2>
-      <p>Comfortable rooms for your team, and a banquet hall for meetings and seminars. Ask us about corporate stays.</p>
-      <a class="btn" href="/corporate/" style="margin-top:14px">Corporate accommodation</a>
+      <h2>Weddings, meetings and functions</h2>
+      <p>Sabha – The Banquet hosts corporate events, marriages, family functions, social events and political meetings, with catering from Taste Point and rooms for your guests.</p>
+      <div class="btns">
+        <a class="btn" href="/banquet/">Book the banquet hall</a>
+        <a class="btn btn-outline" href="/corporate/">Corporate stays</a>
+      </div>
     </div>
-    <img src="/images/dining/sobha-2.webp" alt="Sobha banquet hall set up with a projector screen" loading="lazy" width="800" height="600" />
+    <img src="/images/dining/sobha-3.webp" alt="Sabha banquet hall set up with round tables" loading="lazy" width="800" height="600" />
   </section>
 
   {site.reviews.length > 0 && (
@@ -131,6 +155,19 @@ const photos = [
   .sent-notice button:focus-visible { outline: 2px solid var(--forest); }
   .availability-wrap { margin-top: -56px; position: relative; z-index: 2; }
   .more { margin-top: 12px; font-weight: 600; }
+  .lead { margin: -8px 0 18px; }
+  .services { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .service { color: inherit; text-decoration: none; display: grid; grid-template-rows: auto 1fr; transition: border-color 0.15s, box-shadow 0.15s; }
+  .service:hover { border-color: var(--forest); box-shadow: 0 6px 18px rgb(0 0 0 / 0.08); }
+  .service:focus-visible { outline: 2px solid var(--forest); outline-offset: 2px; }
+  .service h3 { font-size: 1.1rem; }
+  .service .muted { font-size: 0.92rem; margin: 4px 0 8px; }
+  .go { color: var(--forest); font-weight: 700; }
+  .pic { position: relative; }
+  .flag { position: absolute; top: 10px; left: 10px; background: var(--brand); color: #fff; font-weight: 700; font-size: 0.8rem; padding: 3px 10px; border-radius: 99px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .btn-outline { background: #fff; color: var(--forest); border: 1.5px solid var(--forest); }
+  .btn-outline:hover { background: #e7f0ea; }
   .split { display: grid; gap: 28px; grid-template-columns: 1fr 1fr; align-items: center; }
   .split img { border-radius: var(--radius); aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
   .map { width: 100%; aspect-ratio: 4 / 3; border: 0; border-radius: var(--radius); background: var(--surface); }

@@ -1,4 +1,5 @@
 ---
+import RoomPrice from './RoomPrice.astro';
 interface Props {
   room: {
     slug: string;
@@ -20,9 +21,7 @@ const { room } = Astro.props;
     <ul class="tags">
       {room.amenities.map((a) => <li>{a}</li>)}
     </ul>
-    {room.price
-      ? <p><strong>From ₹{room.price.toLocaleString('en-IN')}</strong> / night</p>
-      : <p class="muted">Contact us for today's rate</p>}
+    <RoomPrice price={room.price} />
     <a class="btn" href={`/book/?room=${room.slug}`} style="margin-top:10px">Book this room</a>
   </div>
 </article>

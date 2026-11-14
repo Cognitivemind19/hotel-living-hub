@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import OfferBanner from '../components/OfferBanner.astro';
+import Web3Form from '../components/Web3Form.astro';
+import venues from '../data/venues.json';
+import menu from '../data/menu.json';
+import { discount, inr } from '../lib/offer';
+
+const dining = venues.filter((v) => v.slug !== 'sabha');
+const occasions = ['Family meal', 'Birthday', 'Anniversary', 'Business lunch or dinner', 'Date night', 'Other'];
+---
+<BaseLayout title="Restaurant & Bar" description={`Taste Point restaurant and Madira lounge bar at Hotel Living Hub. Reserve a table online and get ${discount}% off your food bill.`}>
+  <PageHero title="Restaurant & Bar" lead="Indian, Chinese and Assamese favourites at Taste Point, and evenings at Madira." image="/images/dining/taste-point.webp" />
+
+  <section class="section container">
+    <OfferBanner what="your table" on="your food bill at Taste Point" href="#reserve" cta="Reserve a table" />
+
+    <div class="venues">
+      {dining.map((v) => (
+        <article id={v.slug}>
+          <p class="type">{v.type}</p>
+          <h2>{v.name}</h2>
+          <p class="desc">{v.description}</p>
+          <div class="photo-row">
+            <img src={v.image} alt={v.name} loading="lazy" width="800" height="600" />
+            {v.photos.map((p) => <img src={p.src} alt={p.alt} loading="lazy" width="800" height="600" />)}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section band" id="menu">
+    <div class="container">
+      <h2>Taste Point menu</h2>
+      <p class="muted intro">Enjoy it at the restaurant, or <a href="/order/">order online for home delivery</a> with {discount}% off.</p>
+      <div class="menu">
+        {menu.map((c) => (
+          <div>
+            <h3>{c.category}</h3>
+            <ul>
+              {c.items.map((i) => (
+                <li><span class:list={['dot', i.veg ? 'veg' : 'nonveg']} aria-label={i.veg ? 'Vegetarian' : 'Non-vegetarian'}></span>{i.name}<span class="price">{inr(i.price)}</span></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <a class="btn" href="/order/" style="margin-top:20px">Order for delivery</a>
+    </div>
+  </section>
+
+  <section class="section container split" id="reserve">
+    <div>
+      <h2>Reserve a table</h2>
+      <p class="muted intro">Send your request and we'll confirm by phone or WhatsApp. Mention your booking when you arrive and we'll take {discount}% off your food bill.</p>
+      <Web3Form subject={`New table reservation (${discount}% web offer)`} sheet="Restaurant" id="table-form">
+        <label>Name <input name="name" required autocomplete="name" /></label>
+        <div class="row">
+          <label>Phone <input name="phone" type="tel" required autocomplete="tel" /></label>
+          <label>Email (optional) <input name="email" type="email" autocomplete="email" /></label>
+        </div>
+        <div class="row">
+          <label>Date <input name="date" type="date" required /></label>
+          <label>Time <input name="time" type="time" required min="11:00" max="22:30" /></label>
+        </div>
+        <div class="row">
+          <label>Guests <input name="guests" type="number" min="1" max="60" value="2" required /></label>
+          <label>Occasion
+            <select name="occasion">
+              {occasions.map((o) => <option>{o}</option>)}
+            </select>
+          </label>
+        </div>
+        <label>Special requests (optional) <textarea name="message" rows="3" placeholder="Seating preference, pre-order, cake, etc."></textarea></label>
+        <button class="btn" type="submit">Reserve my table</button>
+      </Web3Form>
+    </div>
+    <img src="/images/dining/taste-point-2.webp" alt="Taste Point dining tables" loading="lazy" width="800" height="600" />
+  </section>
+</BaseLayout>
+
+<script>
+  const date = (document.getElementById('table-form') as HTMLFormElement).elements.namedItem('date') as HTMLInputElement;
+  const d = new Date();
+  date.min = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+</script>
+
+<style>
+  .venues { display: grid; gap: 48px; }
+  .type { color: var(--forest); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  article h2 { margin-bottom: 6px; }
+  .desc { margin-bottom: 16px; max-width: 720px; }
+  .intro { margin-bottom: 18px; }
+
+  .menu { display: grid; gap: 24px 40px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .menu h3 { color: var(--brand-dark); border-bottom: 1px solid #e0d2c2; padding-bottom: 4px; margin-bottom: 8px; }
+  .menu ul { list-style: none; display: grid; gap: 6px; }
+  .menu li { display: flex; align-items: center; gap: 8px; }
+  .price { margin-left: auto; font-weight: 600; white-space: nowrap; }
+
+  .split { display: grid; gap: 40px; grid-template-columns: 1fr 1fr; align-items: start; }
+  .split img { border-radius: var(--radius); aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+
+  @media (max-width: 800px) {
+    .split { grid-template-columns: 1fr; }
+    .split img { display: none; }
+  }
+</style>

@@ -1,0 +1,11 @@
+---
+import { discount, inr, withDiscount } from '../lib/offer';
+
+interface Props {
+  price: number | null;
+}
+const { price } = Astro.props;
+---
+{price
+  ? <p>From <span class="was">{inr(price)}</span><strong>{inr(withDiscount(price))}</strong> / night <span class="save">{discount}% off when you book online</span></p>
+  : <p class="muted">Contact us for today's rate · {discount}% off when you book online</p>}

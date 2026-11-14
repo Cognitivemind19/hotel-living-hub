@@ -5,23 +5,47 @@ import BookingCta from '../components/BookingCta.astro';
 import site from '../data/site.json';
 import offers from '../data/offers.json';
 import { waHref } from '../lib/links';
+import { discount } from '../lib/offer';
+
+const web = offers.filter((o) => o.web);
+const packages = offers.filter((o) => !o.web);
 ---
-<BaseLayout title="Special Offers & Packages" description="Long-stay, dining, corporate and event packages at Hotel Living Hub.">
-  <PageHero title="Special Offers & Packages" lead="Book direct and ask us for the best rate on your stay." image="/images/dining/taste-point-2.webp" />
+<BaseLayout title="Special Offers & Packages" description={`${discount}% off rooms, restaurant, food delivery and the banquet hall when you book through the Hotel Living Hub website.`}>
+  <PageHero title="Special Offers & Packages" lead={`Book any of our services through this website and save ${discount}%.`} image="/images/dining/taste-point-2.webp" />
 
   <section class="section container">
+    <h2>Book online, save {discount}%</h2>
     <div class="grid">
-      {offers.map((o) => (
+      {web.map((o) => (
+        <article class="card">
+          <div class="pic"><img src={o.image} alt={o.title} loading="lazy" width="800" height="600" /><span class="flag">{discount}% OFF</span></div>
+          <div class="card-body">
+            <h3 class="name">{o.title}</h3>
+            <p>{o.description}</p>
+            <a class="btn" style="margin-top:12px" href={o.href}>{o.cta}</a>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="muted terms">{site.offerTerms}</p>
+  </section>
+
+  <section class="section band">
+   <div class="container">
+    <h2>Packages</h2>
+    <div class="grid">
+      {packages.map((o) => (
         <article class="card">
           <img src={o.image} alt={o.title} loading="lazy" width="800" height="600" />
           <div class="card-body">
-            <h2 class="name">{o.title}</h2>
+            <h3 class="name">{o.title}</h3>
             <p>{o.description}</p>
             <a class="btn" style="margin-top:12px" href={waHref(`Hi, I'd like to know more about "${o.title}" at ${site.name}.`)} target="_blank" rel="noopener">{o.cta}</a>
           </div>
         </article>
       ))}
     </div>
+   </div>
   </section>
 
   <BookingCta />
@@ -29,4 +53,7 @@ import { waHref } from '../lib/links';
 
 <style>
   .name { font-size: 1.2rem; margin-bottom: 6px; }
+  .pic { position: relative; }
+  .flag { position: absolute; top: 12px; left: 12px; background: var(--brand); color: #fff; font-weight: 700; font-size: 0.85rem; padding: 4px 10px; border-radius: 99px; }
+  .terms { margin-top: 16px; font-size: 0.88rem; }
 </style>

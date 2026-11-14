@@ -4,7 +4,7 @@ import site from '../data/site.json';
 interface Props {
   subject: string;
   /** Google Sheet tab that also receives a copy of each submission (see google-apps-script/Code.gs). */
-  sheet?: 'Contact' | 'Booking' | 'Corporate';
+  sheet?: 'Contact' | 'Booking' | 'Corporate' | 'Restaurant' | 'Banquet' | 'Order';
   id?: string;
 }
 const { subject, sheet, id } = Astro.props;

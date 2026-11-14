@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import Web3Form from '../components/Web3Form.astro';
+import OfferBanner from '../components/OfferBanner.astro';
+import { discount } from '../lib/offer';
 import site from '../data/site.json';
 import rooms from '../data/rooms.json';
 import { telHref, waHref } from '../lib/links';
@@ -10,6 +12,7 @@ import { telHref, waHref } from '../lib/links';
   <PageHero title="Book Your Stay" lead="Choose whichever way is easiest for you." image="/images/rooms/suite.webp" />
 
   <section class="section container">
+    <OfferBanner what="your stay" on="the room tariff" href="#reserve" cta="Book online" />
     <div class="ways">
       <a class="way" id="wa-booking" href={waHref(`Hi, I'd like to book a stay at ${site.name}.`)} data-base={waHref()} data-hotel={site.name} target="_blank" rel="noopener">
         <h2>WhatsApp booking</h2>
@@ -23,16 +26,16 @@ import { telHref, waHref } from '../lib/links';
       </a>
       <a class="way" href="#reserve">
         <h2>Online reservation</h2>
-        <p class="muted">Send your details using the form.</p>
+        <p class="muted">Send your details using the form and get {discount}% off.</p>
         <span class="btn">Fill in the form</span>
       </a>
     </div>
 
     <div class="reserve" id="reserve">
       <h2>Online reservation</h2>
-      <p class="muted intro">Send your request and we'll confirm availability and the rate by phone or WhatsApp.</p>
+      <p class="muted intro">Send your request and we'll confirm availability and your discounted rate ({discount}% off) by phone or WhatsApp.</p>
 
-      <Web3Form subject="New booking enquiry" sheet="Booking" id="booking-form">
+      <Web3Form subject={`New booking enquiry (${discount}% web offer)`} sheet="Booking" id="booking-form">
         <label>Name <input name="name" required autocomplete="name" /></label>
         <div class="row">
           <label>Phone <input name="phone" type="tel" required autocomplete="tel" /></label>

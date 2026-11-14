@@ -12,17 +12,57 @@
   "mapEmbedUrl": "https://maps.google.com/maps?q=27.2359375,94.1059375&z=17&hl=en&output=embed",
   "formAccessKey": "6c37cf46-319e-425a-bfcc-fe5eb5432568",
   "sheetsWebAppUrl": "",
+  "onlineDiscount": 10,
+  "offerTerms": "Valid only on bookings and orders placed through this website. Cannot be combined with other offers.",
+  "delivery": {
+    "hours": "11:00 AM – 10:00 PM",
+    "area": "North Lakhimpur town and nearby areas",
+    "payment": [
+      "Cash on delivery",
+      "UPI on delivery"
+    ]
+  },
   "nav": [
-    { "href": "/", "label": "Home" },
-    { "href": "/about/", "label": "About" },
-    { "href": "/rooms/", "label": "Rooms" },
-    { "href": "/amenities/", "label": "Amenities" },
-    { "href": "/dining/", "label": "Dining" },
-    { "href": "/corporate/", "label": "Corporate" },
-    { "href": "/attractions/", "label": "Attractions" },
-    { "href": "/gallery/", "label": "Gallery" },
-    { "href": "/offers/", "label": "Offers" },
-    { "href": "/contact/", "label": "Contact" }
+    {
+      "href": "/",
+      "label": "Home"
+    },
+    {
+      "href": "/rooms/",
+      "label": "Rooms"
+    },
+    {
+      "href": "/restaurant/",
+      "label": "Restaurant"
+    },
+    {
+      "href": "/order/",
+      "label": "Order Food"
+    },
+    {
+      "href": "/banquet/",
+      "label": "Banquet"
+    },
+    {
+      "href": "/corporate/",
+      "label": "Corporate"
+    },
+    {
+      "href": "/offers/",
+      "label": "Offers"
+    },
+    {
+      "href": "/gallery/",
+      "label": "Gallery"
+    },
+    {
+      "href": "/about/",
+      "label": "About"
+    },
+    {
+      "href": "/contact/",
+      "label": "Contact"
+    }
   ],
   "reviews": [],
   "roomAmenities": [
@@ -48,8 +88,11 @@
       "alt": "Guest room with two beds and a sitting area",
       "title": "Hotel Living Hub",
       "lead": "Comfortable stays, warm hospitality",
-      "text": "AC rooms, a restaurant, a lounge bar and a banquet hall, all under one roof.",
-      "cta": { "href": "/rooms/", "label": "Explore our rooms" }
+      "text": "AC rooms, a restaurant, home delivery and a banquet hall, all under one roof. Book online and save 10%.",
+      "cta": {
+        "href": "/rooms/",
+        "label": "Explore our rooms"
+      }
     },
     {
       "image": "/images/dining/taste-point.webp",
@@ -57,7 +100,21 @@
       "title": "Taste Point",
       "lead": "Our in-house AC restaurant",
       "text": "Table seating for families and groups, and a relaxed lounge area to unwind after a meal.",
-      "cta": { "href": "/dining/#taste-point", "label": "Visit Taste Point" }
+      "cta": {
+        "href": "/restaurant/#reserve",
+        "label": "Reserve a table"
+      }
+    },
+    {
+      "image": "/images/dining/taste-point-3.webp",
+      "alt": "Table set with a meal at Taste Point",
+      "title": "Order Online",
+      "lead": "Taste Point food, delivered",
+      "text": "Order from our menu and get 10% off every online order.",
+      "cta": {
+        "href": "/order/",
+        "label": "Order food now"
+      }
     },
     {
       "image": "/images/dining/madira.webp",
@@ -65,15 +122,21 @@
       "title": "Madira – The Bar",
       "lead": "A stylish AC lounge bar",
       "text": "A backlit counter, table seating and private booths for a quiet evening.",
-      "cta": { "href": "/dining/#madira", "label": "Discover Madira" }
+      "cta": {
+        "href": "/restaurant/#madira",
+        "label": "Discover Madira"
+      }
     },
     {
       "image": "/images/dining/sobha.webp",
-      "alt": "Sobha banquet hall set up for a seminar",
-      "title": "Sobha – The Banquet",
-      "lead": "A large AC banquet hall",
-      "text": "Set up for meetings, seminars, receptions and family celebrations.",
-      "cta": { "href": "/dining/#sobha", "label": "Plan your event" }
+      "alt": "Sabha banquet hall set up for a seminar",
+      "title": "Sabha – The Banquet",
+      "lead": "Weddings, corporate events and functions",
+      "text": "A large AC hall for marriages, meetings, family functions and public events.",
+      "cta": {
+        "href": "/banquet/",
+        "label": "Plan your event"
+      }
     }
   ],
   "social": {
@@ -81,5 +144,15 @@
     "instagram": "https://www.instagram.com/livinghubhotel/",
     "linkedin": "https://www.linkedin.com/in/living-hub-hotel-60333244a/",
     "x": ""
-  }
+  },
+  "footerNav": [
+    {
+      "href": "/amenities/",
+      "label": "Amenities"
+    },
+    {
+      "href": "/attractions/",
+      "label": "Attractions"
+    }
+  ]
 }

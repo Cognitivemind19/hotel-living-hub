@@ -18,7 +18,7 @@ const iconSize = 32;
     <nav aria-label="Footer">
       <h2>Explore</h2>
       <ul>
-        {site.nav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        {[...site.nav, ...site.footerNav].map((l) => <li><a href={l.href}>{l.label}</a></li>)}
         <li><a href="/book/">Book Now</a></li>
       </ul>
     </nav>

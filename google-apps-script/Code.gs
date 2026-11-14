@@ -14,6 +14,9 @@ const TABS = {
   Contact: ['name', 'phone', 'message'],
   Booking: ['name', 'phone', 'email', 'check_in', 'check_out', 'room', 'guests', 'message'],
   Corporate: ['company', 'name', 'phone', 'email', 'rooms_needed', 'message'],
+  Restaurant: ['name', 'phone', 'email', 'date', 'time', 'guests', 'occasion', 'message'],
+  Banquet: ['name', 'phone', 'email', 'organisation', 'event_type', 'date', 'session', 'guests', 'catering', 'rooms_needed', 'message'],
+  Order: ['name', 'phone', 'address', 'landmark', 'when', 'payment', 'order', 'subtotal', 'discount', 'total', 'message'],
 };
 
 const LABELS = {
@@ -26,6 +29,21 @@ const LABELS = {
   room: 'Room',
   guests: 'Guests',
   rooms_needed: 'Rooms needed',
+  date: 'Date',
+  time: 'Time',
+  occasion: 'Occasion',
+  organisation: 'Organisation',
+  event_type: 'Event type',
+  session: 'Session',
+  catering: 'Catering',
+  address: 'Delivery address',
+  landmark: 'Landmark',
+  when: 'Delivery time',
+  payment: 'Payment',
+  order: 'Order',
+  subtotal: 'Subtotal',
+  discount: 'Web discount',
+  total: 'Total',
   message: 'Message',
 };
 

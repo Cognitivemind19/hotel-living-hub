@@ -1,12 +1,14 @@
 ---
 import site from '../data/site.json';
 import { telHref, waHref } from '../lib/links';
+import { discount } from '../lib/offer';
 
 const path = Astro.url.pathname;
 ---
 <div class="topbar">
   <div class="container strip">
     <span class="times">Check-in {site.checkIn} · Check-out {site.checkOut}</span>
+    <a class="promo" href="/offers/">{discount}% off when you book online</a>
     <span class="reach">
       <a href={telHref}>{site.phone}</a>
       <a href={waHref()} target="_blank" rel="noopener">WhatsApp</a>
@@ -48,7 +50,10 @@ const path = Astro.url.pathname;
 <style>
   .topbar { background: var(--forest); color: #fff; font-size: 0.85rem; }
   .strip { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; }
-  .reach { display: flex; gap: 18px; margin-left: auto; }
+  .reach { display: flex; gap: 18px; }
+  .promo { color: #fff; font-weight: 700; text-decoration: none; background: var(--brand); padding: 0 10px; border-radius: 99px; white-space: nowrap; }
+  .promo:hover { text-decoration: underline; }
+  .promo:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   .reach a { color: #fff; text-decoration: none; font-weight: 600; white-space: nowrap; }
   .reach a:hover { text-decoration: underline; }
   .reach a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
@@ -100,15 +105,19 @@ const path = Astro.url.pathname;
 
   a:focus-visible, summary:focus-visible { outline: 2px solid var(--forest); outline-offset: 2px; }
 
-  @media (max-width: 1080px) {
+  @media (max-width: 1140px) {
     .nav-desktop { display: none; }
     .menu { display: block; }
     .actions { gap: 8px; }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 860px) {
     .times { display: none; }
-    .reach { margin-inline: auto; }
+  }
+
+  @media (max-width: 600px) {
+    .strip { font-size: 0.8rem; gap: 4px 12px; flex-wrap: wrap; justify-content: center; }
+    .reach { gap: 12px; }
     .logo img { height: 42px; }
   }
 

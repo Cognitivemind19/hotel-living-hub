@@ -29,7 +29,7 @@ import venues from '../data/venues.json';
     <h2>On-site spaces</h2>
     <div class="grid">
       {venues.map((v) => (
-        <a class="card space" href={`/dining/#${v.slug}`}>
+        <a class="card space" href={v.href}>
           <img src={v.image} alt={v.name} loading="lazy" width="800" height="600" />
           <div class="card-body">
             <h3>{v.name}</h3>

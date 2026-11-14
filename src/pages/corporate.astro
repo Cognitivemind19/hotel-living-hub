@@ -2,9 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import Web3Form from '../components/Web3Form.astro';
+import OfferBanner from '../components/OfferBanner.astro';
+import { discount } from '../lib/offer';
 ---
 <BaseLayout title="Corporate Accommodation" description="Corporate stays, team bookings and meeting space at Hotel Living Hub.">
   <PageHero title="Corporate Accommodation" lead="Rooms for your team and space for your meetings, in one place." image="/images/dining/sobha-2.webp" />
+
+  <div class="container offer-wrap">
+    <OfferBanner what="rooms and meeting space" on="room tariffs and the banquet hall rent" href="#quote" cta="Request a quote" />
+  </div>
 
   <section class="section container split">
     <div>
@@ -14,7 +20,7 @@ import Web3Form from '../components/Web3Form.astro';
         <li>Free Wi-Fi and power backup</li>
         <li>24-hour reception</li>
         <li>In-house restaurant for team meals</li>
-        <li>Banquet hall for meetings and seminars</li>
+        <li><a href="/banquet/#corporate">Banquet hall</a> for meetings and seminars</li>
         <li>On-site parking</li>
       </ul>
       <div class="photo-row photos">
@@ -23,10 +29,10 @@ import Web3Form from '../components/Web3Form.astro';
       </div>
     </div>
 
-    <div>
+    <div id="quote">
       <h2>Ask for corporate rates</h2>
       <p class="muted intro">Tell us what your team needs and we'll get back to you with a quote.</p>
-      <Web3Form subject="New corporate enquiry" sheet="Corporate">
+      <Web3Form subject={`New corporate enquiry (${discount}% web offer)`} sheet="Corporate">
         <label>Company <input name="company" required autocomplete="organization" /></label>
         <label>Your name <input name="name" required autocomplete="name" /></label>
         <div class="row">
@@ -44,6 +50,8 @@ import Web3Form from '../components/Web3Form.astro';
 <style>
   .split { display: grid; gap: 40px; grid-template-columns: 1fr 1fr; }
   .split .checks { grid-template-columns: 1fr; }
+  .offer-wrap { margin-top: 48px; }
+  .offer-wrap + .section { padding-top: 0; }
   .photos { margin-top: 20px; }
   .intro { margin-bottom: 14px; }
 

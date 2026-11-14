@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "corporate",
+    "name": "Corporate events",
+    "description": "Meetings, seminars, conferences, product launches and training days.",
+    "includes": ["Theatre or classroom seating", "Projector screen and sound", "Tea breaks and lunch", "Rooms for visiting staff"]
+  },
+  {
+    "slug": "wedding",
+    "name": "Marriages & receptions",
+    "description": "Wedding receptions, engagement ceremonies and sangeet nights.",
+    "includes": ["Round-table banquet seating", "Catering by Taste Point", "Stage and decor on request", "Rooms for the families"]
+  },
+  {
+    "slug": "family",
+    "name": "Family functions",
+    "description": "Birthdays, anniversaries, annaprashan, baby showers and get-togethers.",
+    "includes": ["Flexible seating", "Custom menus", "Cake and decor on request", "Day or evening sessions"]
+  },
+  {
+    "slug": "social",
+    "name": "Social events",
+    "description": "Community gatherings, reunions, cultural programmes and award nights.",
+    "includes": ["Stage and sound", "Buffet or plated meals", "On-site parking", "Power backup"]
+  },
+  {
+    "slug": "political",
+    "name": "Political & public meetings",
+    "description": "Party meetings, press conferences, workers' meets and public addresses.",
+    "includes": ["Theatre seating", "Microphones and sound", "Tea and snacks", "On-site parking"]
+  }
+]

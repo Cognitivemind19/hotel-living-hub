@@ -1,13 +1,17 @@
 ---
+import RoomPrice from '../components/RoomPrice.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import BookingCta from '../components/BookingCta.astro';
+import OfferBanner from '../components/OfferBanner.astro';
+import { discount } from '../lib/offer';
 import rooms from '../data/rooms.json';
 ---
 <BaseLayout title="Rooms & Accommodation" description="Deluxe, Executive and Suite rooms at Hotel Living Hub, with photos and amenities.">
-  <PageHero title="Rooms & Accommodation" lead="Send us your dates and we'll share the best available rate." image="/images/rooms/executive.webp" />
+  <PageHero title="Rooms & Accommodation" lead={`Book online through our website and save ${discount}% on your stay.`} image="/images/rooms/executive.webp" />
 
   <section class="section container rooms">
+    <OfferBanner what="your stay" on="the room tariff" href="/book/" cta="Book now" />
     {rooms.map((room) => (
       <article class="room" id={room.slug}>
         <div class="main">
@@ -19,9 +23,7 @@ import rooms from '../data/rooms.json';
             <ul class="tags">
               {room.amenities.map((a) => <li>{a}</li>)}
             </ul>
-            {room.price
-              ? <p><strong>From ₹{room.price.toLocaleString('en-IN')}</strong> / night</p>
-              : <p class="muted">Contact us for today's rate</p>}
+            <RoomPrice price={room.price} />
             <a class="btn" href={`/book/?room=${room.slug}`} style="margin-top:12px">Book this room</a>
           </div>
         </div>

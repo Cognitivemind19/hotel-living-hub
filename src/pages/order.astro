@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import OfferBanner from '../components/OfferBanner.astro';
+import Web3Form from '../components/Web3Form.astro';
+import site from '../data/site.json';
+import menu from '../data/menu.json';
+import { discount, inr } from '../lib/offer';
+import { waHref, telHref } from '../lib/links';
+
+const slots = ['As soon as possible', 'Lunch (12 – 2 PM)', 'Evening (5 – 7 PM)', 'Dinner (7 – 10 PM)'];
+---
+<BaseLayout title="Order Food Online" description={`Order Taste Point food online for home delivery in North Lakhimpur and get ${discount}% off every order.`}>
+  <PageHero title="Order Food Online" lead={`Taste Point favourites, delivered to your door. ${discount}% off every online order.`} image="/images/dining/taste-point-3.webp" />
+
+  <section class="section container">
+    <OfferBanner verb="Order" what="your food" on="your order total" />
+
+    <ul class="facts">
+      <li><strong>Delivery hours</strong> {site.delivery.hours}</li>
+      <li><strong>Delivery area</strong> {site.delivery.area}</li>
+      <li><strong>Payment</strong> {site.delivery.payment.join(' or ')}</li>
+    </ul>
+
+    <div class="shop">
+      <div class="menu" id="menu">
+        {menu.map((c) => (
+          <section>
+            <h2>{c.category}</h2>
+            <ul>
+              {c.items.map((i) => (
+                <li class="item" data-id={i.id} data-name={i.name} data-price={i.price}>
+                  <span class:list={['dot', i.veg ? 'veg' : 'nonveg']} aria-label={i.veg ? 'Vegetarian' : 'Non-vegetarian'}></span>
+                  <span class="name">{i.name}<span class="price">{inr(i.price)}</span></span>
+                  <span class="qty" role="group" aria-label={`Quantity of ${i.name}`}>
+                    <button type="button" data-step="-1" aria-label={`Remove one ${i.name}`}>−</button>
+                    <output aria-live="polite">0</output>
+                    <button type="button" data-step="1" aria-label={`Add one ${i.name}`}>+</button>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+
+      <div class="checkout" id="checkout">
+        <h2>Your order</h2>
+        <p class="empty muted" data-empty>Add dishes from the menu to start your order.</p>
+        <ul class="lines" data-lines></ul>
+        <dl class="totals" data-totals hidden>
+          <dt>Subtotal</dt><dd data-subtotal></dd>
+          <dt class="off">Web offer ({discount}% off)</dt><dd class="off" data-discount></dd>
+          <dt class="grand">To pay</dt><dd class="grand" data-total></dd>
+        </dl>
+        <p class="note muted">Delivery charge, if any, depends on distance and is confirmed when we call you.</p>
+
+        <Web3Form subject={`New food delivery order (${discount}% web offer)`} sheet="Order" id="order-form">
+          <label>Name <input name="name" required autocomplete="name" /></label>
+          <label>Phone <input name="phone" type="tel" required autocomplete="tel" /></label>
+          <label>Delivery address <textarea name="address" rows="2" required autocomplete="street-address"></textarea></label>
+          <label>Landmark (optional) <input name="landmark" /></label>
+          <div class="row">
+            <label>Delivery time
+              <select name="when">{slots.map((s) => <option>{s}</option>)}</select>
+            </label>
+            <label>Payment
+              <select name="payment">{site.delivery.payment.map((p) => <option>{p}</option>)}</select>
+            </label>
+          </div>
+          <label>Notes (optional) <textarea name="message" rows="2" placeholder="Spice level, allergies, etc."></textarea></label>
+          <!-- Filled in by the script below; `hidden` (not type="hidden") so the Google Sheet copy includes them. -->
+          <textarea name="order" hidden></textarea>
+          <input name="subtotal" hidden />
+          <input name="discount" hidden />
+          <input name="total" hidden />
+          <button class="btn" type="submit" data-submit disabled>Place order</button>
+          <a class="btn btn-whatsapp" data-wa data-base={waHref()} href={waHref(`Hi, I'd like to order food from ${site.name}.`)} target="_blank" rel="noopener">Or order on WhatsApp</a>
+          <p class="muted small">We'll call you to confirm your order and delivery time. Questions? Call <a href={telHref}>{site.phone}</a>.</p>
+        </Web3Form>
+      </div>
+    </div>
+  </section>
+
+  <a class="cart-bar" href="#checkout" data-bar hidden><span data-bar-count></span><strong data-bar-total></strong></a>
+</BaseLayout>
+
+<script>
+  import site from '../data/site.json';
+
+  const rate = site.onlineDiscount / 100;
+  const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+  const $ = <T extends Element = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
+
+  const form = $<HTMLFormElement>('#order-form');
+  const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
+  const cart = new Map<string, { name: string; price: number; qty: number }>();
+
+  for (const item of document.querySelectorAll<HTMLElement>('.item')) {
+    const out = item.querySelector('output')!;
+    for (const btn of item.querySelectorAll<HTMLButtonElement>('[data-step]')) {
+      btn.addEventListener('click', () => {
+        const { id, name, price } = item.dataset as { id: string; name: string; price: string };
+        const qty = Math.max(0, Math.min(50, (cart.get(id)?.qty ?? 0) + Number(btn.dataset.step)));
+        if (qty) cart.set(id, { name, price: Number(price), qty });
+        else cart.delete(id);
+        out.value = String(qty);
+        item.classList.toggle('picked', qty > 0);
+        render();
+      });
+    }
+  }
+
+  function totals() {
+    const lines = [...cart.values()];
+    const subtotal = lines.reduce((sum, l) => sum + l.price * l.qty, 0);
+    const off = Math.round(subtotal * rate);
+    return { lines, subtotal, off, total: subtotal - off, count: lines.reduce((n, l) => n + l.qty, 0) };
+  }
+
+  const lineText = (l: { name: string; price: number; qty: number }) => `${l.qty} x ${l.name} = ${inr(l.price * l.qty)}`;
+
+  function render() {
+    const { lines, subtotal, off, total, count } = totals();
+    $('[data-lines]').replaceChildren(...lines.map((l) => {
+      const li = document.createElement('li');
+      const what = document.createElement('span');
+      const cost = document.createElement('span');
+      what.textContent = `${l.qty} × ${l.name}`;
+      cost.textContent = inr(l.price * l.qty);
+      li.append(what, cost);
+      return li;
+    }));
+    $('[data-empty]').hidden = count > 0;
+    $('[data-totals]').hidden = count === 0;
+    $('[data-subtotal]').textContent = inr(subtotal);
+    $('[data-discount]').textContent = `− ${inr(off)}`;
+    $('[data-total]').textContent = inr(total);
+    $<HTMLButtonElement>('[data-submit]').disabled = count === 0;
+
+    // Sent to Web3Forms and the Google Sheet along with the guest's details.
+    (form.elements.namedItem('order') as HTMLTextAreaElement).value = lines.map(lineText).join('\n');
+    field('subtotal').value = inr(subtotal);
+    field('discount').value = inr(off);
+    field('total').value = inr(total);
+
+    $('[data-bar]').hidden = count === 0;
+    $('[data-bar-count]').textContent = `${count} item${count === 1 ? '' : 's'} · View order`;
+    $('[data-bar-total]').textContent = inr(total);
+    updateWhatsApp();
+  }
+
+  const wa = $<HTMLAnchorElement>('[data-wa]');
+  function updateWhatsApp() {
+    const { lines, subtotal, off, total } = totals();
+    const text = [
+      `Hi, I'd like to order food from ${site.name}.`,
+      ...lines.map(lineText),
+      lines.length && `Subtotal ${inr(subtotal)}, web offer -${inr(off)}, to pay ${inr(total)}`,
+      field('name').value && `Name: ${field('name').value}`,
+      field('address').value && `Address: ${field('address').value}`,
+      field('landmark').value && `Landmark: ${field('landmark').value}`,
+      `Delivery: ${field('when').value}`,
+      `Payment: ${field('payment').value}`,
+    ].filter(Boolean).join('\n');
+    wa.href = `${wa.dataset.base}?text=${encodeURIComponent(text)}`;
+  }
+  form.addEventListener('input', updateWhatsApp);
+  form.addEventListener('change', updateWhatsApp);
+
+  // Web3Form resets the form when the guest comes Back after a successful order; empty the cart too.
+  form.addEventListener('reset', () => {
+    cart.clear();
+    document.querySelectorAll('.item').forEach((i) => {
+      i.classList.remove('picked');
+      i.querySelector('output')!.value = '0';
+    });
+    setTimeout(render);
+  });
+
+  render();
+</script>
+
+<style>
+  .facts { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 28px; margin-bottom: 28px; }
+  .facts strong { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--forest); }
+
+  .shop { display: grid; gap: 40px; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr); align-items: start; }
+  .menu { display: grid; gap: 28px; }
+  .menu h2 { font-size: 1.25rem; color: var(--brand-dark); border-bottom: 1px solid #e0d2c2; padding-bottom: 4px; margin-bottom: 6px; }
+  .menu ul { list-style: none; }
+  .item { display: flex; align-items: center; gap: 10px; padding: 8px 6px; border-bottom: 1px solid #f1e9df; border-radius: 6px; }
+  .item.picked { background: #eef6f0; }
+  .name { flex: 1; display: grid; }
+  .price { color: var(--muted); font-size: 0.9rem; }
+  .qty { display: flex; align-items: center; gap: 4px; }
+  .qty button {
+    width: 34px; height: 34px; border-radius: 8px; border: 1.5px solid var(--forest);
+    background: #fff; color: var(--forest); font: inherit; font-size: 1.2rem; font-weight: 700; cursor: pointer; line-height: 1;
+  }
+  .qty button:hover { background: var(--forest); color: #fff; }
+  .qty button:focus-visible { outline: 2px solid var(--forest); outline-offset: 2px; }
+  .qty output { min-width: 24px; text-align: center; font-weight: 700; }
+
+  .checkout {
+    position: sticky; top: 90px; display: grid; gap: 12px;
+    padding: 20px; background: #fff; border: 1px solid #eadfd2; border-radius: var(--radius);
+  }
+  .checkout h2 { margin: 0; font-size: 1.3rem; }
+  .lines { list-style: none; display: grid; gap: 4px; }
+  .lines li { display: flex; justify-content: space-between; gap: 12px; }
+  .totals { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; border-top: 1px solid #eadfd2; padding-top: 10px; }
+  .totals[hidden], .empty[hidden] { display: none; }
+  .totals dd { text-align: right; }
+  .off { color: var(--brand-dark); font-weight: 600; }
+  .grand { font-weight: 700; font-size: 1.15rem; }
+  .note, .small { font-size: 0.85rem; }
+  .checkout form { max-width: none; }
+  .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+  .btn-whatsapp { text-align: center; }
+
+  .cart-bar { display: none; }
+
+  @media (max-width: 860px) {
+    .shop { grid-template-columns: 1fr; }
+    .checkout { position: static; }
+    .cart-bar:not([hidden]) {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      position: fixed; left: 12px; right: 12px; bottom: 74px; z-index: 20; /* sits above the WhatsApp button */
+      padding: 14px 18px; border-radius: var(--radius);
+      background: var(--forest); color: #fff; text-decoration: none; box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+    }
+  }
+</style>
