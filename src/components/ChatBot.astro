@@ -1,0 +1,311 @@
+---
+/**
+ * A simple, rule-based chat assistant. No AI and no server: every answer is
+ * built here at build time from the site's data files, and the script below
+ * matches the guest's choice or typed words to a topic by keyword.
+ */
+import site from '../data/site.json';
+import rooms from '../data/rooms.json';
+import events from '../data/events.json';
+import { discount, inr, withDiscount } from '../lib/offer';
+import { telHref, waHref } from '../lib/links';
+
+type Link = { label: string; href: string; external?: boolean };
+type Topic = { id: string; label: string; keywords: string[]; lines: string[]; links: Link[] };
+
+const wa: Link = { label: 'Chat on WhatsApp', href: waHref(), external: true };
+const call: Link = { label: `Call ${site.phone}`, href: telHref };
+
+const topics: Topic[] = [
+  {
+    id: 'rooms',
+    label: 'Room prices',
+    keywords: ['room', 'rooms', 'price', 'prices', 'rate', 'rates', 'tariff', 'cost', 'stay', 'night', 'deluxe', 'executive', 'suite', 'kamra', 'kotha', 'bed'],
+    lines: [
+      `Our rooms, with the ${discount}% online price:`,
+      ...rooms.map((r) => (r.price ? `${r.name}: ${inr(withDiscount(r.price))} / night (regular ${inr(r.price)})` : `${r.name}: ask us for today's rate`)),
+      'All rooms have AC, TV and an attached bathroom.',
+    ],
+    links: [{ label: 'Book a room', href: '/book/' }, { label: 'See room photos', href: '/rooms/' }],
+  },
+  {
+    id: 'book',
+    label: 'How to book',
+    keywords: ['book', 'booking', 'reserve', 'reservation', 'available', 'availability', 'vacancy'],
+    lines: [
+      `Send a request with the online form and we'll confirm availability by phone or WhatsApp. Booking through the website gets you ${discount}% off.`,
+    ],
+    links: [{ label: 'Book online', href: '/book/' }, wa],
+  },
+  {
+    id: 'offer',
+    label: `${discount}% online offer`,
+    keywords: ['offer', 'offers', 'discount', 'deal', 'coupon', 'cheap', 'save', 'percent'],
+    lines: [
+      `Get ${discount}% off rooms, your food bill at Taste Point, food delivery orders and the banquet hall rent when you book through this website.`,
+      site.offerTerms,
+    ],
+    links: [{ label: 'See all offers', href: '/offers/' }],
+  },
+  {
+    id: 'order',
+    label: 'Order food',
+    keywords: ['order', 'delivery', 'deliver', 'home delivery', 'food', 'menu', 'parcel', 'takeaway', 'khana', 'khabar', 'hungry', 'biryani', 'momo', 'thali'],
+    lines: [
+      `Order from the Taste Point menu online and get ${discount}% off.`,
+      `Delivery hours: ${site.delivery.hours}`,
+      `Area: ${site.delivery.area}`,
+      `Payment: ${site.delivery.payment.join(' or ')}`,
+    ],
+    links: [{ label: 'Order food now', href: '/order/' }],
+  },
+  {
+    id: 'restaurant',
+    label: 'Restaurant & bar',
+    keywords: ['restaurant', 'dine', 'dining', 'table', 'lunch', 'dinner', 'breakfast', 'eat', 'taste point', 'bar', 'madira', 'drink', 'drinks'],
+    lines: [
+      'Taste Point is our AC restaurant, serving Indian, Chinese and Assamese food. Madira – The Bar is our AC lounge bar.',
+      `Reserve a table online and get ${discount}% off your food bill.`,
+    ],
+    links: [{ label: 'Reserve a table', href: '/restaurant/#reserve' }, { label: 'See the menu', href: '/restaurant/#menu' }],
+  },
+  {
+    id: 'banquet',
+    label: 'Banquet hall',
+    keywords: ['banquet', 'hall', 'sabha', 'event', 'events', 'function', 'party', 'wedding', 'marriage', 'reception', 'shaadi', 'biya', 'birthday', 'anniversary', 'meeting', 'seminar', 'conference', 'political', 'social', 'venue', 'catering'],
+    lines: [
+      `Sabha – The Banquet is our AC hall for ${events.map((e) => e.name.toLowerCase()).join(', ')}.`,
+      `Catering comes from Taste Point, and guests can stay in the hotel. Book online for ${discount}% off the hall rent.`,
+    ],
+    links: [{ label: 'Book the hall', href: '/banquet/#enquire' }, { label: 'See the hall', href: '/banquet/' }],
+  },
+  {
+    id: 'corporate',
+    label: 'Corporate stays',
+    keywords: ['corporate', 'company', 'business', 'team', 'office', 'gst', 'invoice', 'bulk'],
+    lines: ['We offer corporate rates for team stays, with meeting space in our banquet hall. Tell us what you need and we will send a quote.'],
+    links: [{ label: 'Request a quote', href: '/corporate/#quote' }],
+  },
+  {
+    id: 'times',
+    label: 'Check-in times',
+    keywords: ['check-in', 'checkin', 'check in', 'check-out', 'checkout', 'check out', 'time', 'timing', 'timings', 'early', 'late'],
+    lines: [`Check-in is from ${site.checkIn} and check-out is by ${site.checkOut}.`, 'For early check-in or late check-out, ask us and we will try to help.'],
+    links: [wa],
+  },
+  {
+    id: 'facilities',
+    label: 'Facilities',
+    keywords: ['facility', 'facilities', 'amenity', 'amenities', 'wifi', 'wi-fi', 'internet', 'parking', 'park', 'ac', 'power', 'backup', 'cctv', 'security'],
+    lines: [`Facilities: ${site.amenities.join(', ')}.`],
+    links: [{ label: 'All amenities', href: '/amenities/' }],
+  },
+  {
+    id: 'location',
+    label: 'Location',
+    keywords: ['where', 'location', 'address', 'map', 'direction', 'directions', 'reach', 'distance', 'near', 'lakhimpur', 'station', 'airport'],
+    lines: [`We are at ${site.address}.`],
+    links: [{ label: 'Open in Google Maps', href: site.mapUrl, external: true }, { label: 'Nearby attractions', href: '/attractions/' }],
+  },
+  {
+    id: 'contact',
+    label: 'Talk to a person',
+    keywords: ['contact', 'call', 'phone', 'number', 'whatsapp', 'email', 'human', 'person', 'staff', 'help', 'talk', 'speak'],
+    lines: [`Phone: ${site.phone}`, `WhatsApp: ${site.whatsapp}`, `Email: ${site.email}`],
+    links: [wa, call],
+  },
+];
+
+const fallback = {
+  lines: ["Sorry, I don't have an answer for that. Our front desk can help: continue on WhatsApp and your question will already be typed in."],
+  links: [call],
+};
+
+const data = { topics, fallback, waBase: waHref(), hotel: site.name };
+---
+<div class="chatbot" data-chatbot>
+  <button class="launcher" type="button" aria-expanded="false" aria-controls="chatbot-panel" data-launcher>
+    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" class="i-chat"><path d="M4 5h16v11H9l-5 4z" /></svg>
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="i-close"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    <span class="visually-hidden">Chat with us</span>
+  </button>
+
+  <section class="panel" id="chatbot-panel" role="dialog" aria-label={`Chat with ${site.name}`} hidden data-panel>
+    <header>
+      <div>
+        <p class="name">{site.name}</p>
+        <p class="status">Quick answers · {discount}% off online</p>
+      </div>
+      <button type="button" class="close" aria-label="Close chat" data-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+    </header>
+    <div class="log" role="log" aria-live="polite" data-log></div>
+    <form class="ask" data-ask>
+      <label class="visually-hidden" for="chatbot-input">Type your question</label>
+      <input id="chatbot-input" type="text" placeholder="Type your question…" autocomplete="off" maxlength="200" />
+      <button class="send" type="submit" aria-label="Send">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12l16-8-6 16-2-7z" /></svg>
+      </button>
+    </form>
+  </section>
+
+  <script type="application/json" data-chatbot-data set:html={JSON.stringify(data).replace(/</g, '\\u003c')} />
+</div>
+
+<script>
+  type Link = { label: string; href: string; external?: boolean };
+  type Topic = { id: string; label: string; keywords: string[]; lines: string[]; links: Link[] };
+  type Data = { topics: Topic[]; fallback: { lines: string[]; links: Link[] }; waBase: string; hotel: string };
+
+  const root = document.querySelector<HTMLElement>('[data-chatbot]');
+  if (root) {
+    const data: Data = JSON.parse(root.querySelector('[data-chatbot-data]')!.textContent!);
+    const launcher = root.querySelector<HTMLButtonElement>('[data-launcher]')!;
+    const panel = root.querySelector<HTMLElement>('[data-panel]')!;
+    const log = root.querySelector<HTMLElement>('[data-log]')!;
+    const form = root.querySelector<HTMLFormElement>('[data-ask]')!;
+    const input = form.querySelector('input')!;
+    let started = false;
+
+    const el = <K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string, text?: string) => {
+      const node = document.createElement(tag);
+      if (cls) node.className = cls;
+      if (text) node.textContent = text;
+      return node;
+    };
+
+    const scroll = () => (log.scrollTop = log.scrollHeight);
+
+    function say(lines: string[], links: Link[] = []) {
+      const msg = el('div', 'msg bot');
+      for (const line of lines) msg.append(el('p', '', line));
+      if (links.length) {
+        const row = el('div', 'links');
+        for (const l of links) {
+          const a = el('a', 'link', l.label);
+          a.href = l.href;
+          if (l.external) { a.target = '_blank'; a.rel = 'noopener'; }
+          row.append(a);
+        }
+        msg.append(row);
+      }
+      log.append(msg);
+    }
+
+    function chips(exclude?: string) {
+      log.querySelectorAll('.chips').forEach((c) => c.remove());
+      const row = el('div', 'chips');
+      for (const t of data.topics) {
+        if (t.id === exclude) continue;
+        const b = el('button', 'chip', t.label);
+        b.type = 'button';
+        b.addEventListener('click', () => ask(t.label, t));
+        row.append(b);
+      }
+      log.append(row);
+      scroll();
+    }
+
+    // Scores each topic by how many of its keywords appear in the question.
+    function match(question: string): Topic | undefined {
+      const q = ` ${question.toLowerCase().replace(/[^\p{L}\p{N}%\s-]/gu, ' ').replace(/\s+/g, ' ')} `;
+      let best: Topic | undefined;
+      let bestScore = 0;
+      for (const t of data.topics) {
+        const score = t.keywords.reduce((s, k) => s + (q.includes(k.length <= 3 ? ` ${k} ` : k) ? k.length : 0), 0);
+        if (score > bestScore) { best = t; bestScore = score; }
+      }
+      return best;
+    }
+
+    function ask(question: string, topic?: Topic) {
+      log.append(el('div', 'msg me', question));
+      const t = topic ?? match(question);
+      if (t) {
+        say(t.lines, t.links);
+      } else {
+        const text = `Hi, I have a question for ${data.hotel}: ${question}`;
+        say(data.fallback.lines, [{ label: 'Continue on WhatsApp', href: `${data.waBase}?text=${encodeURIComponent(text)}`, external: true }, ...data.fallback.links]);
+      }
+      chips(t?.id);
+    }
+
+    function setOpen(open: boolean) {
+      panel.hidden = !open;
+      launcher.setAttribute('aria-expanded', String(open));
+      root!.classList.toggle('open', open);
+      if (open && !started) {
+        started = true;
+        say([`Hi! 👋 Welcome to ${data.hotel}. What can I help you with?`, 'Pick a topic or type your question.']);
+        chips();
+      }
+      if (open) input.focus();
+      else launcher.focus();
+    }
+
+    launcher.addEventListener('click', () => setOpen(panel.hidden));
+    root.querySelector('[data-close]')!.addEventListener('click', () => setOpen(false));
+    panel.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = input.value.trim();
+      if (!q) return;
+      input.value = '';
+      ask(q);
+    });
+  }
+</script>
+
+<style>
+  .chatbot { position: fixed; left: 16px; bottom: 16px; z-index: 30; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .launcher {
+    display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%;
+    background: var(--brand); color: #fff; border: 0; cursor: pointer;
+    box-shadow: 0 4px 14px rgb(0 0 0 / 0.22);
+  }
+  .launcher:hover { background: var(--brand-dark); }
+  .launcher:focus-visible, .close:focus-visible, .send:focus-visible { outline: 2px solid var(--forest); outline-offset: 2px; }
+  .launcher svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .launcher .i-chat { fill: currentColor; stroke: none; }
+  .chatbot.open .i-chat, .chatbot:not(.open) .i-close { display: none; }
+
+  .panel {
+    position: absolute; left: 0; bottom: 68px;
+    width: min(360px, calc(100vw - 32px)); height: min(540px, calc(100dvh - 110px));
+    display: flex; flex-direction: column;
+    background: var(--bg); border: 1px solid #eadfd2; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 16px 40px rgb(0 0 0 / 0.25);
+  }
+  .panel[hidden] { display: none; }
+
+  header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; background: var(--forest); color: #fff; }
+  .name { font-weight: 700; }
+  .status { font-size: 0.8rem; opacity: 0.85; }
+  .close { display: grid; place-items: center; width: 34px; height: 34px; border: 0; border-radius: 8px; background: transparent; color: #fff; cursor: pointer; }
+  .close:hover { background: rgb(255 255 255 / 0.15); }
+  .close svg, .send svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .log { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; font-size: 0.93rem; }
+  .log :global(.msg) { max-width: 88%; padding: 9px 12px; border-radius: 12px; line-height: 1.45; overflow-wrap: anywhere; }
+  .log :global(.msg p + p) { margin-top: 4px; }
+  .log :global(.bot) { align-self: flex-start; background: #fff; border: 1px solid #eadfd2; border-bottom-left-radius: 4px; }
+  .log :global(.me) { align-self: flex-end; background: var(--forest); color: #fff; border-bottom-right-radius: 4px; }
+  .log :global(.links) { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .log :global(.link) { padding: 5px 10px; border-radius: 99px; background: var(--forest); color: #fff; text-decoration: none; font-weight: 600; font-size: 0.85rem; }
+  .log :global(.link:hover) { background: var(--forest-dark); }
+  .log :global(.chips) { display: flex; flex-wrap: wrap; gap: 6px; }
+  .log :global(.chip) {
+    font: inherit; font-size: 0.85rem; padding: 5px 11px; border-radius: 99px; cursor: pointer;
+    background: #fff; color: var(--forest); border: 1.5px solid var(--forest);
+  }
+  .log :global(.chip:hover) { background: #e7f0ea; }
+  .log :global(.chip:focus-visible), .log :global(.link:focus-visible) { outline: 2px solid var(--forest); outline-offset: 2px; }
+
+  .ask { display: flex; gap: 8px; padding: 10px; border-top: 1px solid #eadfd2; background: #fff; max-width: none; }
+  .ask input { flex: 1; min-width: 0; padding: 9px 12px; border-radius: 99px; }
+  .send { display: grid; place-items: center; width: 42px; height: 42px; flex: none; border: 0; border-radius: 50%; background: var(--forest); color: #fff; cursor: pointer; }
+  .send:hover { background: var(--forest-dark); }
+</style>

@@ -15,7 +15,7 @@ No linter, type-checker, or tests — verify with `npm run build`.
 
 ## Architecture
 
-Static Astro site, plain CSS, no framework, no backend. Client JS is limited to small scripts: the home availability bar, the pre-fill in `book.astro` and `banquet.astro`, and the cart on `order.astro`.
+Static Astro site, plain CSS, no framework, no backend. Client JS is limited to small scripts: the home availability bar, the pre-fill in `book.astro` and `banquet.astro`, the cart on `order.astro`, and the chat assistant in `ChatBot.astro`.
 
 - `src/data/*.json` is the source of truth for content: `site.json` (contact info, nav, amenities, reviews, `onlineDiscount`, `delivery`), `rooms.json`, `venues.json`, `menu.json` (restaurant + delivery menu), `events.json` (banquet event types), `offers.json`, `attractions.json`. Pages read from them rather than hardcoding text. Unset values (`price`, `guests`, `distance`, `reviews`, `attractions`, `mapEmbedUrl`) are hidden on the page.
 - Room `slug` links `RoomCard` and `AvailabilityBar` → `/book/?room=<slug>` → the pre-fill script in `book.astro`. Keep slugs in sync if renamed.
@@ -24,6 +24,7 @@ Static Astro site, plain CSS, no framework, no backend. Client JS is limited to 
 - "Check Availability" does not query live inventory: it passes dates, room and guests to `/book/`, where the guest sends a request.
 - Forms post directly to Web3Forms through `Web3Form.astro` (`site.json`'s `formAccessKey`) — no backend. On success Web3Forms redirects to `/?sent=1`, which shows a thank-you notice. When `site.json`'s `sheetsWebAppUrl` is set, each form's `sheet` prop also sends a copy to a Google Sheet via the Apps Script in `google-apps-script/Code.gs` (the user deploys that script themselves). A new `sheet` value needs a matching entry in `TABS` there, and the script must be redeployed.
 - Shared styles/classes live in `src/styles/global.css`; page-specific CSS goes in a scoped `<style>` block in that `.astro` file.
+- `ChatBot.astro` (on every page via `BaseLayout`) is rule-based, with no AI or server: its answers are built at build time from the data files, and typed questions are matched to topics by keyword. Unmatched questions hand off to WhatsApp with the question pre-filled. Add topics or keywords there.
 - Internal links use trailing slashes (`/rooms/`), which `Header.astro` relies on for active-link highlighting.
 
 ## Known placeholders
