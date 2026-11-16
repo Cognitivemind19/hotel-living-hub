@@ -4,11 +4,12 @@ import PageHero from '../components/PageHero.astro';
 import OfferBanner from '../components/OfferBanner.astro';
 import Web3Form from '../components/Web3Form.astro';
 import site from '../data/site.json';
-import menu from '../data/menu.json';
+import menu from '../data/order-menu.json';
 import { discount, inr } from '../lib/offer';
 import { waHref, telHref } from '../lib/links';
 
 const slots = ['As soon as possible', 'Lunch (12 – 2 PM)', 'Evening (5 – 7 PM)', 'Dinner (7 – 10 PM)'];
+const sectionId = (category: string) => 'm-' + category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 ---
 <BaseLayout title="Order Food Online" description={`Order Taste Point food online for home delivery in North Lakhimpur and get ${discount}% off every order.`}>
   <PageHero title="Order Food Online" lead={`Taste Point favourites, delivered to your door. ${discount}% off every online order.`} image="/images/dining/taste-point-3.webp" />
@@ -24,14 +25,29 @@ const slots = ['As soon as possible', 'Lunch (12 – 2 PM)', 'Evening (5 – 7 P
 
     <div class="shop">
       <div class="menu" id="menu">
+        <div class="browse" data-browse>
+          <div class="tools">
+            <input type="search" placeholder="Search dishes" aria-label="Search dishes" data-search />
+            <label class="veg-only"><input type="checkbox" data-veg-only /> <span class="dot veg" aria-hidden="true"></span> Veg only</label>
+          </div>
+          <nav class="cats" aria-label="Menu sections">
+            {menu.map((c) => <a href={`#${sectionId(c.category)}`}>{c.category}</a>)}
+          </nav>
+        </div>
+        <p class="muted no-match" data-no-match hidden>No dishes match your search.</p>
         {menu.map((c) => (
-          <section>
+          <section id={sectionId(c.category)} data-section>
             <h2>{c.category}</h2>
+            {'note' in c && c.note && <p class="when muted">{c.note}</p>}
             <ul>
               {c.items.map((i) => (
-                <li class="item" data-id={i.id} data-name={i.name} data-price={i.price}>
+                <li class="item" data-id={i.id} data-name={i.name} data-price={i.price} data-veg={String(i.veg)}>
                   <span class:list={['dot', i.veg ? 'veg' : 'nonveg']} aria-label={i.veg ? 'Vegetarian' : 'Non-vegetarian'}></span>
-                  <span class="name">{i.name}<span class="price">{inr(i.price)}</span></span>
+                  <span class="name">
+                    <span>{i.name}</span>
+                    {'desc' in i && i.desc && <small class="desc">{i.desc}</small>}
+                    <span class="price">{inr(i.price)}</span>
+                  </span>
                   <span class="qty" role="group" aria-label={`Quantity of ${i.name}`}>
                     <button type="button" data-step="-1" aria-label={`Remove one ${i.name}`}>−</button>
                     <output aria-live="polite">0</output>
@@ -55,7 +71,7 @@ const slots = ['As soon as possible', 'Lunch (12 – 2 PM)', 'Evening (5 – 7 P
         </dl>
         <p class="note muted">Delivery charge, if any, depends on distance and is confirmed when we call you.</p>
 
-        <Web3Form subject={`New food delivery order (${discount}% web offer)`} sheet="Order" id="order-form">
+        <Web3Form subject="Food Order" sheet="Order" id="order-form">
           <label>Name <input name="name" required autocomplete="name" /></label>
           <label>Phone <input name="phone" type="tel" required autocomplete="tel" /></label>
           <label>Delivery address <textarea name="address" rows="2" required autocomplete="street-address"></textarea></label>
@@ -96,20 +112,54 @@ const slots = ['As soon as possible', 'Lunch (12 – 2 PM)', 'Evening (5 – 7 P
   const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
   const cart = new Map<string, { name: string; price: number; qty: number }>();
 
-  for (const item of document.querySelectorAll<HTMLElement>('.item')) {
-    const out = item.querySelector('output')!;
+  const items = [...document.querySelectorAll<HTMLElement>('.item')];
+  for (const item of items) {
     for (const btn of item.querySelectorAll<HTMLButtonElement>('[data-step]')) {
       btn.addEventListener('click', () => {
         const { id, name, price } = item.dataset as { id: string; name: string; price: string };
         const qty = Math.max(0, Math.min(50, (cart.get(id)?.qty ?? 0) + Number(btn.dataset.step)));
         if (qty) cart.set(id, { name, price: Number(price), qty });
         else cart.delete(id);
-        out.value = String(qty);
-        item.classList.toggle('picked', qty > 0);
+        // A few dishes are listed in two sections (e.g. soups under Round the Clock); keep both in step.
+        for (const same of items.filter((i) => i.dataset.id === id)) {
+          same.querySelector('output')!.value = String(qty);
+          same.classList.toggle('picked', qty > 0);
+        }
         render();
       });
     }
   }
+
+  // Search and Veg-only filter
+  const search = $<HTMLInputElement>('[data-search]');
+  const vegOnly = $<HTMLInputElement>('[data-veg-only]');
+  function filter() {
+    const words = search.value.toLowerCase().split(/\s+/).filter(Boolean);
+    let shown = 0;
+    for (const section of document.querySelectorAll<HTMLElement>('[data-section]')) {
+      let any = false;
+      for (const item of section.querySelectorAll<HTMLElement>('.item')) {
+        const text = item.textContent!.toLowerCase();
+        const ok = (!vegOnly.checked || item.dataset.veg === 'true') && words.every((w) => text.includes(w));
+        item.hidden = !ok;
+        any ||= ok;
+      }
+      section.hidden = !any;
+      if (any) shown++;
+    }
+    $('[data-no-match]').hidden = shown > 0;
+  }
+  search.addEventListener('input', filter);
+  vegOnly.addEventListener('change', filter);
+
+  // The section bar sticks just under the site header, whose height changes with screen size.
+  const setOffsets = () => {
+    const head = document.querySelector<HTMLElement>('.site-header')?.offsetHeight ?? 0;
+    document.documentElement.style.setProperty('--head', `${head}px`);
+    document.documentElement.style.setProperty('--browse', `${$('[data-browse]').offsetHeight}px`);
+  };
+  setOffsets();
+  addEventListener('resize', setOffsets);
 
   function totals() {
     const lines = [...cart.values()];
@@ -189,6 +239,26 @@ const slots = ['As soon as possible', 'Lunch (12 – 2 PM)', 'Evening (5 – 7 P
   .menu { display: grid; gap: 28px; }
   .menu h2 { font-size: 1.25rem; color: var(--brand-dark); border-bottom: 1px solid #e0d2c2; padding-bottom: 4px; margin-bottom: 6px; }
   .menu ul { list-style: none; }
+  .menu [data-section] { scroll-margin-top: calc(var(--head, 72px) + var(--browse, 100px) + 8px); }
+  .menu [hidden] { display: none; }
+  .when { font-size: 0.85rem; margin: -2px 0 6px; }
+
+  .browse {
+    position: sticky; top: var(--head, 72px); z-index: 5;
+    display: grid; gap: 8px; padding: 10px 0; margin-bottom: -12px;
+    background: var(--bg); border-bottom: 1px solid #eadfd2;
+  }
+  .tools { display: flex; gap: 10px; align-items: center; }
+  .tools input[type="search"] { flex: 1; min-width: 0; padding: 9px 12px; border: 1px solid #d9c9b6; border-radius: 8px; font: inherit; background: #fff; }
+  .veg-only { display: flex; align-items: center; gap: 6px; white-space: nowrap; font-weight: 600; cursor: pointer; }
+  .cats { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+  .cats::-webkit-scrollbar { display: none; }
+  .cats a {
+    flex: none; padding: 5px 12px; border-radius: 999px; border: 1px solid #e0d2c2; background: #fff;
+    color: var(--forest); font-size: 0.85rem; font-weight: 600; text-decoration: none; white-space: nowrap;
+  }
+  .cats a:hover { background: var(--forest); color: #fff; }
+  .desc { color: var(--muted); font-size: 0.82rem; line-height: 1.35; }
   .item { display: flex; align-items: center; gap: 10px; padding: 8px 6px; border-bottom: 1px solid #f1e9df; border-radius: 6px; }
   .item.picked { background: #eef6f0; }
   .name { flex: 1; display: grid; }

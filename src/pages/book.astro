@@ -35,7 +35,7 @@ import { telHref, waHref } from '../lib/links';
       <h2>Online reservation</h2>
       <p class="muted intro">Send your request and we'll confirm availability and your discounted rate ({discount}% off) by phone or WhatsApp.</p>
 
-      <Web3Form subject={`New booking enquiry (${discount}% web offer)`} sheet="Booking" id="booking-form">
+      <Web3Form subject="New booking enquiry for Rooms" sheet="Booking" id="booking-form">
         <label>Name <input name="name" required autocomplete="name" /></label>
         <div class="row">
           <label>Phone <input name="phone" type="tel" required autocomplete="tel" /></label>
@@ -76,6 +76,13 @@ import { telHref, waHref } from '../lib/links';
   }
   if (room.selectedIndex < 0) room.selectedIndex = 0;
   bindStayDates(form);
+
+  // Email subject names the room the guest chose, e.g. "New booking enquiry for Rooms — Deluxe Room — Hotel Living Hub"
+  const subject = form.elements.namedItem("subject") as HTMLInputElement;
+  const [base, hotel] = subject.value.split(" — ");
+  form.addEventListener("submit", () => {
+    subject.value = `${base} — ${room.selectedOptions[0]?.text || "Any room"} — ${hotel}`;
+  });
 
   // Keep the WhatsApp message in step with the form
   const wa = document.getElementById('wa-booking') as HTMLAnchorElement;

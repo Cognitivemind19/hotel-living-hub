@@ -1,0 +1,202 @@
+[
+  {
+    "category": "Mocktails",
+    "items": [
+      {"id": "virgin-mojito", "name": "Virgin Mojito", "price": 150, "veg": true, "desc": "Mint leaves, lime, sugar and soda, served chilled."},
+      {"id": "fruit-punch", "name": "Fruit Punch", "price": 150, "veg": true, "desc": "A delightful mix of fruit juices."},
+      {"id": "cucumber-mint-refresher", "name": "Cucumber Mint Refresher", "price": 150, "veg": true, "desc": "Cucumber and fresh mint with lime and soda — crisp and refreshing."},
+      {"id": "tropical-cooler", "name": "Tropical Cooler", "price": 150, "veg": true, "desc": "Pineapple and mango juices with a splash of soda."}
+    ]
+  },
+  {
+    "category": "Soft Beverages",
+    "items": [
+      {"id": "aerated-water-with-service", "name": "Aerated Water (with service)", "price": 70, "veg": true},
+      {"id": "juice-by-glass-canned", "name": "Juice by Glass (Canned)", "price": 90, "veg": true},
+      {"id": "packaged-water-with-service", "name": "Packaged Water (with service)", "price": 20, "veg": true},
+      {"id": "fresh-lime-soda-sweet-salted-mix", "name": "Fresh Lime Soda (Sweet / Salted / Mix)", "price": 100, "veg": true},
+      {"id": "fresh-lime-water-sweet-salted-mix", "name": "Fresh Lime Water (Sweet / Salted / Mix)", "price": 50, "veg": true}
+    ]
+  },
+  {
+    "category": "Breakfast",
+    "note": "Served 08:00–10:30 hrs",
+    "items": [
+      {"id": "juice-fresh-seasonal", "name": "Juice (Fresh Seasonal)", "price": 120, "veg": true},
+      {"id": "juice-canned", "name": "Juice (Canned)", "price": 90, "veg": true},
+      {"id": "thick-shake-vanilla-chocolate-banana", "name": "Thick Shake (Vanilla / Chocolate / Banana)", "price": 150, "veg": true},
+      {"id": "sweet-lassi", "name": "Sweet Lassi", "price": 100, "veg": true},
+      {"id": "butter-milk", "name": "Butter Milk", "price": 75, "veg": true},
+      {"id": "cold-coffee-plain", "name": "Cold Coffee (Plain)", "price": 125, "veg": true, "desc": "Chilled, creamy blend of coffee and milk, served over ice."},
+      {"id": "cold-coffee-with-ice-cream", "name": "Cold Coffee (With Ice Cream)", "price": 150, "veg": true, "desc": "Chilled, creamy blend of coffee and milk, served over ice."},
+      {"id": "eggs-to-order-2-eggs", "name": "Eggs to Order (2 Eggs)", "price": 150, "veg": false, "desc": "Plain / Masala / Fried / Boiled, served with fries."},
+      {"id": "toast", "name": "Toast", "price": 80, "veg": true, "desc": "White or brown bread with butter and jam."},
+      {"id": "poori-bhaji-4-pieces", "name": "Poori Bhaji (4 Pieces)", "price": 125, "veg": true, "desc": "Served with pickle."},
+      {"id": "stuffed-paratha-2-pieces", "name": "Stuffed Paratha (2 Pieces)", "price": 125, "veg": true, "desc": "Potato / Paneer / Plain, served with curd and pickle."},
+      {"id": "poha", "name": "Poha", "price": 100, "veg": true, "desc": "Flattened rice with mild spices, onion and a touch of lemon."},
+      {"id": "idli-plain", "name": "Idli (Plain)", "price": 120, "veg": true, "desc": "Steamed rice cakes with sambar and chutneys."},
+      {"id": "pot-of-tea-green-black-readymade", "name": "Pot of Tea (Green / Black / Readymade)", "price": 100, "veg": true},
+      {"id": "pot-of-coffee-black-readymade", "name": "Pot of Coffee (Black / Readymade)", "price": 120, "veg": true}
+    ]
+  },
+  {
+    "category": "Round the Clock",
+    "note": "Served 08:00–22:00 hrs",
+    "items": [
+      {"id": "vegetable-sandwich-plain", "name": "Vegetable Sandwich (Plain)", "price": 125, "veg": true, "desc": "Served with fries."},
+      {"id": "vegetable-sandwich-toasted", "name": "Vegetable Sandwich (Toasted)", "price": 150, "veg": true, "desc": "Served with fries."},
+      {"id": "vegetable-sandwich-grilled", "name": "Vegetable Sandwich (Grilled)", "price": 175, "veg": true, "desc": "Served with fries."},
+      {"id": "chicken-sandwich-plain", "name": "Chicken Sandwich (Plain)", "price": 175, "veg": false, "desc": "Served with fries."},
+      {"id": "chicken-sandwich-toasted", "name": "Chicken Sandwich (Toasted)", "price": 190, "veg": false, "desc": "Served with fries."},
+      {"id": "chicken-sandwich-grilled", "name": "Chicken Sandwich (Grilled)", "price": 220, "veg": false, "desc": "Served with fries."},
+      {"id": "cream-of-tomato-soup", "name": "Cream of Tomato Soup", "price": 160, "veg": true},
+      {"id": "cream-of-chicken-soup", "name": "Cream of Chicken Soup", "price": 190, "veg": false},
+      {"id": "french-fries", "name": "French Fries", "price": 110, "veg": true},
+      {"id": "round-the-clock-fruit-salad", "name": "Fruit Salad", "price": 150, "veg": true, "desc": "Diced fresh fruits, with or without ice cream."},
+      {"id": "aerated-water-with-service", "name": "Aerated Water (with service)", "price": 70, "veg": true},
+      {"id": "juice-by-glass-canned", "name": "Juice by Glass (Canned)", "price": 90, "veg": true},
+      {"id": "packaged-water-1-litre-with-service", "name": "Packaged Water (1 Litre, with service)", "price": 20, "veg": true}
+    ]
+  },
+  {
+    "category": "Soups",
+    "note": "Lunch 12:30–14:45 hrs, dinner 18:45–22:30 hrs",
+    "items": [
+      {"id": "cream-of-tomato-soup", "name": "Cream of Tomato Soup", "price": 160, "veg": true},
+      {"id": "cream-of-chicken-soup", "name": "Cream of Chicken Soup", "price": 190, "veg": false},
+      {"id": "sweet-corn-soup-veg", "name": "Sweet Corn Soup (Veg)", "price": 160, "veg": true},
+      {"id": "sweet-corn-soup-chicken", "name": "Sweet Corn Soup (Chicken)", "price": 190, "veg": false},
+      {"id": "hot-sour-soup-veg", "name": "Hot & Sour Soup (Veg)", "price": 160, "veg": true},
+      {"id": "hot-sour-soup-chicken", "name": "Hot & Sour Soup (Chicken)", "price": 190, "veg": false},
+      {"id": "veg-manchow-soup", "name": "Veg Manchow Soup", "price": 160, "veg": true, "desc": "Spicy Indo-Chinese soup with vegetables and crispy noodles."},
+      {"id": "chicken-manchow-soup", "name": "Chicken Manchow Soup", "price": 190, "veg": false, "desc": "Spicy Indo-Chinese soup with shredded chicken and crispy noodles."}
+    ]
+  },
+  {
+    "category": "Salads & Chaat",
+    "note": "Lunch 12:30–14:45 hrs, dinner 18:45–23:00 hrs",
+    "items": [
+      {"id": "green-salad", "name": "Green Salad", "price": 125, "veg": true, "desc": "Cucumber, tomato and seasonal greens."},
+      {"id": "nankeen-chaat", "name": "Nankeen Chaat", "price": 150, "veg": true, "desc": "Savoury namkeen with onion, tomato, spices and chutneys."},
+      {"id": "aloo-chaat", "name": "Aloo Chaat", "price": 150, "veg": true, "desc": "Crispy potatoes tossed in tangy spices and chutneys."},
+      {"id": "peanut-masala", "name": "Peanut Masala", "price": 150, "veg": true, "desc": "Fried peanuts with onion, tomato, chilli and coriander."},
+      {"id": "masala-papad", "name": "Masala Papad", "price": 150, "veg": true, "desc": "Roasted papad topped with onion, tomato and chilli."},
+      {"id": "assorted-chana-chaat", "name": "Assorted Chana Chaat", "price": 150, "veg": true, "desc": "Chickpeas with fresh vegetables and chutneys."}
+    ]
+  },
+  {
+    "category": "Appetizers",
+    "note": "Lunch 12:30–14:45 hrs, dinner 18:45–22:30 hrs",
+    "items": [
+      {"id": "paneer-tikka", "name": "Paneer Tikka", "price": 300, "veg": true, "desc": "Paneer marinated in spiced yogurt, grilled until smoky."},
+      {"id": "paneer-pakora", "name": "Paneer Pakora", "price": 250, "veg": true, "desc": "Paneer in spiced gram flour batter, fried golden."},
+      {"id": "assorted-vegetable-pakora", "name": "Assorted Vegetable Pakora", "price": 200, "veg": true, "desc": "Seasonal vegetable fritters in gram flour batter."},
+      {"id": "chilli-paneer-dry", "name": "Chilli Paneer (Dry)", "price": 250, "veg": true, "desc": "Paneer tossed with onion, capsicum and chilli sauce."},
+      {"id": "vegetable-manchurian-dry", "name": "Vegetable Manchurian (Dry)", "price": 200, "veg": true, "desc": "Crispy vegetable balls in a soy-chilli sauce."},
+      {"id": "egg-pakora", "name": "Egg Pakora", "price": 200, "veg": false, "desc": "Boiled egg halves in gram flour batter, fried golden."},
+      {"id": "tawa-fish", "name": "Tawa Fish", "price": 350, "veg": false, "desc": "Tawa-cooked fish with regional spices."},
+      {"id": "chicken-tikka", "name": "Chicken Tikka", "price": 375, "veg": false, "desc": "Chicken in spiced yogurt, char-grilled."},
+      {"id": "murg-malai-tikka", "name": "Murg Malai Tikka", "price": 400, "veg": false, "desc": "Chicken in cream, cheese and mild spices."},
+      {"id": "murg-achari-tikka", "name": "Murg Achari Tikka", "price": 375, "veg": false, "desc": "Chicken with tangy pickle spices, grilled."},
+      {"id": "tandoori-chicken-full", "name": "Tandoori Chicken (Full)", "price": 650, "veg": false, "desc": "Whole chicken in yogurt and spices, roasted in the tandoor."},
+      {"id": "chilli-chicken-dry", "name": "Chilli Chicken (Dry)", "price": 300, "veg": false, "desc": "Chicken with onion, capsicum and chilli sauce."},
+      {"id": "fish-finger", "name": "Fish Finger", "price": 300, "veg": false, "desc": "Crumb-fried fish strips with a tangy dip."},
+      {"id": "chicken-fingers", "name": "Chicken Fingers", "price": 300, "veg": false, "desc": "Crumb-fried chicken strips with a dip."},
+      {"id": "chicken-pakora", "name": "Chicken Pakora", "price": 300, "veg": false, "desc": "Chicken in spiced gram flour batter, deep-fried."}
+    ]
+  },
+  {
+    "category": "Main Course – Vegetarian",
+    "note": "Lunch 12:30–14:45 hrs, dinner 18:45–22:30 hrs",
+    "items": [
+      {"id": "paneer-butter-masala", "name": "Paneer Butter Masala", "price": 325, "veg": true, "desc": "Paneer in a fenugreek-flavoured tomato gravy."},
+      {"id": "palak-paneer", "name": "Palak Paneer", "price": 325, "veg": true, "desc": "Paneer in a spinach and mint gravy."},
+      {"id": "kadai-paneer", "name": "Kadai Paneer", "price": 325, "veg": true, "desc": "Paneer with capsicum and onion in kadai-style gravy."},
+      {"id": "malai-kofta", "name": "Malai Kofta", "price": 325, "veg": true, "desc": "Paneer and potato dumplings in a creamy tomato gravy."},
+      {"id": "mushroom-matar", "name": "Mushroom Matar", "price": 350, "veg": true, "desc": "Mushroom and green peas in onion-tomato gravy."},
+      {"id": "methi-matar-malai", "name": "Methi Matar Malai", "price": 325, "veg": true, "desc": "Fenugreek and green peas in a cashew-cream gravy."},
+      {"id": "aloo-matar-ki-subzi", "name": "Aloo Matar ki Subzi", "price": 250, "veg": true, "desc": "Home-style potato and green peas curry."},
+      {"id": "subzi-jalfrezi", "name": "Subzi Jalfrezi", "price": 300, "veg": true, "desc": "Spicy mixed vegetables with lemon and coriander."},
+      {"id": "mixed-vegetable", "name": "Mixed Vegetable", "price": 275, "veg": true, "desc": "Seasonal vegetables, home style."},
+      {"id": "aloo-bhaja", "name": "Aloo Bhaja", "price": 180, "veg": true, "desc": "Lightly spiced potato fry."},
+      {"id": "chilli-paneer-gravy", "name": "Chilli Paneer (Gravy)", "price": 325, "veg": true, "desc": "Paneer with onion and capsicum in chilli gravy."},
+      {"id": "vegetable-manchurian-gravy", "name": "Vegetable Manchurian (Gravy)", "price": 275, "veg": true, "desc": "Vegetable balls in a soy-chilli gravy."},
+      {"id": "sweet-n-sour-vegetable", "name": "Sweet N Sour Vegetable", "price": 275, "veg": true, "desc": "Crispy vegetables in sweet and sour sauce."},
+      {"id": "dal-tadka-dal-fry", "name": "Dal Tadka / Dal Fry", "price": 200, "veg": true, "desc": "Lentils tempered with onion, cumin and coriander."},
+      {"id": "raita", "name": "Raita", "price": 125, "veg": true, "desc": "Yogurt with pineapple, fruit, vegetables or boondi."},
+      {"id": "plain-curd", "name": "Plain Curd", "price": 100, "veg": true}
+    ]
+  },
+  {
+    "category": "Main Course – Non-Vegetarian",
+    "note": "Lunch 12:30–14:45 hrs, dinner 18:45–22:30 hrs",
+    "items": [
+      {"id": "bengali-fish-curry", "name": "Bengali Fish Curry", "price": 350, "veg": false, "desc": "Fish in mustard seed, turmeric and light spices."},
+      {"id": "fish-kalia", "name": "Fish Kalia", "price": 350, "veg": false, "desc": "Fish slow-cooked in a spiced onion-tomato gravy."},
+      {"id": "chicken-curry", "name": "Chicken Curry", "price": 325, "veg": false, "desc": "Home-style chicken curry with potatoes."},
+      {"id": "chicken-masala", "name": "Chicken Masala", "price": 325, "veg": false, "desc": "Chicken in a traditional Indian masala."},
+      {"id": "mutton-curry", "name": "Mutton Curry", "price": 425, "veg": false, "desc": "Home-style mutton curry with potatoes."},
+      {"id": "mutton-kosha", "name": "Mutton Kosha", "price": 425, "veg": false, "desc": "Bengali-style mutton, slow-cooked to a thick gravy."},
+      {"id": "spicy-chicken-curry", "name": "Spicy Chicken Curry", "price": 350, "veg": false, "desc": "Chicken in a rich gravy with bold spices."},
+      {"id": "egg-curry", "name": "Egg Curry", "price": 200, "veg": false, "desc": "Boiled eggs in a spiced onion-tomato gravy."},
+      {"id": "chilli-fish", "name": "Chilli Fish", "price": 350, "veg": false, "desc": "Crispy fish with onion, capsicum and chilli sauce."},
+      {"id": "chilli-chicken", "name": "Chilli Chicken", "price": 325, "veg": false, "desc": "Chicken with onion, capsicum and chilli sauce."}
+    ]
+  },
+  {
+    "category": "Continental",
+    "note": "Lunch 12:30–14:45 hrs, dinner 19:30–23:30 hrs",
+    "items": [
+      {"id": "pasta-tomato-or-cheese-sauce-veg", "name": "Pasta — Tomato or Cheese Sauce (Veg)", "price": 250, "veg": true},
+      {"id": "pasta-tomato-or-cheese-sauce-chicken", "name": "Pasta — Tomato or Cheese Sauce (Chicken)", "price": 275, "veg": false},
+      {"id": "saut-ed-vegetables", "name": "Sautéed Vegetables", "price": 300, "veg": true, "desc": "Home-style vegetables sautéed with light spices."}
+    ]
+  },
+  {
+    "category": "Rice, Biryani & Noodles",
+    "note": "Lunch 12:30–14:45 hrs, dinner 18:45–22:30 hrs",
+    "items": [
+      {"id": "steamed-rice", "name": "Steamed Rice", "price": 125, "veg": true},
+      {"id": "pulao-jeera-matar", "name": "Pulao (Jeera / Matar)", "price": 225, "veg": true},
+      {"id": "khichdi-with-papad-and-pickle", "name": "Khichdi (with Papad and Pickle)", "price": 300, "veg": true, "desc": "Rice, lentils and vegetables, cooked to comfort."},
+      {"id": "subz-biryani-with-raita-and-salad", "name": "Subz Biryani (with Raita and Salad)", "price": 300, "veg": true},
+      {"id": "chicken-biryani-with-raita", "name": "Chicken Biryani (with Raita)", "price": 350, "veg": false},
+      {"id": "mutton-biryani-with-raita", "name": "Mutton Biryani (with Raita)", "price": 450, "veg": false},
+      {"id": "vegetable-hakka-noodles", "name": "Vegetable Hakka Noodles", "price": 225, "veg": true},
+      {"id": "chicken-hakka-noodles", "name": "Chicken Hakka Noodles", "price": 275, "veg": false},
+      {"id": "vegetable-fried-rice", "name": "Vegetable Fried Rice", "price": 225, "veg": true},
+      {"id": "chicken-fried-rice", "name": "Chicken Fried Rice", "price": 275, "veg": false},
+      {"id": "egg-fried-rice", "name": "Egg Fried Rice", "price": 250, "veg": false}
+    ]
+  },
+  {
+    "category": "Breads",
+    "note": "Lunch 12:30–14:45 hrs, dinner 18:45–22:30 hrs",
+    "items": [
+      {"id": "tandoori-roti-with-without-butter", "name": "Tandoori Roti (With / Without Butter)", "price": 45, "veg": true},
+      {"id": "naan-with-without-butter", "name": "Naan (With / Without Butter)", "price": 65, "veg": true},
+      {"id": "garlic-naan", "name": "Garlic Naan", "price": 100, "veg": true},
+      {"id": "laccha-paratha-with-without-butter", "name": "Laccha Paratha (With / Without Butter)", "price": 60, "veg": true},
+      {"id": "tawa-roti-1-portion-2-pieces", "name": "Tawa Roti (1 Portion – 2 Pieces)", "price": 50, "veg": true}
+    ]
+  },
+  {
+    "category": "Special Combos",
+    "note": "Lunch 12:30–14:45 hrs, dinner 18:45–22:30 hrs",
+    "items": [
+      {"id": "vegetable-curry-combo", "name": "Vegetable Curry Combo", "price": 300, "veg": true, "desc": "Seasonal veg with steamed rice, pickle, papad and salad."},
+      {"id": "bengali-fish-curry-with-rice-with-bone", "name": "Bengali Fish Curry with Rice (with bone)", "price": 350, "veg": false, "desc": "Fish in onion-tomato gravy with steamed rice."},
+      {"id": "mutton-kosha-with-rice", "name": "Mutton Kosha with Rice", "price": 450, "veg": false, "desc": "Bengali-style mutton with steamed rice."},
+      {"id": "chicken-curry-with-rice", "name": "Chicken Curry with Rice", "price": 400, "veg": false, "desc": "With steamed rice, pickle, papad and salad."}
+    ]
+  },
+  {
+    "category": "Desserts",
+    "note": "Lunch 12:30–14:45 hrs, dinner 18:45–22:30 hrs",
+    "items": [
+      {"id": "desserts-fruit-salad", "name": "Fruit Salad", "price": 225, "veg": true, "desc": "Diced fresh fruits, with or without ice cream."},
+      {"id": "choice-of-ice-cream-ask-your-server", "name": "Choice of Ice Cream (ask your server)", "price": 120, "veg": true},
+      {"id": "jugal-bandi", "name": "Jugal Bandi", "price": 150, "veg": true, "desc": "Hot gulab jamun with a scoop of vanilla ice cream."}
+    ]
+  }
+]
