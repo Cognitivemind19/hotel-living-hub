@@ -20,11 +20,17 @@ const topics: Topic[] = [
   {
     id: 'rooms',
     label: 'Room prices',
-    keywords: ['room', 'rooms', 'price', 'prices', 'rate', 'rates', 'tariff', 'cost', 'stay', 'night', 'deluxe', 'executive', 'suite', 'kamra', 'kotha', 'bed'],
+    keywords: ['room', 'rooms', 'price', 'prices', 'rate', 'rates', 'tariff', 'cost', 'stay', 'night', 'deluxe', 'executive', 'suite', 'kamra', 'kotha', 'bed', 'single', 'double', 'occupancy', 'included', 'inclusions', 'complimentary'],
     lines: [
-      `Our rooms, with the ${discount}% online price:`,
-      ...rooms.map((r) => (r.price ? `${r.name}: ${inr(withDiscount(r.price))} / night (regular ${inr(r.price)})` : `${r.name}: ask us for today's rate`)),
-      'All rooms have AC, TV and an attached bathroom.',
+      `Our rooms per night, with the ${discount}% online price:`,
+      ...rooms.map((r) =>
+        !r.price
+          ? `${r.name}: ask us for today's rate`
+          : r.priceDouble
+            ? `${r.name}: single ${inr(withDiscount(r.price))} (regular ${inr(r.price)}), double ${inr(withDiscount(r.priceDouble))} (regular ${inr(r.priceDouble)})`
+            : `${r.name}: ${inr(withDiscount(r.price))} (regular ${inr(r.price)})`,
+      ),
+      `Included with every room: ${site.roomInclusions.join(', ').toLowerCase()}.`,
     ],
     links: [{ label: 'Book a room', href: '/book/' }, { label: 'See room photos', href: '/rooms/' }],
   },

@@ -6,12 +6,20 @@ import BookingCta from '../components/BookingCta.astro';
 import OfferBanner from '../components/OfferBanner.astro';
 import { discount } from '../lib/offer';
 import rooms from '../data/rooms.json';
+import site from '../data/site.json';
 ---
 <BaseLayout title="Rooms & Accommodation" description="Deluxe, Executive and Suite rooms at Hotel Living Hub, with photos and amenities.">
   <PageHero title="Rooms & Accommodation" lead={`Book online through our website and save ${discount}% on your stay.`} image="/images/rooms/executive.webp" />
 
   <section class="section container rooms">
     <OfferBanner what="your stay" on="the room tariff" href="/book/" cta="Book now" />
+    <div class="inclusions">
+      <h2>Included with every room</h2>
+      <p class="muted">Room rates are per room, per night. Every booking includes these complimentary amenities and services:</p>
+      <ul class="checks">
+        {site.roomInclusions.map((i) => <li>{i}</li>)}
+      </ul>
+    </div>
     {rooms.map((room) => (
       <article class="room" id={room.slug}>
         <div class="main">
@@ -23,7 +31,7 @@ import rooms from '../data/rooms.json';
             <ul class="tags">
               {room.amenities.map((a) => <li>{a}</li>)}
             </ul>
-            <RoomPrice price={room.price} />
+            <RoomPrice price={room.price} priceDouble={room.priceDouble} />
             <a class="btn" href={`/book/?room=${room.slug}`} style="margin-top:12px">Book this room</a>
           </div>
         </div>
@@ -40,6 +48,8 @@ import rooms from '../data/rooms.json';
 <style>
   .rooms { display: grid; gap: 56px; }
   .room { display: grid; gap: 12px; }
+  .inclusions { background: var(--surface); border-radius: var(--radius); padding: 24px; }
+  .inclusions .checks { margin-top: 14px; }
   .main { display: grid; gap: 28px; grid-template-columns: 1.2fr 1fr; align-items: center; }
   .main img { border-radius: var(--radius); aspect-ratio: 4 / 3; object-fit: cover; width: 100%; background: var(--surface); }
   .main h2 { margin-bottom: 4px; }

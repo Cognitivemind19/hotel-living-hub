@@ -17,7 +17,7 @@ No linter, type-checker, or tests — verify with `npm run build`.
 
 Static Astro site, plain CSS, no framework, no backend. Client JS is limited to small scripts: the home availability bar, the pre-fill in `book.astro` and `banquet.astro`, the cart on `order.astro`, and the chat assistant in `ChatBot.astro`.
 
-- `src/data/*.json` is the source of truth for content: `site.json` (contact info, nav, amenities, reviews, `onlineDiscount`, `delivery`), `rooms.json`, `venues.json`, `menu.json` (restaurant page menu), `order-menu.json` (the `/order/` menu, converted from the hotel's In-Room Dining Word menu; a dish listed in two sections shares one `id` so the cart counts it once), `events.json` (banquet event types), `offers.json`, `attractions.json`. Pages read from them rather than hardcoding text. Unset values (`price`, `guests`, `distance`, `reviews`, `attractions`, `mapEmbedUrl`) are hidden on the page.
+- `src/data/*.json` is the source of truth for content: `site.json` (contact info, nav, amenities, reviews, `onlineDiscount`, `delivery`), `rooms.json`, `venues.json`, `menu.json` (restaurant page menu), `order-menu.json` (the `/order/` menu, converted from the hotel's In-Room Dining Word menu; a dish listed in two sections shares one `id` so the cart counts it once), `events.json` (banquet event types), `offers.json`, `attractions.json`. Pages read from them rather than hardcoding text. Room `price` is the single-occupancy rate and `priceDouble` the double; `site.json` `roomInclusions` lists what every room includes. Unset values (`price`, `priceDouble`, `guests`, `distance`, `reviews`, `attractions`, `mapEmbedUrl`) are hidden on the page.
 - Room `slug` links `RoomCard` and `AvailabilityBar` → `/book/?room=<slug>` → the pre-fill script in `book.astro`. Keep slugs in sync if renamed.
 - The website sells four services, each with an online-only discount (`site.json` `onlineDiscount`, read via `src/lib/offer.ts` and shown by `OfferBanner.astro`): rooms (`/rooms/`, `/book/`), restaurant table reservations (`/restaurant/`), food delivery (`/order/`) and the banquet hall (`/banquet/`). There is no payment gateway: every order or booking is a request the hotel confirms by phone. `/dining/` redirects to `/restaurant/` (see `astro.config.mjs`).
 - The `/order/` cart fills `order`, `subtotal`, `discount` and `total` fields that use the `hidden` attribute, not `type="hidden"`, so the Google Sheet copy includes them.
@@ -29,7 +29,7 @@ Static Astro site, plain CSS, no framework, no backend. Client JS is limited to 
 
 ## Known placeholders
 
-Pre-launch stubs, not bugs: `site.json` reviews, provisional room prices in `rooms.json`, dishes and prices in `menu.json` (restaurant page), delivery hours/area in `site.json`, distances in `attractions.json`, and the sample packages in `offers.json`.
+Pre-launch stubs, not bugs: `site.json` reviews, dishes and prices in `menu.json` (restaurant page), delivery hours/area in `site.json`, distances in `attractions.json`, and the sample packages in `offers.json`.
 
 ## Deploy
 

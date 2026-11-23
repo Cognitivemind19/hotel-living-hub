@@ -82,6 +82,16 @@
     "Power backup",
     "CCTV security"
   ],
+  "roomInclusions": [
+    "Welcome drink on arrival",
+    "Buffet breakfast the next morning",
+    "Air-conditioning",
+    "Free Wi-Fi",
+    "Tea/coffee maker in the room",
+    "Two bottles of packaged drinking water",
+    "Food room service",
+    "Daily housekeeping and linen change"
+  ],
   "heroSlides": [
     {
       "image": "/images/hero.webp",

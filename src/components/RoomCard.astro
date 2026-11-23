@@ -5,6 +5,7 @@ interface Props {
     slug: string;
     name: string;
     price: number | null;
+    priceDouble?: number | null;
     guests: number | null;
     bed: string;
     image: string;
@@ -21,7 +22,7 @@ const { room } = Astro.props;
     <ul class="tags">
       {room.amenities.map((a) => <li>{a}</li>)}
     </ul>
-    <RoomPrice price={room.price} />
+    <RoomPrice price={room.price} priceDouble={room.priceDouble} />
     <a class="btn" href={`/book/?room=${room.slug}`} style="margin-top:10px">Book this room</a>
   </div>
 </article>
