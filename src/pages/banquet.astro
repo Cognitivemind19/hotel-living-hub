@@ -1,4 +1,5 @@
 ---
+import WaLogo from '../components/WaLogo.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import OfferBanner from '../components/OfferBanner.astro';
@@ -13,7 +14,7 @@ const hall = venues.find((v) => v.slug === 'sabha')!;
 const sessions = ['Morning', 'Afternoon', 'Evening', 'Full day'];
 ---
 <BaseLayout title="Banquet Hall" description={`Sabha – The Banquet at Hotel Living Hub: AC hall for weddings, corporate events, family functions, social events and political meetings. Book online and get ${discount}% off the hall rent.`}>
-  <PageHero title="Sabha – The Banquet" lead="An AC banquet hall for weddings, corporate events, family functions and public meetings." image="/images/dining/sobha-3.webp" />
+  <PageHero title="Sabha – The Banquet" lead="An AC banquet hall for weddings, corporate events, family functions and public meetings." image="/images/banquet/sabha-2.webp" />
 
   <section class="section container">
     <OfferBanner what="the banquet hall" on="the hall rent" href="#enquire" cta="Book the hall" />
@@ -90,8 +91,8 @@ const sessions = ['Morning', 'Afternoon', 'Evening', 'Full day'];
     <div class="aside">
       <h3>Prefer to talk?</h3>
       <p class="muted">Call or WhatsApp us to visit the hall before you book. The {discount}% web offer still applies when you send your request here first.</p>
-      <a class="btn btn-whatsapp" href={waHref(`Hi, I'd like to book Sabha – The Banquet at ${site.name}.`)} target="_blank" rel="noopener">WhatsApp us</a>
-      <img src="/images/dining/sobha-2.webp" alt="Sabha banquet hall set up for a meeting" loading="lazy" width="800" height="600" />
+      <a class="btn btn-whatsapp" href={waHref(`Hi, I'd like to book Sabha – The Banquet at ${site.name}.`)} target="_blank" rel="noopener"><WaLogo />WhatsApp us</a>
+      <img src="/images/banquet/sabha-4.webp" alt="Head table and podium set up for a meeting" loading="lazy" width="800" height="600" />
     </div>
   </section>
 </BaseLayout>

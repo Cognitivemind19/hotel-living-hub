@@ -48,16 +48,12 @@
     "name": "Sabha – The Banquet",
     "type": "AC banquet hall",
     "description": "A large pillared AC hall that can be set up theatre-style or with round tables for weddings, receptions, corporate events, seminars, family functions and public meetings.",
-    "image": "/images/dining/sobha.webp",
+    "image": "/images/banquet/sabha.webp",
     "photos": [
-      {
-        "src": "/images/dining/sobha-2.webp",
-        "alt": "Sabha banquet hall with projector screen"
-      },
-      {
-        "src": "/images/dining/sobha-3.webp",
-        "alt": "Sabha banquet hall with round tables"
-      }
+      { "src": "/images/banquet/sabha-2.webp", "alt": "Sabha banquet hall with round tables facing the stage" },
+      { "src": "/images/banquet/sabha-3.webp", "alt": "Stage with podium, projector screen and head table" },
+      { "src": "/images/banquet/sabha-6.webp", "alt": "Round tables with covered chairs set up for a function" },
+      { "src": "/images/banquet/sabha-event.webp", "alt": "Guests at a family celebration in Sabha" }
     ],
     "href": "/banquet/"
   }
