@@ -1,4 +1,5 @@
 ---
+import WaLogo from '../components/WaLogo.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import Web3Form from '../components/Web3Form.astro';
@@ -17,7 +18,7 @@ import { telHref, waHref } from '../lib/links';
       <a class="way" id="wa-booking" href={waHref(`Hi, I'd like to book a stay at ${site.name}.`)} data-base={waHref()} data-hotel={site.name} target="_blank" rel="noopener">
         <h2>WhatsApp booking</h2>
         <p class="muted">The quickest way to reach us.</p>
-        <span class="btn btn-whatsapp">Chat on WhatsApp</span>
+        <span class="btn btn-whatsapp"><WaLogo />Chat on WhatsApp</span>
       </a>
       <a class="way" href={telHref}>
         <h2>Phone booking</h2>

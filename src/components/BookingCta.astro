@@ -1,6 +1,7 @@
 ---
 import site from '../data/site.json';
 import { telHref, waHref } from '../lib/links';
+import WaLogo from './WaLogo.astro';
 
 interface Props {
   title?: string;
@@ -11,7 +12,7 @@ const { title = 'Ready to book your stay?' } = Astro.props;
   <div class="container">
     <h2>{title}</h2>
     <div class="actions">
-      <a class="btn btn-whatsapp" href={waHref(`Hi, I'd like to book a stay at ${site.name}.`)} target="_blank" rel="noopener">WhatsApp booking</a>
+      <a class="btn btn-whatsapp" href={waHref(`Hi, I'd like to book a stay at ${site.name}.`)} target="_blank" rel="noopener"><WaLogo />WhatsApp booking</a>
       <a class="btn" href={telHref}>Call {site.phone}</a>
       <a class="btn" href="/book/">Online reservation</a>
     </div>

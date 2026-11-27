@@ -7,6 +7,7 @@
 import site from '../data/site.json';
 import rooms from '../data/rooms.json';
 import events from '../data/events.json';
+import icons from '../data/icons.json';
 import { discount, inr, withDiscount } from '../lib/offer';
 import { telHref, waHref } from '../lib/links';
 
@@ -127,7 +128,7 @@ const fallback = {
   links: [call],
 };
 
-const data = { topics, fallback, waBase: waHref(), hotel: site.name };
+const data = { topics, fallback, waBase: waHref(), hotel: site.name, waIcon: icons.whatsapp };
 ---
 <div class="chatbot" data-chatbot>
   <button class="launcher" type="button" aria-expanded="false" aria-controls="chatbot-panel" data-launcher>
@@ -162,7 +163,7 @@ const data = { topics, fallback, waBase: waHref(), hotel: site.name };
 <script>
   type Link = { label: string; href: string; external?: boolean };
   type Topic = { id: string; label: string; keywords: string[]; lines: string[]; links: Link[] };
-  type Data = { topics: Topic[]; fallback: { lines: string[]; links: Link[] }; waBase: string; hotel: string };
+  type Data = { topics: Topic[]; fallback: { lines: string[]; links: Link[] }; waBase: string; hotel: string; waIcon: { viewBox: string; d: string } };
 
   const root = document.querySelector<HTMLElement>('[data-chatbot]');
   if (root) {
@@ -183,6 +184,20 @@ const data = { topics, fallback, waBase: waHref(), hotel: site.name };
 
     const scroll = () => (log.scrollTop = log.scrollHeight);
 
+    // The WhatsApp logo for links that open a WhatsApp chat.
+    const svgNs = 'http://www.w3.org/2000/svg';
+    function waLogo() {
+      const svg = document.createElementNS(svgNs, 'svg');
+      svg.setAttribute('viewBox', data.waIcon.viewBox);
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('class', 'wa-logo');
+      const path = document.createElementNS(svgNs, 'path');
+      path.setAttribute('d', data.waIcon.d);
+      path.setAttribute('fill', 'currentColor');
+      svg.append(path);
+      return svg;
+    }
+
     function say(lines: string[], links: Link[] = []) {
       const msg = el('div', 'msg bot');
       for (const line of lines) msg.append(el('p', '', line));
@@ -191,6 +206,7 @@ const data = { topics, fallback, waBase: waHref(), hotel: site.name };
         for (const l of links) {
           const a = el('a', 'link', l.label);
           a.href = l.href;
+          if (l.href.startsWith(data.waBase)) a.prepend(waLogo());
           if (l.external) { a.target = '_blank'; a.rel = 'noopener'; }
           row.append(a);
         }
@@ -302,6 +318,7 @@ const data = { topics, fallback, waBase: waHref(), hotel: site.name };
   .log :global(.links) { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   .log :global(.link) { padding: 5px 10px; border-radius: 99px; background: var(--forest); color: #fff; text-decoration: none; font-weight: 600; font-size: 0.85rem; }
   .log :global(.link:hover) { background: var(--forest-dark); }
+  .log :global(.link .wa-logo) { width: 14px; height: 14px; margin-right: 5px; vertical-align: -2px; }
   .log :global(.chips) { display: flex; flex-wrap: wrap; gap: 6px; }
   .log :global(.chip) {
     font: inherit; font-size: 0.85rem; padding: 5px 11px; border-radius: 99px; cursor: pointer;

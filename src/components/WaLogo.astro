@@ -1,0 +1,11 @@
+---
+/** The bare WhatsApp logo, in the current text colour, for buttons and links. */
+import icons from '../data/icons.json';
+
+interface Props {
+  size?: number;
+}
+const { size = 20 } = Astro.props;
+const { viewBox, d } = icons.whatsapp;
+---
+<svg class="wa-logo" xmlns="http://www.w3.org/2000/svg" viewBox={viewBox} width={size} height={size} aria-hidden="true" focusable="false"><!-- Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (CC BY 4.0) --><path d={d} fill="currentColor" /></svg>

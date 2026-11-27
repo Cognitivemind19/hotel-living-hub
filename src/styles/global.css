@@ -43,7 +43,7 @@ a { color: var(--forest); }
   cursor: pointer;
 }
 .btn:hover { background: var(--forest-dark); }
-.btn-whatsapp { background: var(--accent); color: #0b3d1e; }
+.btn-whatsapp { background: var(--accent); color: #0b3d1e; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
 .btn-whatsapp:hover { background: #1ebe5a; }
 
 .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }

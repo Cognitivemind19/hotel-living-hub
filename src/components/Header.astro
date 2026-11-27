@@ -2,6 +2,7 @@
 import site from '../data/site.json';
 import { telHref, waHref } from '../lib/links';
 import { discount } from '../lib/offer';
+import WaLogo from './WaLogo.astro';
 
 const path = Astro.url.pathname;
 ---
@@ -11,7 +12,7 @@ const path = Astro.url.pathname;
     <a class="promo" href="/offers/">{discount}% off when you book online</a>
     <span class="reach">
       <a href={telHref}>{site.phone}</a>
-      <a href={waHref()} target="_blank" rel="noopener">WhatsApp</a>
+      <a class="wa" href={waHref()} target="_blank" rel="noopener"><WaLogo size={16} />WhatsApp</a>
     </span>
   </div>
 </div>
@@ -56,6 +57,8 @@ const path = Astro.url.pathname;
   .promo:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   .reach a { color: #fff; text-decoration: none; font-weight: 600; white-space: nowrap; }
   .reach a:hover { text-decoration: underline; }
+  .reach .wa { display: inline-flex; align-items: center; gap: 5px; }
+  .reach .wa :global(.wa-logo) { color: #25d366; }
   .reach a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
   .site-header { background: #fff; border-bottom: 1px solid #eadfd2; position: sticky; top: 0; z-index: 10; }

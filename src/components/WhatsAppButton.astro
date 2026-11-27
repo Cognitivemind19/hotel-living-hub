@@ -1,16 +1,21 @@
 ---
 import site from '../data/site.json';
 import { waHref } from '../lib/links';
+import WaLogo from './WaLogo.astro';
 ---
 <a class="wa-float" href={waHref(`Hi, I'd like to enquire about a room at ${site.name}.`)} target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-  WhatsApp
+  <WaLogo size={24} />
+  <span>WhatsApp</span>
 </a>
 
 <style>
   .wa-float {
     position: fixed; right: 16px; bottom: 16px; z-index: 20;
-    background: var(--accent); color: #0b3d1e; font-weight: 700;
-    padding: 12px 18px; border-radius: 99px; text-decoration: none;
-    box-shadow: 0 4px 14px rgb(0 0 0 / 0.18);
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #25d366; color: #0b3d1e; font-weight: 700;
+    padding: 11px 18px 11px 14px; border-radius: 99px; text-decoration: none;
+    box-shadow: 0 4px 14px rgb(0 0 0 / 0.22);
   }
+  .wa-float:hover { background: #1ebe5a; }
+  .wa-float:focus-visible { outline: 3px solid #128c7e; outline-offset: 2px; }
 </style>

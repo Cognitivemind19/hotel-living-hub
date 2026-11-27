@@ -1,4 +1,5 @@
 ---
+import WaLogo from '../components/WaLogo.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import OfferBanner from '../components/OfferBanner.astro';
@@ -91,7 +92,7 @@ const sectionId = (category: string) => 'm-' + category.toLowerCase().replace(/[
           <input name="discount" hidden />
           <input name="total" hidden />
           <button class="btn" type="submit" data-submit disabled>Place order</button>
-          <a class="btn btn-whatsapp" data-wa data-base={waHref()} href={waHref(`Hi, I'd like to order food from ${site.name}.`)} target="_blank" rel="noopener">Or order on WhatsApp</a>
+          <a class="btn btn-whatsapp" data-wa data-base={waHref()} href={waHref(`Hi, I'd like to order food from ${site.name}.`)} target="_blank" rel="noopener"><WaLogo />Or order on WhatsApp</a>
           <p class="muted small">We'll call you to confirm your order and delivery time. Questions? Call <a href={telHref}>{site.phone}</a>.</p>
         </Web3Form>
       </div>
