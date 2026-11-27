@@ -9,8 +9,8 @@
     "bed": "Two beds",
     "image": "/images/rooms/deluxe.webp",
     "photos": [
-      { "src": "/images/rooms/deluxe-2.webp", "alt": "Deluxe Room with two beds and table" },
-      { "src": "/images/rooms/deluxe-3.webp", "alt": "Deluxe Room with TV and dresser" },
+      { "src": "/images/rooms/deluxe-2.webp", "alt": "Deluxe Room seating and writing table" },
+      { "src": "/images/rooms/deluxe-3.webp", "alt": "Deluxe Room with TV and mirror" },
       { "src": "/images/rooms/deluxe-bath.webp", "alt": "Deluxe Room attached bathroom" }
     ],
     "amenities": ["AC", "TV", "Sitting area", "Attached bathroom"]
@@ -25,8 +25,8 @@
     "bed": "Double bed",
     "image": "/images/rooms/executive.webp",
     "photos": [
-      { "src": "/images/rooms/executive-2.webp", "alt": "Executive Room seating and writing table" },
-      { "src": "/images/rooms/executive-3.webp", "alt": "Executive Room with TV and mirror" },
+      { "src": "/images/rooms/executive-2.webp", "alt": "Executive Room with two beds and table" },
+      { "src": "/images/rooms/executive-3.webp", "alt": "Executive Room with TV and dresser" },
       { "src": "/images/rooms/executive-bath.webp", "alt": "Executive Room attached bathroom" }
     ],
     "amenities": ["AC", "TV", "Electric kettle", "Writing table", "Attached bathroom"]
