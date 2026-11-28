@@ -8,6 +8,9 @@
  *
  * Each form gets its own tab (created automatically with a header row). New
  * form fields become new columns automatically.
+ *
+ * The website's Reviews page reads the newest reviews back through doGet. To
+ * take a review off the website, type anything in its "Hide" column.
  */
 
 const TABS = {
@@ -17,6 +20,7 @@ const TABS = {
   Restaurant: ['name', 'phone', 'email', 'date', 'time', 'guests', 'occasion', 'message'],
   Banquet: ['name', 'phone', 'email', 'organisation', 'event_type', 'date', 'session', 'guests', 'catering', 'rooms_needed', 'message'],
   Order: ['name', 'phone', 'address', 'landmark', 'when', 'payment', 'order', 'subtotal', 'discount', 'total', 'message'],
+  Review: ['name', 'rating', 'visit', 'message', 'phone', 'hide'],
 };
 
 const LABELS = {
@@ -44,13 +48,18 @@ const LABELS = {
   subtotal: 'Subtotal',
   discount: 'Web discount',
   total: 'Total',
+  rating: 'Rating',
+  visit: 'Visited for',
   message: 'Message',
+  hide: 'Hide',
 };
 
 const TIME_HEADER = 'Date & time';
 const TIME_ZONE = 'Asia/Kolkata';
 const MAX_LENGTH = 5000;
 const MAX_FIELDS = 30;
+const MAX_REVIEWS = 20;
+const REVIEWS_CACHE_KEY = 'reviews';
 
 function doPost(e) {
   const params = (e && e.parameter) || {};
@@ -58,7 +67,7 @@ function doPost(e) {
   if (!Object.prototype.hasOwnProperty.call(TABS, tab) || params.botcheck) return reply('ignored');
 
   const fields = Object.keys(params)
-    .filter((key) => !key.startsWith('_') && key !== 'botcheck' && /^[a-z0-9_]{1,40}$/i.test(key))
+    .filter((key) => !key.startsWith('_') && key !== 'botcheck' && key !== 'hide' && /^[a-z0-9_]{1,40}$/i.test(key))
     .slice(0, MAX_FIELDS);
 
   const lock = LockService.getScriptLock();
@@ -79,10 +88,53 @@ function doPost(e) {
     });
 
     sheet.appendRow(headers.map((header) => (header in values ? values[header] : '')));
+    if (tab === 'Review') CacheService.getScriptCache().remove(REVIEWS_CACHE_KEY);
     return reply('ok');
   } finally {
     lock.releaseLock();
   }
+}
+
+// GET ?reviews=1 returns the newest reviews for the website (never the guest's phone or email).
+function doGet(e) {
+  const params = (e && e.parameter) || {};
+  if (params.reviews !== '1') return reply('ignored');
+
+  const cache = CacheService.getScriptCache();
+  let json = cache.get(REVIEWS_CACHE_KEY);
+  if (!json) {
+    json = JSON.stringify({ result: 'ok', reviews: readReviews() });
+    cache.put(REVIEWS_CACHE_KEY, json, 300);
+  }
+  return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON);
+}
+
+function readReviews() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Review');
+  if (!sheet || sheet.getLastRow() < 2) return [];
+  const rows = sheet.getDataRange().getValues();
+  const col = (label) => rows[0].indexOf(label);
+  const c = { time: col(TIME_HEADER), name: col(LABELS.name), rating: col(LABELS.rating), visit: col(LABELS.visit), quote: col(LABELS.message), hide: col(LABELS.hide) };
+  const get = (row, i) => (i === -1 ? '' : String(row[i]).trim());
+  // Sheets may turn the timestamp text into a Date; either way return yyyy-MM-dd.
+  const day = (v) => (v instanceof Date ? Utilities.formatDate(v, TIME_ZONE, 'yyyy-MM-dd') : String(v).slice(0, 10));
+
+  const reviews = [];
+  for (let r = rows.length - 1; r >= 1 && reviews.length < MAX_REVIEWS; r--) {
+    const row = rows[r];
+    const name = get(row, c.name);
+    const quote = get(row, c.quote);
+    if (!name || !quote || get(row, c.hide)) continue;
+    const rating = Math.round(Number(get(row, c.rating)));
+    reviews.push({
+      name: name.slice(0, 60),
+      quote: quote.slice(0, 1000),
+      rating: rating >= 1 && rating <= 5 ? rating : undefined,
+      visit: get(row, c.visit).slice(0, 60),
+      date: c.time === -1 ? '' : day(row[c.time]),
+    });
+  }
+  return reviews;
 }
 
 function getSheet(tab) {

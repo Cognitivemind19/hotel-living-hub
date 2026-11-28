@@ -44,6 +44,10 @@
       "label": "Banquet"
     },
     {
+      "href": "/events/",
+      "label": "Events"
+    },
+    {
       "href": "/corporate/",
       "label": "Corporate"
     },
@@ -54,6 +58,10 @@
     {
       "href": "/gallery/",
       "label": "Gallery"
+    },
+    {
+      "href": "/reviews/",
+      "label": "Reviews"
     },
     {
       "href": "/about/",

@@ -1,0 +1,249 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Web3Form from '../components/Web3Form.astro';
+import site from '../data/site.json';
+
+// Each review is emailed by Web3Forms and copied to the Google Sheet's "Review" tab.
+// The page shows the newest 20 from the Sheet (via the Apps Script's doGet), followed
+// by any reviews written into site.json `reviews`. Without sheetsWebAppUrl only the
+// site.json reviews appear.
+type Review = { name: string; quote: string; rating?: number; visit?: string; date?: string };
+const staticReviews = site.reviews as Review[];
+const MAX = 20;
+
+const stars = (n: number) => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
+const formatDate = (iso: string) =>
+  new Date(`${iso}T00:00:00`).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+
+const rated = staticReviews.filter((r) => r.rating);
+const average = rated.length ? rated.reduce((s, r) => s + (r.rating ?? 0), 0) / rated.length : 0;
+
+const visits = ['Room stay', 'Taste Point restaurant', 'Madira – The Bar', 'Food delivery', 'Banquet / event', 'Corporate stay'];
+const live = Boolean(site.sheetsWebAppUrl);
+const config = { feedUrl: site.sheetsWebAppUrl ? `${site.sheetsWebAppUrl}?reviews=1` : '', max: MAX, staticReviews };
+---
+<BaseLayout title="Guest Reviews" description="Read what guests say about Hotel Living Hub, and share your own review of your stay, meal or event.">
+  <PageHero title="Guest reviews" lead="Stayed, dined or celebrated with us? We would love to hear from you." image="/images/gallery/reception.webp" />
+
+  <div class="sent-notice" id="sent-notice" role="status" hidden>
+    <div class="container">
+      <p><strong>Thank you for your review!</strong> {live ? 'It is now on this page, and a copy has been sent to our team.' : 'It has been sent to our team.'}</p>
+      <button type="button" aria-label="Close" data-dismiss>&times;</button>
+    </div>
+  </div>
+
+  <section class="section container layout">
+    <div class="list" id="guest-reviews">
+      <h2>What guests say</h2>
+      <p class="summary" id="summary" hidden={rated.length === 0}>
+        <span class="stars" aria-hidden="true" data-avg-stars>{stars(average)}</span>
+        <strong data-avg>{average.toFixed(1)} / 5</strong>
+        <span class="muted" data-count>from {rated.length} review{rated.length === 1 ? '' : 's'}</span>
+      </p>
+      <div class="reviews" id="reviews">
+        {staticReviews.slice(0, MAX).map((r) => (
+          <blockquote class="card card-body review">
+            {r.rating && <p class="stars" role="img" aria-label={`${r.rating} out of 5 stars`}>{stars(r.rating)}</p>}
+            <p>“{r.quote}”</p>
+            <footer class="muted">
+              <strong>{r.name}</strong>
+              {r.visit && <span> · {r.visit}</span>}
+              {r.date && <span> · {formatDate(r.date)}</span>}
+            </footer>
+          </blockquote>
+        ))}
+      </div>
+      <p class="card card-body empty" id="empty" hidden={staticReviews.length > 0}>No reviews yet. Be the first to share your experience!</p>
+      <p class="google">
+        You can also review us on <a href={site.mapUrl} target="_blank" rel="noopener">Google Maps</a>.
+      </p>
+    </div>
+
+    <div class="card card-body write" id="write">
+      <h2>Write a review</h2>
+      {live && <p class="muted">Your review appears on this page as soon as you send it.</p>}
+      <Web3Form subject="New guest review" sheet="Review" id="review-form" redirectTo="/reviews/?sent=1#guest-reviews">
+        <label>Your name <input name="name" required autocomplete="name" maxlength="60" /></label>
+        <fieldset class="rating">
+          <legend>Your rating</legend>
+          <div class="rating-stars">
+            {[5, 4, 3, 2, 1].map((n) => (
+              <>
+                <input type="radio" name="rating" id={`rate-${n}`} value={n} required />
+                <label for={`rate-${n}`} title={`${n} star${n === 1 ? '' : 's'}`}><span class="sr-only">{n} star{n === 1 ? '' : 's'}</span></label>
+              </>
+            ))}
+          </div>
+        </fieldset>
+        <label>What did you visit for?
+          <select name="visit" required>
+            <option value="">Choose one</option>
+            {visits.map((v) => <option>{v}</option>)}
+          </select>
+        </label>
+        <label>Your review <textarea name="message" rows="5" required minlength="10" maxlength="1000"></textarea></label>
+        <label>Phone or email <span class="opt">(optional, never shown on the website)</span>
+          <input name="phone" autocomplete="tel" />
+        </label>
+        <button class="btn" type="submit">Submit review</button>
+      </Web3Form>
+    </div>
+  </section>
+
+  <template id="review-template">
+    <blockquote class="card card-body review">
+      <p class="stars" role="img"></p>
+      <p data-quote></p>
+      <footer class="muted"><strong data-name></strong><span data-meta></span></footer>
+    </blockquote>
+  </template>
+
+  <script is:inline type="application/json" id="reviews-config" set:html={JSON.stringify(config)} />
+</BaseLayout>
+
+<script>
+  import { FORM_SENT_KEY } from '../scripts/form-sent';
+
+  type Review = { name: string; quote: string; rating?: number; visit?: string; date?: string };
+  type Config = { feedUrl: string; max: number; staticReviews: Review[] };
+
+  const config = JSON.parse(document.getElementById('reviews-config')!.textContent!) as Config;
+  const PENDING_KEY = 'review-pending';
+  const list = document.getElementById('reviews')!;
+  const template = document.getElementById('review-template') as HTMLTemplateElement;
+
+  const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
+  const formatDate = (iso: string) => {
+    const d = new Date(`${iso}T00:00:00`);
+    return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+  };
+  const same = (a: Review, b: Review) => a.name.trim() === b.name.trim() && a.quote.trim() === b.quote.trim();
+
+  // Guest text is only ever set with textContent, never as HTML.
+  function card(r: Review) {
+    const el = template.content.firstElementChild!.cloneNode(true) as HTMLElement;
+    const starEl = el.querySelector<HTMLElement>('.stars')!;
+    if (r.rating) {
+      starEl.textContent = stars(r.rating);
+      starEl.setAttribute('aria-label', `${r.rating} out of 5 stars`);
+    } else starEl.remove();
+    el.querySelector('[data-quote]')!.textContent = `“${r.quote}”`;
+    el.querySelector('[data-name]')!.textContent = r.name;
+    const date = r.date ? formatDate(r.date) : '';
+    el.querySelector('[data-meta]')!.textContent = [r.visit, date].filter(Boolean).map((v) => ` · ${v}`).join('');
+    return el;
+  }
+
+  function render(reviews: Review[]) {
+    const shown = reviews.slice(0, config.max);
+    list.replaceChildren(...shown.map(card));
+    document.getElementById('empty')!.hidden = shown.length > 0;
+
+    const rated = shown.filter((r) => r.rating);
+    const summary = document.getElementById('summary')!;
+    summary.hidden = rated.length === 0;
+    if (rated.length) {
+      const avg = rated.reduce((s, r) => s + (r.rating ?? 0), 0) / rated.length;
+      summary.querySelector('[data-avg-stars]')!.textContent = stars(Math.round(avg));
+      summary.querySelector('[data-avg]')!.textContent = `${avg.toFixed(1)} / 5`;
+      summary.querySelector('[data-count]')!.textContent = `from ${rated.length} review${rated.length === 1 ? '' : 's'}`;
+    }
+  }
+
+  function readPending(): Review | null {
+    try { return JSON.parse(sessionStorage.getItem(PENDING_KEY) ?? 'null'); } catch { return null; }
+  }
+
+  // Remember the guest's own review so it shows straight away after the redirect,
+  // even before the Sheet copy has been saved.
+  document.getElementById('review-form')?.addEventListener('submit', (e) => {
+    const form = e.currentTarget as HTMLFormElement;
+    const data = new FormData(form);
+    const review: Review = {
+      name: String(data.get('name') ?? '').trim(),
+      quote: String(data.get('message') ?? '').trim(),
+      rating: Number(data.get('rating')) || undefined,
+      visit: String(data.get('visit') ?? ''),
+      date: new Date().toISOString().slice(0, 10),
+    };
+    try { sessionStorage.setItem(PENDING_KEY, JSON.stringify(review)); } catch {}
+  });
+
+  // Web3Forms lands here with ?sent=1 after a successful submission.
+  const url = new URL(location.href);
+  const justSent = url.searchParams.get('sent') === '1';
+  if (justSent) {
+    const notice = document.getElementById('sent-notice')!;
+    notice.hidden = false;
+    notice.querySelector('[data-dismiss]')!.addEventListener('click', () => (notice.hidden = true));
+    try { sessionStorage.setItem(FORM_SENT_KEY, '1'); } catch {}
+    url.searchParams.delete('sent');
+    history.replaceState(null, '', url.pathname + url.search + url.hash);
+  }
+
+  const pending = justSent && config.feedUrl ? readPending() : null;
+  if (!justSent) try { sessionStorage.removeItem(PENDING_KEY); } catch {}
+
+  function show(live: Review[]) {
+    const all = [...live, ...config.staticReviews];
+    if (pending && !all.some((r) => same(r, pending))) all.unshift(pending);
+    render(all);
+  }
+
+  if (pending) show([]);
+  if (config.feedUrl) {
+    fetch(config.feedUrl)
+      .then((res) => res.json())
+      .then((data: { reviews?: Review[] }) => {
+        const live = (data.reviews ?? []).filter((r) => r && typeof r.name === 'string' && typeof r.quote === 'string');
+        show(live);
+      })
+      .catch(() => {});
+  }
+</script>
+
+<style>
+  .sent-notice { background: #e6f4ea; border-bottom: 2px solid var(--forest); color: var(--forest-dark); }
+  .sent-notice[hidden] { display: none; }
+  .sent-notice .container { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; }
+  .sent-notice p { margin: 0; }
+  .sent-notice button { background: none; border: 0; font-size: 1.6rem; line-height: 1; color: inherit; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+  .sent-notice button:focus-visible { outline: 2px solid var(--forest); }
+
+  .layout { display: grid; gap: 32px; grid-template-columns: 1.3fr 1fr; align-items: start; }
+  .list { display: grid; gap: 16px; scroll-margin-top: 90px; }
+  .list h2 { margin: 0; }
+  .summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin: 0; }
+  .summary[hidden], .empty[hidden] { display: none; }
+  .reviews { display: grid; gap: 16px; }
+  .reviews:empty { display: none; }
+  .review { margin: 0; display: grid; gap: 8px; }
+  .review p { margin: 0; overflow-wrap: anywhere; }
+  .stars { color: #d99a00; letter-spacing: 2px; font-size: 1.15rem; margin: 0; }
+  .empty { margin: 0; }
+  .google { margin: 0; }
+
+  .write { position: sticky; top: 90px; }
+  .write h2 { margin-top: 0; }
+  .opt { font-weight: 400; color: var(--muted); font-size: 0.85rem; }
+
+  .rating { border: 0; padding: 0; margin: 0; }
+  .rating legend { font-weight: 700; font-size: 0.95rem; padding: 0; margin-bottom: 4px; }
+  /* Radios are listed 5 → 1 and shown reversed, so `~` can light up the chosen star and those before it. */
+  .rating-stars { display: inline-flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; }
+  .rating-stars input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .rating-stars label { cursor: pointer; font-size: 2rem; line-height: 1; color: #d6cfc6; }
+  .rating-stars label::before { content: '★'; }
+  .rating-stars label:hover,
+  .rating-stars label:hover ~ label,
+  .rating-stars input:checked ~ label { color: #d99a00; }
+  .rating-stars input:focus-visible + label { outline: 2px solid var(--forest); outline-offset: 2px; border-radius: 4px; }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .write { position: static; }
+  }
+</style>

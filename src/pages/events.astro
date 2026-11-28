@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Lightbox from '../components/Lightbox.astro';
+import pastEvents from '../data/past-events.json';
+
+type Photo = { src: string; alt: string };
+type PastEvent = {
+  title: string;
+  date: string;
+  type?: string;
+  guests?: number;
+  summary: string;
+  images: Photo[];
+  video?: string;
+};
+
+// Newest first; only the five most recent are shown, so adding an event pushes the oldest off.
+const events = (pastEvents as PastEvent[])
+  .slice()
+  .sort((a, b) => b.date.localeCompare(a.date))
+  .slice(0, 5);
+
+const formatDate = (iso: string) =>
+  new Date(`${iso}T00:00:00`).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// A YouTube link becomes an embed; anything else (e.g. /videos/party.mp4) plays in a <video> tag.
+function youtubeEmbed(url: string) {
+  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/);
+  return m ? `https://www.youtube-nocookie.com/embed/${m[1]}` : undefined;
+}
+---
+<BaseLayout title="Events" description="Recent weddings, parties, seminars and meetings hosted at Sabha – The Banquet, Hotel Living Hub.">
+  <PageHero title="Recent events" lead="A look at celebrations and meetings we have hosted at Sabha – The Banquet." image="/images/banquet/sabha-event.webp" />
+
+  <section class="section container events">
+    {events.map((e) => {
+      const embed = e.video ? youtubeEmbed(e.video) : undefined;
+      return (
+        <article class="card event">
+          <a href={e.images[0].src} class="zoom main" data-caption={`${e.title} – ${e.images[0].alt}`} aria-label={`View larger photo: ${e.images[0].alt}`}>
+            <img src={e.images[0].src} alt={e.images[0].alt} loading="lazy" width="800" height="600" />
+          </a>
+          <div class="card-body body">
+            <p class="meta">
+              <time datetime={e.date}>{formatDate(e.date)}</time>
+              {e.type && <span>· {e.type}</span>}
+              {e.guests && <span>· {e.guests} guests</span>}
+            </p>
+            <h2>{e.title}</h2>
+            <p>{e.summary}</p>
+            {e.images.length > 1 && (
+              <div class="thumbs">
+                {e.images.slice(1).map((p) => (
+                  <a href={p.src} class="zoom" data-caption={`${e.title} – ${p.alt}`} aria-label={`View larger photo: ${p.alt}`}>
+                    <img src={p.src} alt={p.alt} loading="lazy" width="400" height="300" />
+                  </a>
+                ))}
+              </div>
+            )}
+            {e.video && (
+              <div class="video">
+                {embed ? (
+                  <iframe src={embed} title={`Video: ${e.title}`} loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+                ) : (
+                  <video src={e.video} controls preload="metadata" playsinline poster={e.images[0]?.src}></video>
+                )}
+              </div>
+            )}
+          </div>
+        </article>
+      );
+    })}
+  </section>
+
+  <section class="section band">
+    <div class="container cta">
+      <h2>Planning an event?</h2>
+      <p>Sabha hosts marriages, family functions, corporate events and public meetings, with catering from Taste Point.</p>
+      <a class="btn" href="/banquet/">Book the banquet hall</a>
+    </div>
+  </section>
+
+  <Lightbox />
+</BaseLayout>
+
+<style>
+  .events { display: grid; gap: 32px; }
+  .event { display: grid; grid-template-columns: 1.1fr 1fr; }
+  .main img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; height: 100%; background: var(--surface); }
+  .body { display: grid; gap: 12px; align-content: start; padding: 20px 24px; }
+  .thumbs { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  .thumbs .zoom { border-radius: 8px; }
+  .thumbs img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; background: var(--surface); }
+  .body h2 { margin: 0; }
+  .body p { margin: 0; }
+  .meta { color: var(--brand-dark); font-weight: 700; font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 0 6px; }
+
+  .video iframe, .video video { width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: var(--radius); background: #000; display: block; }
+
+  .zoom { display: block; overflow: hidden; cursor: zoom-in; }
+  .zoom img { transition: transform 0.3s; }
+  .zoom:hover img { transform: scale(1.04); }
+  .zoom:focus-visible { outline: 2px solid var(--forest); outline-offset: -2px; }
+
+  .cta { text-align: center; display: grid; gap: 12px; justify-items: center; }
+  .cta p { max-width: 60ch; margin: 0; }
+
+  @media (max-width: 800px) {
+    .event { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .zoom img { transition: none; }
+    .zoom:hover img { transform: none; }
+  }
+</style>

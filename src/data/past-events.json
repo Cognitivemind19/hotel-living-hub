@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Family birthday celebration",
+    "date": "2026-11-22",
+    "type": "Family function",
+    "guests": 120,
+    "summary": "An evening birthday party in Sabha with balloon decor, a photo stage and a buffet dinner from Taste Point for family and friends.",
+    "images": [
+      { "src": "/images/banquet/sabha-event.webp", "alt": "Guests at a birthday celebration in Sabha" },
+      { "src": "/images/banquet/sabha-5.webp", "alt": "Stage set up beside the windows" }
+    ],
+    "video": ""
+  },
+  {
+    "title": "Corporate seminar",
+    "date": "2026-11-15",
+    "type": "Corporate event",
+    "guests": 60,
+    "summary": "A half-day seminar with a head table, podium, projector screen and sound, followed by tea and lunch.",
+    "images": [
+      { "src": "/images/banquet/sabha-3.webp", "alt": "Stage with podium and projector screen" },
+      { "src": "/images/banquet/sabha-4.webp", "alt": "Head table set for the speakers" }
+    ],
+    "video": ""
+  },
+  {
+    "title": "Engagement ceremony",
+    "date": "2026-11-08",
+    "type": "Marriage & reception",
+    "guests": 150,
+    "summary": "An engagement ceremony with round-table seating, floral decor on the stage and a full dinner buffet.",
+    "images": [
+      { "src": "/images/banquet/sabha.webp", "alt": "Round tables set across the hall" },
+      { "src": "/images/banquet/sabha-2.webp", "alt": "Tables facing the stage" }
+    ],
+    "video": ""
+  },
+  {
+    "title": "Community award night",
+    "date": "2026-10-25",
+    "type": "Social event",
+    "guests": 100,
+    "summary": "An award night for a local community group, with stage, sound and a plated dinner.",
+    "images": [
+      { "src": "/images/banquet/sabha-6.webp", "alt": "Sabha set up with round tables" },
+      { "src": "/images/banquet/sabha-2.webp", "alt": "Seating facing the stage" }
+    ],
+    "video": ""
+  },
+  {
+    "title": "Workers' meet",
+    "date": "2026-10-12",
+    "type": "Public meeting",
+    "guests": 200,
+    "summary": "A workers' meet with theatre seating, microphones and tea and snacks for the attendees.",
+    "images": [
+      { "src": "/images/banquet/sabha-3.webp", "alt": "Stage with podium" },
+      { "src": "/images/banquet/sabha.webp", "alt": "The hall set up for guests" }
+    ],
+    "video": ""
+  }
+]

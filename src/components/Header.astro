@@ -62,7 +62,8 @@ const path = Astro.url.pathname;
   .reach a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
   .site-header { background: #fff; border-bottom: 1px solid #eadfd2; position: sticky; top: 0; z-index: 10; }
-  .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 10px 0; }
+  /* Wider than --max so all twelve nav links fit on one line. */
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 10px 0; width: min(100% - 32px, 1320px); }
 
   .logo { flex: none; display: block; border-radius: 4px; }
   .logo img { height: 48px; width: auto; }
@@ -108,7 +109,7 @@ const path = Astro.url.pathname;
 
   a:focus-visible, summary:focus-visible { outline: 2px solid var(--forest); outline-offset: 2px; }
 
-  @media (max-width: 1140px) {
+  @media (max-width: 1340px) {
     .nav-desktop { display: none; }
     .menu { display: block; }
     .actions { gap: 8px; }

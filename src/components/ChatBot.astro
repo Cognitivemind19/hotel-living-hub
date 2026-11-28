@@ -84,7 +84,14 @@ const topics: Topic[] = [
       `Sabha – The Banquet is our AC hall for ${events.map((e) => e.name.toLowerCase()).join(', ')}.`,
       `Catering comes from Taste Point, and guests can stay in the hotel. Book online for ${discount}% off the hall rent.`,
     ],
-    links: [{ label: 'Book the hall', href: '/banquet/#enquire' }, { label: 'See the hall', href: '/banquet/' }],
+    links: [{ label: 'Book the hall', href: '/banquet/#enquire' }, { label: 'See the hall', href: '/banquet/' }, { label: 'Recent events', href: '/events/' }],
+  },
+  {
+    id: 'reviews',
+    label: 'Reviews',
+    keywords: ['review', 'reviews', 'feedback', 'rating', 'ratings', 'rate us', 'testimonial', 'complaint', 'experience'],
+    lines: ['We would love to hear about your stay, meal or event. You can read guest reviews and write your own on our reviews page.'],
+    links: [{ label: 'Write a review', href: '/reviews/#write' }, { label: 'Read reviews', href: '/reviews/' }],
   },
   {
     id: 'corporate',
